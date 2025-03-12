@@ -1,0 +1,212 @@
+/* General styling */
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Navbar hide/show animation */
+.navbar-hide {
+  top: -100px;
+  transition: top 0.4s ease-in-out;
+}
+
+.navbar-show {
+  top: 0;
+  transition: top 0.4s ease-in-out;
+}
+
+/* Estilo para el Navbar para que permanezca fijo en la parte superior */
+.navbar {
+  position: fixed;
+  width: 100%;
+  z-index: 1000;
+}
+
+/* Header Styles */
+.main-header {
+  text-align: center;
+  padding: 20px;
+  background-color: #0e0d0de5;
+  color: #fff;
+}
+
+.main-header h1 {
+  margin: 0;
+}
+
+/* Navigation Bar Styles */
+.nav-bar {
+  display: flex;
+  justify-content: center;
+  background-color: #fffdfd;
+  padding: 0px;
+}
+
+.nav-bar a {
+  color: rgb(0, 0, 0);
+  padding: 14px 20px;
+  text-decoration: none;
+}
+
+.nav-bar a:hover {
+  background-color: #555;
+}
+
+.navbar {
+  position: fixed;
+  width: 100%;
+  z-index: 1000;
+  background-color: #343a40; /* Color oscuro de la navbar */
+}
+
+/* Content Section Styles */
+.home-content {
+  display: flex;
+  justify-content: space-around;
+  padding: 20px;
+}
+
+.home-content img {
+  max-width: 150px;
+  height: auto;
+  border: 2px solid #ddd;
+}
+
+.cart-count {
+  position: absolute;
+  top: -10px; /* Ajusta la distancia desde el icono */
+  right: -1px; /* Ajusta la distancia desde el icono */
+  background-color: #FF4C4C;
+  color: white;
+  border-radius: 50%;
+  padding: 4px 8px; /* Ajusta el tamaño del contador */
+  font-size: 0.75rem; /* Usa rem en lugar de px para mejor escalado */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 18px;
+  height: 18px;
+}
+
+.cart-footer {
+  margin-bottom: 50px; /* Ajusta este valor según el espacio que desees */
+}
+
+/* Asegura que el contenedor del carrito ocupe toda la pantalla y empuje el footer hacia abajo */
+.cart-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 77.6vh; /* Ocupa al menos toda la altura de la ventana */
+}
+
+.cart-content {
+  flex-grow: 1; /* Crece para ocupar el espacio disponible */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.empty-cart {
+  text-align: center;
+}
+
+
+
+.custom-trash-button {
+  border-color: #808080; /* Gris */
+  background-color: transparent; /* Fondo transparente */
+  color: #000; /* Texto en negro para que coincida con el secondary */
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Transición suave en colores */
+}
+
+.custom-trash-button:hover {
+  background-color: rgba(223, 223, 223, 0.9); /* Más visible al hacer hover, coincide con btn-secondary */
+  border-color: #808080; /* Mantén el borde gris */
+  color: #000; /* Mantén el color del texto */
+}
+
+.custom-trash-button:focus, .custom-trash-button:active {
+  background-color: rgba(230, 230, 230, 0.4) !important; /* Gris más claro y transparente */
+  color: #000 !important; /* Mantén el color del texto */
+  outline: none !important;
+  box-shadow: none !important; /* Sin sombra en focus o active */
+}
+
+
+
+/* Estilo del botón "Vaciar" en el carrito con los mismos colores y efectos, y borde como el de basura */
+button.btn-secondary {
+  background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco ligeramente transparente */
+  color: #000; /* Texto en negro */
+  border: 1px solid #808080; /* Mismo borde gris que el botón de basura */
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Cambia el fondo cuando se hace hover */
+button.btn-secondary:hover {
+  background-color: rgba(223, 223, 223, 0.9); /* Más visible al hacer hover */
+  color: #000; /* Mantén el color del texto */
+  border-color: #808080; /* Mantén el borde gris en hover */
+}
+
+/* Cambia el fondo cuando se hace clic o focus */
+button.btn-secondary:focus, button.btn-secondary:active {
+  background-color: rgba(230, 230, 230, 0.4) !important; /* Gris más claro y transparente */
+  color: #000 !important; /* Mantén el color del texto */
+  outline: none !important;
+  box-shadow: none !important; /* Sin contorno o sombra en focus */
+  border-color: #808080; /* Mantén el borde gris en focus y active */
+}
+
+
+
+/* Estilo del botón "Comprar" en el carrito */
+button.btn-danger {
+  background-color: rgba(0, 123, 255, 0.85); /* Azul suave */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+button.btn-danger:hover {
+  background-color: rgba(0, 123, 255, 1); /* Azul más oscuro */
+}
+
+button.btn-danger:focus, button.btn-danger:active {
+  background-color: rgba(0, 123, 255, 0.85); /* Mantén el azul en focus o active */
+  box-shadow: none;
+  outline: none;
+}
+
+/* Estilo personalizado para botones azules */
+button.custom-blue-btn, .modal-footer button.custom-blue-btn {
+  padding: 10px;
+  background-color: rgba(0, 123, 255, 0.85); /* Azul suave */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button.custom-blue-btn:hover, .modal-footer button.custom-blue-btn:hover {
+  background-color: rgba(0, 123, 255, 1); /* Azul más oscuro al pasar el mouse */
+}
+
+button.custom-blue-btn:focus, button.custom-blue-btn:active, .modal-footer button.custom-blue-btn:focus, .modal-footer button.custom-blue-btn:active {
+  background-color: rgba(0, 123, 255, 0.85); /* Mantén el color azul al hacer focus o active */
+  outline: none;
+  box-shadow: none;
+}
+
+
+

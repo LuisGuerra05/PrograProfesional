@@ -1,0 +1,72 @@
+/* Si tu navbar es fixed, agrega un padding al body o contenedor principal */
+body {
+  padding-top: 20px; /* Ajusta esto al tamaño de tu navbar */
+}
+
+/* Estilo contenedor del login */
+.login-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+}
+
+/* Título del formulario de login */
+.login-container h2 {
+  text-align: center;
+  color: #007BFF; /* Azul Principal */
+}
+
+/* Estilos de los inputs */
+.login-container input {
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.login-container input:focus {
+  border-color: rgba(0, 123, 255, 0.85); /* Azul suave */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Sombra en tonos azules */
+  outline: none; /* Elimina el borde predeterminado */
+}
+
+/* Estilo del botón de login */
+.login-container button {
+  padding: 10px;
+  background-color: rgba(0, 123, 255, 0.85); /* Azul suave con un poco de transparencia */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-container button:hover {
+  background-color: rgba(0, 123, 255, 1); /* Azul más oscuro al pasar el mouse */
+}
+
+.login-container button:active, .login-container button:focus {
+  background-color: rgba(0, 123, 255, 0.85); /* Mantiene el color al presionar */
+  box-shadow: none;
+  outline: none;
+}
+
+/* Estilo del texto debajo del botón */
+.login-container p {
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* Estilo del enlace 'Regístrate aquí' */
+.register-link {
+  color: #007BFF; /* Azul Principal */
+  text-decoration: underline;
+  transition: color 0.3s ease;
+}
+
+.register-link:hover {
+  color: #0056b3; /* Azul más oscuro */
+}

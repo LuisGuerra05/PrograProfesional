@@ -1,0 +1,58 @@
+.language-selector-container {
+  position: relative;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.language-selector-button {
+  background-color: #f1f1f1;
+  color: black;
+  border: 2px solid black;
+  padding: 6px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+  text-align: left;
+  width: auto;
+}
+
+.language-selector-options {
+  display: none;
+  position: absolute;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 10px;
+  width: 100px;
+  z-index: 1000;
+  margin-top: 5px;
+  font-size: 14px;
+}
+
+.language-selector-container.active .language-selector-options {
+  display: block;
+}
+
+.language-selector-options div {
+  padding: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  background-color: white;
+  color: black;
+  border-radius: 8px;
+  text-align: center;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.language-selector-options div:hover {
+  background-color: rgba(0, 123, 255, 0.85); /* Azul suave */
+  color: white;
+  border-radius: 8px;
+}
+
+/* Aplica el estilo azul solo al que está seleccionado si no hay hover */
+.language-selector-options div.selected:not(:hover) {
+  background-color: rgba(0, 123, 255, 0.85);
+  color: white;
+  border-radius: 8px;
+}

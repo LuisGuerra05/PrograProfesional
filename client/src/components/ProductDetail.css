@@ -1,0 +1,86 @@
+/* Estilo específico para la información del producto */
+.product-info-container {
+  padding: 20px; /* Espacio interno */
+  border: 1px solid #ddd; /* Borde alrededor del contenedor */
+  border-radius: 5px; /* Bordes redondeados */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para darle profundidad */
+  background-color: #fff; /* Fondo blanco */
+  margin-top: 20px;
+  margin-bottom: 20px; /* Margen inferior para dar espacio antes del footer */
+  min-height: 90%;
+}
+
+.product-info {
+  margin-top: 20px;
+}
+
+.product-title {
+  font-size: 1.8em;
+  font-weight: bold;
+}
+
+.product-name {
+  font-size: 1.2em;
+  margin-bottom: 15px;
+  color: #555;
+}
+
+.product-price {
+  font-size: 1.5em;
+  color: #000; /* Cambia el color del precio a negro */
+  margin-bottom: 20px;
+}
+
+.size-selection p {
+  font-size: 1.1em;
+}
+
+.size-buttons .size-btn {
+  margin-right: 10px;
+  margin-top: 10px;
+}
+
+/* Botón de agregar al carrito */
+.add-to-cart-btn {
+  background-color: rgba(0, 123, 255, 0.85); /* Azul suave */
+  border: none;
+  margin-top: 20px;
+  padding: 10px 20px; /* Ajuste de padding para que el botón se ajuste al texto */
+  font-size: 1.2em;
+}
+
+.add-to-cart-btn:hover {
+  background-color: rgba(0, 123, 255, 1); /* Azul más oscuro */
+}
+
+.add-to-cart-btn:focus, .add-to-cart-btn:active {
+  background-color: rgba(0, 123, 255, 0.85); /* Mantiene el color azul al presionar */
+  outline: none;
+  box-shadow: none;
+}
+
+/* Ajusta la altura mínima y el espaciado del contenedor principal */
+.product-detail-container {
+  padding-top: 30px; /* Espacio superior para que no quede pegado al navbar */
+  margin-bottom: 40px; /* Margen inferior para que no quede pegado al footer */
+  min-height: calc(100vh - 160px); /* Ajusta la altura mínima tomando en cuenta navbar y footer */
+}
+
+@media (min-width: 768px) {
+  .product-detail-container {
+    padding-top: 50px; /* Añadir padding superior para evitar que se corte con el navbar */
+    margin-bottom: 40px; /* Ajustar margen inferior en pantallas más grandes */
+  }
+}
+
+/* Sobrescribe el color verde del toast de éxito */
+.Toastify__toast--success {
+  box-shadow: none !important; /* Eliminar cualquier sombra predeterminada */
+}
+/* Sobrescribe el color de la barra de progreso */
+.Toastify__progress-bar--success {
+  background-color: rgba(0, 123, 255, 0.85) !important; /* Azul fuerte para la barra de progreso */
+}
+
+
+

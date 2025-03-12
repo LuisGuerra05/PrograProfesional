@@ -1,0 +1,176 @@
+/* Ajuste de márgenes en la columna de los checkboxes */
+.container-fluid {
+  padding-left: 120px;  /* Ajustar margen izquierdo */
+  padding-right: 120px; /* Ajustar margen derecho */
+}
+
+.form-group {
+  margin-left: 10px;  /* Separación a la derecha del borde */
+}
+
+.checkbox-container {
+  border: 1px solid #ddd; /* Borde alrededor del contenedor */
+  border-radius: 5px; /* Bordes redondeados */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para darle profundidad */
+  padding: 15px; /* Espacio alrededor de los checkboxes */
+  background-color: white; /* Fondo blanco */
+  margin-bottom: 20px; /* Separación del resto del contenido */
+}
+
+
+/* Ajuste de la columna de productos para que no esté pegada al borde */
+.col-products {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+/* Estilos generales de las tarjetas de producto */
+.card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Ajusta el contenedor de la imagen para agrandarla */
+.card-img-top {
+  height: 300px;
+  object-fit: contain;
+  padding: 5px;
+  background-color: #f9f9f9;
+}
+
+/* Estiliza el cuerpo de la tarjeta para que mantenga un diseño uniforme */
+.card-body {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-title {
+  font-size: 1.2em;
+  margin-bottom: 0.5em;
+}
+
+.card-text {
+  font-size: 0.9em;
+  color: #555;
+}
+
+.card h4 {
+  margin-top: 1em;
+  color: #000;
+}
+
+/* Estiliza el botón de agregar al carrito */
+button.btn-danger, .modal-footer button.btn-success {
+  padding: 10px;
+  background-color: rgba(0, 123, 255, 0.85); /* Azul suave */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button.btn-danger:hover, .modal-footer button.btn-success:hover {
+  background-color: rgba(0, 123, 255, 1); /* Azul más oscuro al pasar el mouse */
+}
+
+button.btn-danger:focus, button.btn-danger:active, .modal-footer button.btn-success:focus, .modal-footer button.btn-success:active {
+  background-color: rgba(0, 123, 255, 0.85); /* Mantén el color azul al hacer focus o active */
+  outline: none;
+  box-shadow: none;
+}
+
+.modal-dialog {
+  max-width: 500px; /* Ancho fijo */
+}
+
+.modal-body {
+  min-height: 250px; /* Altura mínima para evitar que el modal cambie de tamaño */
+  max-height: 350px; /* Altura máxima */
+  overflow-y: auto; /* Permitir scroll si el contenido excede */
+}
+
+.add-to-cart-modal .modal-dialog {
+  max-width: 500px; /* Específico para este modal */
+}
+
+.add-to-cart-modal .modal-body {
+  min-height: 250px;
+  max-height: 350px;
+  overflow-y: auto;
+}
+
+.clear-cart-modal .modal-dialog {
+  max-width: 500px; /* Un tamaño más pequeño para este modal */
+}
+
+.clear-cart-modal .modal-body {
+  min-height: 100px; /* No es necesario que sea tan alto como el otro modal */
+  max-height: auto; /* Ajusta el contenido sin límite de altura */
+}
+
+/* Muestra el dropdown solo en pantallas grandes y más pequeñas */
+.dropdown-filter {
+  display: none;  /* Oculta el dropdown por defecto */
+}
+
+/* Oculta el checklist en pantallas pequeñas */
+.team-filter {
+  display: block;  /* Muestra el checklist lateral por defecto */
+}
+
+/* Media query para pantallas grandes (lg) y más pequeñas */
+@media (max-width: 1199px) { /* lg: hasta 1199px */
+  .team-filter {
+    display: none;  /* Oculta el checklist lateral en pantallas lg y más pequeñas */
+  }
+  
+  .dropdown-filter {
+    display: block;  /* Muestra el dropdown en pantallas lg y más pequeñas */
+    margin-bottom: 20px;
+  }
+
+  .container-fluid {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .form-group {
+    margin-left: 0;  /* Reduce el margen en pantallas lg */
+  }
+
+  .col-products {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+
+
+/* Estiliza el botón del dropdown para que mantenga el mismo fondo al hacer clic */
+.dropdown-button {
+  background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco ligeramente transparente */
+  color: #000; /* Texto en negro */
+  border: 1px solid #808080; /* Mismo borde gris que los otros botones */
+  border-radius: 5px; /* Redondez similar a los otros botones */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Cambia el fondo cuando se hace hover (pasar el mouse por encima) */
+.dropdown-button:hover {
+  background-color: rgba(223, 223, 223, 0.9); /* Más visible al hacer hover */
+  color: #000; /* Mantén el color del texto */
+  border-color: #808080; /* Mantén el borde gris en hover */
+}
+
+/* Cambia el fondo cuando se hace clic (gris muy clarito y transparente) */
+.dropdown-button:focus, .dropdown-button:active {
+  background-color: rgba(230, 230, 230, 0.4) !important; /* Gris más claro y transparente */
+  color: #000 !important; /* Mantén el color del texto */
+  outline: none !important;
+  box-shadow: none !important; /* Sin contorno o sombra en focus */
+  border-color: #808080; /* Mantén el borde gris en focus y active */
+}

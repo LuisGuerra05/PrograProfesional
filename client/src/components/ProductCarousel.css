@@ -1,0 +1,40 @@
+/* ProductCarousel.css */
+.product-carousel-container {
+  margin: 20px 0;
+}
+
+.product-carousel .slide img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Aumentar el tamaño de las flechas de navegación y hacerlas siempre visibles */
+.product-carousel .control-arrow {
+  background: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  z-index: 2;
+  opacity: 40; /* Asegurarse de que siempre sean visibles */
+}
+
+.product-carousel .control-prev.control-arrow,
+.product-carousel .control-next.control-arrow {
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 10px;
+}
+
+/* Hacer que las flechas sean más prominentes y visibles */
+.product-carousel .control-arrow:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.product-carousel .control-prev {
+  left: 10px;
+}
+
+.product-carousel .control-next {
+  right: 10px;
+}
