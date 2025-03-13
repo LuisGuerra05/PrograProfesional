@@ -49,12 +49,12 @@ const ProductDetail = () => {
 
   const handleAddToCart = () => {
     if (!selectedSize) {
-      setErrorMessageKey('Debe seleccionar una talla');
+      setErrorMessageKey('You must select a size');
       return;
     }
 
     addToCart(product, selectedSize);
-    toast.success(t('Producto agregado al carrito con éxito'), {
+    toast.success(t('Product added to cart successfully'), {
       className: 'custom-toast', // Clase personalizada
       progressClassName: 'Toastify__progress-bar--blue', // Aplicar estilo al fondo
       progressStyle: { backgroundColor: 'rgba(0, 123, 255, 0.85)' } // Color de la barra de progreso

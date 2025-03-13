@@ -7,7 +7,7 @@ function AboutUs() {
   const { t } = useTranslation();
   return (
     <div className="about-us-container">
-      <h1>{t('Acerca de Nosotros')}</h1>
+      <h1>{t('About Us')}</h1>
       <p>
       {t('ms1-about-us')}
       </p>

@@ -71,11 +71,11 @@ const Cart = () => {
   const handlePurchase = () => {
     if (!isAuthenticated) {
       // Si no está autenticado, redirigir al login
-      alert(t('Debes iniciar sesión para completar la compra'));
+      alert(t('You must log in to complete the purchase'));
       navigate('/login');
     } else {
       // Si está autenticado, completar la compra
-      alert(t('Gracias por tu compra'));
+      alert(t('Thank you for your purchase'));
       clearCart();
     }
   };

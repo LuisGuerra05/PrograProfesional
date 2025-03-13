@@ -134,7 +134,7 @@ const ProductList = () => {
 
   const handleConfirmAddToCart = () => {
     if (!selectedSize) {
-      setErrorMessage(t('Debe seleccionar una talla'));
+      setErrorMessage(t('You must select a size'));
       return;
     }
     addToCart(selectedProduct, selectedSize);
@@ -154,7 +154,7 @@ const ProductList = () => {
         <Col lg={12} className="dropdown-filter"> 
           <Dropdown>
             <Dropdown.Toggle variant="outline-secondary" className="dropdown-button">
-              {t('Filtro por equipo')}
+              {t('Filter by team')}
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
@@ -183,7 +183,7 @@ const ProductList = () => {
         <Col xl={3} className="team-filter"> 
           <div className="checkbox-container">
             <Form.Group>
-              <Form.Label>{t('Filtro por equipo')}</Form.Label>
+              <Form.Label>{t('Filter by team')}</Form.Label>
               <Form.Check
                 type="checkbox"
                 label={t('All')}

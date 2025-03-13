@@ -100,9 +100,9 @@ function Layout({ children }) {
           />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto" onClick={() => setIsNavbarCollapsed(false)}> {/* Cierra el navbar al hacer clic en una opción */}
-              <Nav.Link as={Link} to="/">{t('inicio')}</Nav.Link>
-              <Nav.Link as={Link} to="/products">{t('productos')}</Nav.Link>
-              <Nav.Link as={Link} to="/about">{t('Acerca de Nosotros')}</Nav.Link>
+              <Nav.Link as={Link} to="/">{t('Home')}</Nav.Link>
+              <Nav.Link as={Link} to="/products">{t('Products')}</Nav.Link>
+              <Nav.Link as={Link} to="/about">{t('About Us')}</Nav.Link>
             </Nav>
 
             <LanguageSwitcher 
