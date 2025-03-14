@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS users (
   email VARCHAR(255) NOT NULL UNIQUE,
   address VARCHAR(255),
   password VARCHAR(255) NOT NULL,
+  two_factor_secret VARCHAR(255) NULL, -- Clave secreta para 2FA
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

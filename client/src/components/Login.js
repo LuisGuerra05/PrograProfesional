@@ -9,8 +9,10 @@ const Login = () => {
   const { t, i18n } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [otp, setOtp] = useState('');
+  const [showOtpField, setShowOtpField] = useState(false);
   const [fieldErrors, setFieldErrors] = useState({});
-  const [serverErrorKey, setServerErrorKey] = useState(''); // Cambiar de mensaje traducido a clave
+  const [serverErrorKey, setServerErrorKey] = useState('');
   const navigate = useNavigate();
 
   const { setIsLoggedIn } = useContext(CartContext);
@@ -48,6 +50,9 @@ const Login = () => {
         if (value.trim()) {
           setFieldErrors((prev) => ({ ...prev, password: '' }));
         }
+        break;
+      case 'otp':
+        setOtp(value);
         break;
       default:
         break;
@@ -89,7 +94,7 @@ const Login = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email: trimmedEmail, password: trimmedPassword }),
+        body: JSON.stringify({ email: trimmedEmail, password: trimmedPassword, otp: otp || undefined }),
       });
 
       const data = await response.json();
@@ -119,12 +124,15 @@ const Login = () => {
 
         setIsLoggedIn(true);
         navigate('/profile'); // Redirigir al perfil o página deseada
+      } else if (data.message === 'Se requiere código de autenticación') {
+        setShowOtpField(true); // Mostrar el campo OTP si el backend lo pide
+        setServerErrorKey('Por favor ingrese el código OTP');
       } else {
-        setServerErrorKey('Invalid email or password'); // Guardar clave en lugar del mensaje
+        setServerErrorKey('Invalid email or password');
       }
     } catch (error) {
       console.error('Error al iniciar sesión:', error);
-      setServerErrorKey('An error occurred while logging in'); // Guardar clave en lugar del mensaje
+      setServerErrorKey('An error occurred while logging in');
     }
   };
 
@@ -157,6 +165,20 @@ const Login = () => {
               />
               {fieldErrors.password && <div style={{ color: 'red' }}>{fieldErrors.password}</div>}
             </Form.Group>
+
+            {/* Nuevo campo OTP, solo si el usuario tiene 2FA activado */}
+            {showOtpField && (
+              <Form.Group className="mb-3" controlId="formBasicOTP">
+                <Form.Label>Código de Autenticación (OTP)</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Ingrese su código OTP"
+                  value={otp}
+                  onChange={(e) => handleFieldChange('otp', e.target.value)}
+                  required
+                />
+              </Form.Group>
+            )}
 
             <Button variant="primary" type="submit" className="w-100">
               {t('login-submit')}

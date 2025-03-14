@@ -1,5 +1,5 @@
-import React, { useContext, useState } from 'react';
-import { Button, Container, Row, Col, Card, Form, Alert } from 'react-bootstrap';
+import React, { useContext, useState, useEffect } from 'react';
+import { Button, Container, Row, Col, Card, Form, Alert, Image } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { CartContext } from '../context/CartProvider';
 import { useTranslation } from 'react-i18next';
@@ -13,10 +13,36 @@ const Profile = () => {
   const [newAddress, setNewAddress] = useState(localStorage.getItem('address') || '');
   const [message, setMessage] = useState('');
   const [fieldErrorKey, setFieldErrorKey] = useState('');
+  const [qrCode, setQrCode] = useState('');
+  const [is2FAEnabled, setIs2FAEnabled] = useState(false);
 
   const username = localStorage.getItem('username');
   const email = localStorage.getItem('email');
   const address = localStorage.getItem('address');
+
+  useEffect(() => {
+    // Verificar si el usuario tiene 2FA activo
+    const check2FAStatus = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) return;
+
+      try {
+        const response = await fetch('http://localhost:5000/api/auth/profile', {
+          method: 'GET',
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          setIs2FAEnabled(!!data.two_factor_secret);
+        }
+      } catch (error) {
+        console.error('Error verificando 2FA:', error);
+      }
+    };
+
+    check2FAStatus();
+  }, []);
 
   const validateNoSpecialChars = (value) => {
     const regex = /^[a-zA-Z0-9\sáéíóúÁÉÍÓÚñÑ,.@-]*$/;
@@ -84,6 +110,56 @@ const Profile = () => {
     setNewAddress(localStorage.getItem('address') || '');
   };
 
+  const handleEnable2FA = async () => {
+    const token = localStorage.getItem('token');
+    try {
+      const response = await fetch('http://localhost:5000/api/auth/enable-2fa', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        setQrCode(data.qrCode);
+        setIs2FAEnabled(true);
+        setMessage('2FA activado correctamente');
+        setTimeout(() => setMessage(''), 3000);
+      } else {
+        setMessage(data.message);
+      }
+    } catch (error) {
+      console.error('Error activando 2FA:', error);
+    }
+  };
+
+  const handleDisable2FA = async () => {
+    const token = localStorage.getItem('token');
+    try {
+      const response = await fetch('http://localhost:5000/api/auth/disable-2fa', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        setQrCode('');
+        setIs2FAEnabled(false);
+        setMessage('2FA desactivado correctamente');
+        setTimeout(() => setMessage(''), 3000);
+      } else {
+        setMessage(data.message);
+      }
+    } catch (error) {
+      console.error('Error desactivando 2FA:', error);
+    }
+  };
+
   return (
     <Container style={{ marginTop: '50px' }}>
       <Row className="justify-content-center">
@@ -142,6 +218,22 @@ const Profile = () => {
               <Button className="custom-blue-btn" onClick={handleLogout}>
                 {t('profile-logout')}
               </Button>
+
+              {/* Botón para activar o desactivar 2FA */}
+            <h5 className="mt-4">Autenticación en Dos Pasos (2FA)</h5>
+            {is2FAEnabled ? (
+              <>
+                <Button variant="danger" onClick={handleDisable2FA}>Desactivar 2FA</Button>
+                {qrCode && (
+                  <div className="mt-3">
+                    <p>Escanea este código QR en Google Authenticator:</p>
+                    <Image src={qrCode} alt="Código QR para 2FA" fluid />
+                  </div>
+                )}
+              </>
+            ) : (
+              <Button variant="success" onClick={handleEnable2FA}>Activar / Actualizar 2FA</Button>
+            )}
             </Card.Body>
           </Card>
         </Col>
