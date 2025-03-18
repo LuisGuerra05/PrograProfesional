@@ -102,9 +102,9 @@ const handleOtpChange = (index, value, event) => {
         setShowOtpField(true);
         setServerErrorKey('');
       } else if (data.message === 'Código de autenticación incorrecto') {
-        setServerErrorKey('Código de autenticación OTP incorrecto');
+        setServerErrorKey(t('Incorrect OTP authentication code'));
       } else if (!showOtpField) {
-        setServerErrorKey('Email o contraseña inválido');
+        setServerErrorKey(t('Invalid email or password'));
       }
     } catch (error) {
       console.error('Error al iniciar sesión:', error);
@@ -132,7 +132,7 @@ const handleOtpChange = (index, value, event) => {
 
             {showOtpField && (
               <Form.Group className="mb-3">
-                <Form.Label>Código de Autenticación (OTP)</Form.Label>
+                <Form.Label>{t("Authentication Code (OTP)")}</Form.Label>
                 <InputGroup className="d-flex justify-content-center">
                   {Array(6).fill('').map((_, index) => (
                     <Form.Control
@@ -156,7 +156,7 @@ const handleOtpChange = (index, value, event) => {
                     />
                   ))}
                 </InputGroup>
-                {attemptedSubmit && otp.join('').length < 6 && <div style={{ color: 'red', marginTop: '5px' }}>Ingrese un código de 6 dígitos</div>}
+                {attemptedSubmit && otp.join('').length < 6 && <div style={{ color: 'red', marginTop: '5px' }}>{t('Enter a 6-digit code')}</div>}
               </Form.Group>
             )}
 

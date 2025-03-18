@@ -96,5 +96,12 @@
     "Exclusive for members! Get a 15% discount on the new Atlético de Madrid jersey. Join the red and white passion!": "Exclusive for members! Get a 15% discount on the new Atlético de Madrid jersey. Join the red and white passion!",
     "Filter by team" : "Filter by team",
     "register-address" : "Address",
-    "profile-address" : "Address"
+    "profile-address" : "Address",
+    "Activate/Update two-factor authentication" : "Activate/Update two-factor authentication",
+    "Two-Step Authentication (2FA)" : "Two-Step Authentication (2FA)",
+    "Disable 2FA" : "Disable 2FA",
+    "Scan this QR code in Google Authenticator:" : "Scan this QR code in Google Authenticator:",
+    "Incorrect OTP authentication code" : "Incorrect OTP authentication code",
+    "Authentication Code (OTP)": "Authentication Code (OTP)",
+    "Enter a 6-digit code": "Enter a 6-digit code"
 }

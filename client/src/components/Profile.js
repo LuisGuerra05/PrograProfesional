@@ -125,7 +125,7 @@ const Profile = () => {
       if (response.ok) {
         setQrCode(data.qrCode);
         setIs2FAEnabled(true);
-        setMessage('2FA activado correctamente');
+        setMessage('2FA activated successfully');
         setTimeout(() => setMessage(''), 3000);
       } else {
         setMessage(data.message);
@@ -220,19 +220,19 @@ const Profile = () => {
               </Button>
 
               {/* Botón para activar o desactivar 2FA */}
-            <h5 className="mt-4">Autenticación en Dos Pasos (2FA)</h5>
+            <h5 className="mt-4">{t('Two-Step Authentication (2FA)')}</h5>
             {is2FAEnabled ? (
               <>
-                <Button variant="danger" onClick={handleDisable2FA}>Desactivar 2FA</Button>
+                <Button variant="danger" onClick={handleDisable2FA}>{t('Disable 2FA')}</Button>
                 {qrCode && (
                   <div className="mt-3">
-                    <p>Escanea este código QR en Google Authenticator:</p>
+                    <p>{t('Scan this QR code in Google Authenticator:')}</p>
                     <Image src={qrCode} alt="Código QR para 2FA" fluid />
                   </div>
                 )}
               </>
             ) : (
-              <Button variant="success" onClick={handleEnable2FA}>Activar / Actualizar 2FA</Button>
+              <Button variant="success" onClick={handleEnable2FA}> {t('Activate/Update two-factor authentication')} </Button>
             )}
             </Card.Body>
           </Card>
