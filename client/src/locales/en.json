@@ -97,11 +97,17 @@
     "Filter by team" : "Filter by team",
     "register-address" : "Address",
     "profile-address" : "Address",
-    "Activate/Update two-factor authentication" : "Activate/Update two-factor authentication",
+
+    "Enable" : "Enable",
     "Two-Step Authentication (2FA)" : "Two-Step Authentication (2FA)",
-    "Disable 2FA" : "Disable 2FA",
-    "Scan this QR code in Google Authenticator:" : "Scan this QR code in Google Authenticator:",
+    "Disable" : "Disable",
     "Incorrect OTP authentication code" : "Incorrect OTP authentication code",
     "Authentication Code (OTP)": "Authentication Code (OTP)",
-    "Enter a 6-digit code": "Enter a 6-digit code"
+    "Enter a 6-digit code": "Enter a 6-digit code",
+
+    "open-authenticator-app": "Open your Authenticator App",
+    "scan-qr-code": "Scan the following QR code",
+    "enter-six-digit-code": "Enter the 6-digit code",
+    "2FA disabled successfully": "2FA disabled successfully",
+    "2FA enabled successfully": "2FA enabled successfully"
 }

@@ -4,6 +4,8 @@ import { Form, Button, Container, Row, Col, Alert, InputGroup } from 'react-boot
 import { useTranslation } from 'react-i18next';
 import { CartContext } from '../context/CartProvider';
 import './Login.css';
+import { handleOtpChange } from '../utils/otpUtils'; // Importa la función desde utils
+
 
 const Login = () => {
   const { t } = useTranslation();
@@ -33,31 +35,6 @@ const Login = () => {
     if (field === 'email') setEmail(value);
     if (field === 'password') setPassword(value);
   };
-
-const handleOtpChange = (index, value, event) => {
-    if (!/^\d?$/.test(value)) return; // Solo permitir un dígito numérico
-
-    const newOtp = [...otp];
-    newOtp[index] = value;
-    setOtp(newOtp);
-
-    // Si se ingresa un número, pasar al siguiente campo
-    if (value && index < 5) {
-        document.getElementById(`otp-${index + 1}`)?.focus();
-    }
-
-    // Si se presiona "Backspace" y el campo está vacío, moverse al anterior
-    if (!value && event.key === 'Backspace' && index > 0) {
-        document.getElementById(`otp-${index - 1}`)?.focus();
-    }
-
-    // 🚀 **Nuevo: Si se presiona "Enter" en el último campo, presionar el botón de login**
-    if (event.key === 'Enter' && index === 5) {
-        event.preventDefault(); // Evita que el último número se borre
-        document.getElementById("login-button")?.click(); // Simula el clic en el botón de login
-    }
-};
-
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -131,34 +108,41 @@ const handleOtpChange = (index, value, event) => {
             </Form.Group>
 
             {showOtpField && (
-              <Form.Group className="mb-3">
-                <Form.Label>{t("Authentication Code (OTP)")}</Form.Label>
-                <InputGroup className="d-flex justify-content-center">
-                  {Array(6).fill('').map((_, index) => (
-                    <Form.Control
-                      key={index}
-                      id={`otp-${index}`}
-                      type="text"
-                      maxLength="1"
-                      value={otp[index] || ''}
-                      onChange={(e) => handleOtpChange(index, e.target.value, e)}
-                      onKeyDown={(e) => handleOtpChange(index, '', e)}
-                      className="otp-box"
-                      style={{
-                        width: '40px',
-                        height: '40px',
-                        textAlign: 'center',
-                        fontSize: '20px',
-                        border: '1px solid #ccc',
-                        borderRadius: '5px',
-                        marginRight: '5px',
-                      }}
-                    />
-                  ))}
-                </InputGroup>
-                {attemptedSubmit && otp.join('').length < 6 && <div style={{ color: 'red', marginTop: '5px' }}>{t('Enter a 6-digit code')}</div>}
-              </Form.Group>
-            )}
+            <Form.Group className="mb-3">
+              <Form.Label>{t('Two-Step Authentication (2FA)')}</Form.Label>
+              <Row className="justify-content-center">
+                <Col xs="auto">
+                  <InputGroup className="d-flex justify-content-center">
+                    {Array(6).fill('').map((_, index) => (
+                      <Form.Control
+                        key={index}
+                        id={`otp-${index}`}
+                        type="text"
+                        maxLength="1"
+                        value={otp[index] || ''}
+                        onChange={(e) => handleOtpChange(index, e.target.value, e, otp, setOtp)}
+                        onKeyDown={(e) => handleOtpChange(index, '', e, otp, setOtp)}
+                        className="otp-box"
+                        style={{
+                          width: '40px',  
+                          height: '35px',  
+                          textAlign: 'center',
+                          fontSize: '18px',
+                          border: '1px solid #ccc',
+                          borderRadius: '5px',
+                          margin: '0 2px', 
+                        }}
+                      />
+                    ))}
+                  </InputGroup>
+                </Col>
+              </Row>
+              {attemptedSubmit && otp.join('').length < 6 && (
+                <div style={{ color: 'red', marginTop: '5px' }}>{t('Enter a 6-digit code')}</div>
+              )}
+            </Form.Group>
+          )}
+
 
             <Button variant="primary" type="submit" className="w-100">
               {t('login-submit')}

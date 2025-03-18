@@ -1,8 +1,9 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { Button, Container, Row, Col, Card, Form, Alert, Image } from 'react-bootstrap';
+import { Button, Container, Row, Col, Card, Form, Alert, Image, InputGroup} from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { CartContext } from '../context/CartProvider';
 import { useTranslation } from 'react-i18next';
+import { handleOtpChange } from '../utils/otpUtils'; // Importa la función reutilizable
 
 const Profile = () => {
   const { t } = useTranslation();
@@ -15,6 +16,9 @@ const Profile = () => {
   const [fieldErrorKey, setFieldErrorKey] = useState('');
   const [qrCode, setQrCode] = useState('');
   const [is2FAEnabled, setIs2FAEnabled] = useState(false);
+  const [tempSecret, setTempSecret] = useState('');
+  const [otp, setOtp] = useState(Array(6).fill(''));
+
 
   const username = localStorage.getItem('username');
   const email = localStorage.getItem('email');
@@ -50,11 +54,7 @@ const Profile = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('username');
-    localStorage.removeItem('email');
-    localStorage.removeItem('address');
-    localStorage.removeItem('cart');
+    localStorage.clear();
     clearCart(false);
     setIsLoggedIn(false);
     navigate('/');
@@ -111,9 +111,13 @@ const Profile = () => {
   };
 
   const handleEnable2FA = async () => {
+    setMessage('');
+    setQrCode('');
+    setTempSecret('');
+
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch('http://localhost:5000/api/auth/enable-2fa', {
+      const response = await fetch('http://localhost:5000/api/auth/generate-2fa', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -124,14 +128,50 @@ const Profile = () => {
       const data = await response.json();
       if (response.ok) {
         setQrCode(data.qrCode);
-        setIs2FAEnabled(true);
-        setMessage('2FA activated successfully');
-        setTimeout(() => setMessage(''), 3000);
+        setTempSecret(data.tempSecret);
       } else {
-        setMessage(data.message);
+        setMessage('Error generando 2FA: ' + data.message);
       }
     } catch (error) {
-      console.error('Error activando 2FA:', error);
+      console.error('Error generando 2FA:', error);
+      setMessage('Error al conectar con el servidor.');
+    }
+  };
+
+  const handleConfirm2FA = async () => {
+    if (otp.join('').length !== 6) {
+      return;
+    }
+
+    const token = localStorage.getItem('token');
+    try {
+      const response = await fetch('http://localhost:5000/api/auth/confirm-2fa', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ otp: otp.join(''), tempSecret }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        setIs2FAEnabled(true);
+        setQrCode('');
+        setTempSecret('');
+        setOtp(Array(6).fill(''));
+        setMessage(t('2FA enabled successfully'));
+
+        setTimeout(() => {
+          setMessage('');
+        }, 3000);
+
+      } else {
+        setMessage(t('Incorrect OTP authentication code'));
+      }
+    } catch (error) {
+      console.error('Error confirmando 2FA:', error);
+      setMessage('Error al conectar con el servidor.');
     }
   };
 
@@ -150,13 +190,17 @@ const Profile = () => {
       if (response.ok) {
         setQrCode('');
         setIs2FAEnabled(false);
-        setMessage('2FA desactivado correctamente');
-        setTimeout(() => setMessage(''), 3000);
+        setMessage(t('2FA disabled successfully'));
+        
+        setTimeout(() => {
+          setMessage('');
+        }, 3000);
       } else {
         setMessage(data.message);
       }
     } catch (error) {
       console.error('Error desactivando 2FA:', error);
+      setMessage('Error al conectar con el servidor.');
     }
   };
 
@@ -167,12 +211,8 @@ const Profile = () => {
           <Card className="shadow-sm">
             <Card.Body>
               <h1 className="mb-4">{t('profile-title')}</h1>
-              <p>
-                <strong>{t('profile-username')}:</strong> {username ? username : t('default-username')}
-              </p>
-              <p>
-                <strong>{t('profile-email')}:</strong> {email ? email : t('default-email')}
-              </p>
+              <p><strong>{t('profile-username')}:</strong> {username || t('Usuario')}</p>
+              <p><strong>{t('profile-email')}:</strong> {email || t('Correo no disponible')}</p>
               <p>
                 <strong>{t('profile-address')}:</strong>
                 {isEditing ? (
@@ -214,26 +254,107 @@ const Profile = () => {
                   </>
                 )}
               </p>
-              {message && <Alert variant="success">{t(message)}</Alert>}
-              <Button className="custom-blue-btn" onClick={handleLogout}>
-                {t('profile-logout')}
-              </Button>
+              <p>
+              <strong>{t('Two-Step Authentication (2FA)')}:</strong>{' '}
+              <span 
+                onClick={is2FAEnabled ? handleDisable2FA : handleEnable2FA}
+                className="text-primary"
+                style={{ cursor: 'pointer', textDecoration: 'underline' }}
+              >
+                {is2FAEnabled ? t('Disable') : t('Enable')}
+              </span>
+            </p>
 
-              {/* Botón para activar o desactivar 2FA */}
-            <h5 className="mt-4">{t('Two-Step Authentication (2FA)')}</h5>
-            {is2FAEnabled ? (
-              <>
-                <Button variant="danger" onClick={handleDisable2FA}>{t('Disable 2FA')}</Button>
-                {qrCode && (
-                  <div className="mt-3">
-                    <p>{t('Scan this QR code in Google Authenticator:')}</p>
-                    <Image src={qrCode} alt="Código QR para 2FA" fluid />
+
+            {qrCode && (
+              <div className="mt-3">
+                <p style={{ fontSize: '16px' }}>1. {t('open-authenticator-app')}</p>
+                <p style={{ fontSize: '16px' }}>2. {t('scan-qr-code')}</p>
+                <div className="text-center">
+                  <Image src={qrCode} alt="Código QR para 2FA" />
+                </div>
+
+                <p style={{ fontSize: '16px' }} className="mt-3">3. {t('enter-six-digit-code')}</p>
+                
+                {/* Cuadros OTP alineados al centro */}
+                <Row className="justify-content-center">
+                  <Col xs="auto">
+                    <InputGroup className="d-flex justify-content-center">
+                      {Array(6).fill('').map((_, index) => (
+                        <Form.Control
+                          key={index}
+                          id={`otp-${index}`}
+                          type="text"
+                          maxLength="1"
+                          value={otp[index] || ''}
+                          onChange={(e) => handleOtpChange(index, e.target.value, e, otp, setOtp)}
+                          onKeyDown={(e) => handleOtpChange(index, '', e, otp, setOtp)}
+                          className="otp-box"
+                          style={{
+                            width: '40px',  
+                            height: '40px',  
+                            textAlign: 'center',
+                            fontSize: '20px',
+                            border: '1px solid #ccc',
+                            borderRadius: '5px',
+                            margin: '0 4px', 
+                          }}
+                        />
+                      ))}
+                    </InputGroup>
+                  </Col>
+                </Row>
+
+                {/* Mensajes de error (idénticos al Login) */}
+                {otp.join('').length < 6 && (
+                  <div style={{ color: 'red', marginTop: '5px', textAlign: 'center' }}>
+                    {t('Enter a 6-digit code')}
                   </div>
                 )}
-              </>
-            ) : (
-              <Button variant="success" onClick={handleEnable2FA}> {t('Activate/Update two-factor authentication')} </Button>
+
+                {/* Contenedor para los botones alineados a la derecha */}
+                <div className="d-flex justify-content-end mt-3">
+                  <Button 
+                    variant="secondary" 
+                    size="sm" 
+                    className="me-2"
+                    onClick={() => {
+                      setQrCode('');
+                      setOtp(Array(6).fill(''));
+                      setMessage('');
+                    }}
+                  >
+                    {t('profile-cancel')}
+                  </Button>
+
+                  <Button 
+                    variant="primary" 
+                    size="sm" 
+                    id="confirm-2fa-button"
+                    onClick={handleConfirm2FA}
+                  >
+                    {t('Enable')}
+                  </Button>
+                </div>
+              </div>
             )}
+
+            {message && (
+              <Alert 
+                variant={message === t('Incorrect OTP authentication code') ? "danger" : "success"} 
+                className="mt-3"
+              >
+                {t(message)}
+              </Alert>
+            )}
+
+
+              <Button 
+                className="btn btn-primary w-100 mt-3" 
+                onClick={handleLogout}
+              >
+                {t('profile-logout')}
+              </Button>
             </Card.Body>
           </Card>
         </Col>

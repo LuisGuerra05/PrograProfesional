@@ -112,26 +112,62 @@ const login = (req, res) => {
   });
 };
 
-// Activar 2FA y generar QR
-const enable2FA = (req, res) => {
-  const userId = req.user.id;
+// Generar código QR para 2FA sin activar
+const generate2FA = (req, res) => {
   const secret = speakeasy.generateSecret({ length: 20 });
 
-  const encryptedSecret = encrypt(secret.base32);
+  const otpAuthUrl = `otpauth://totp/EpicKick:${req.user.email}?secret=${secret.base32}&issuer=EpicKick`;
 
-  const sql = 'UPDATE users SET two_factor_secret = ? WHERE id = ?';
-  db.query(sql, [encryptedSecret, userId], async (err, result) => {
-    if (err) return res.status(500).json({ message: 'Error al activar 2FA' });
+  QRCode.toDataURL(otpAuthUrl, (err, qrCodeDataUrl) => {
+    if (err) return res.status(500).json({ message: 'Error generando el QR' });
 
-    const otpAuthUrl = `otpauth://totp/EpicKick:${req.user.email}?secret=${secret.base32}&issuer=EpicKick`;
-
-    QRCode.toDataURL(otpAuthUrl, (err, qrCodeDataUrl) => {
-      if (err) return res.status(500).json({ message: 'Error generando el QR' });
-
-      res.json({ message: '2FA activado', qrCode: qrCodeDataUrl });
-    });
+    res.json({ qrCode: qrCodeDataUrl, tempSecret: secret.base32 });
   });
 };
+
+// Activar 2FA con OTP
+const enable2FA = (req, res) => {
+  const userId = req.user.id;
+  const { otp, tempSecret } = req.body;
+
+  // Validación extra para depuración
+  console.log('Intentando activar 2FA para usuario:', userId);
+  console.log('Código OTP recibido:', otp);
+  console.log('Secreto temporal recibido:', tempSecret);
+
+  if (!otp || !tempSecret) {
+    return res.status(400).json({ message: 'Código OTP y secreto temporal son requeridos' });
+  }
+
+  // Verificar el OTP con el secreto temporal
+  const verified = speakeasy.totp.verify({
+    secret: tempSecret,
+    encoding: 'base32',
+    token: otp,
+    window: 1, // Ajustar la tolerancia de tiempo si es necesario
+  });
+
+  if (!verified) {
+    console.log('OTP incorrecto, no se activará 2FA.');
+    return res.status(401).json({ message: 'Código OTP incorrecto' });
+  }
+
+  console.log('✅ OTP correcto, activando 2FA...');
+
+  // Encriptar el secreto antes de guardarlo en la base de datos
+  const encryptedSecret = encrypt(tempSecret);
+
+  const sql = 'UPDATE users SET two_factor_secret = ? WHERE id = ?';
+  db.query(sql, [encryptedSecret, userId], (err, result) => {
+    if (err) {
+      console.error('Error activando 2FA:', err);
+      return res.status(500).json({ message: 'Error activando 2FA' });
+    }
+
+    res.json({ message: '2FA activado correctamente' });
+  });
+};
+
 
 // Desactivar 2FA
 const disable2FA = (req, res) => {
@@ -144,6 +180,53 @@ const disable2FA = (req, res) => {
     res.json({ message: '2FA desactivado correctamente' });
   });
 };
+
+
+// Obtener perfil del usuario
+const getProfile = (req, res) => {
+  const userId = req.user.id;
+
+  const sql = 'SELECT username, email, address, two_factor_secret FROM users WHERE id = ?';
+  db.query(sql, [userId], (err, results) => {
+    if (err) return res.status(500).json({ message: 'Error al obtener perfil' });
+
+    if (results.length === 0) return res.status(404).json({ message: 'Usuario no encontrado' });
+
+    res.json({
+      username: results[0].username,
+      email: results[0].email,
+      address: results[0].address,
+      two_factor_secret: !!results[0].two_factor_secret, // Enviar si 2FA está activado
+    });
+  });
+};
+
+// Confirmar 2FA con OTP antes de guardarlo en la base de datos
+const confirm2FA = (req, res) => {
+  const userId = req.user.id;
+  const { otp, tempSecret } = req.body;
+
+  if (!otp || !tempSecret) return res.status(400).json({ message: 'OTP y clave temporal requeridos' });
+
+  const verified = speakeasy.totp.verify({
+    secret: tempSecret,
+    encoding: 'base32',
+    token: otp,
+  });
+
+  if (!verified) return res.status(401).json({ message: 'Código de autenticación incorrecto' });
+
+  // Si el OTP es válido, guardar la clave cifrada en la base de datos
+  const encryptedSecret = encrypt(tempSecret);
+
+  const sql = 'UPDATE users SET two_factor_secret = ? WHERE id = ?';
+  db.query(sql, [encryptedSecret, userId], (err, result) => {
+    if (err) return res.status(500).json({ message: 'Error al confirmar 2FA' });
+
+    res.json({ message: '2FA confirmado y activado' });
+  });
+};
+
 
 // Actualizar la dirección del usuario
 const updateAddress = (req, res) => {
@@ -169,4 +252,4 @@ const updateAddress = (req, res) => {
   });
 };
 
-module.exports = { register, login, enable2FA, disable2FA, updateAddress };
+module.exports = { register, login, generate2FA, enable2FA, disable2FA,  updateAddress, getProfile, confirm2FA };
