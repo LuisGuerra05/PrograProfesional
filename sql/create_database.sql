@@ -13,6 +13,16 @@ CREATE TABLE IF NOT EXISTS users (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Tabla de códigos de respaldo para 2FA
+CREATE TABLE IF NOT EXISTS backup_codes (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT,
+  code VARCHAR(255) NOT NULL,
+  status ENUM('used', 'not_used') DEFAULT 'not_used',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
 -- Tabla de productos
 CREATE TABLE IF NOT EXISTS products (
   id INT AUTO_INCREMENT PRIMARY KEY,
