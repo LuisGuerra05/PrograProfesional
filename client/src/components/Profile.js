@@ -37,8 +37,19 @@ const Profile = () => {
         });
 
         const data = await response.json();
+        
         if (response.ok) {
           setIs2FAEnabled(!!data.two_factor_secret);
+          
+          // Asegúrate de que la información del perfil se guarda correctamente en localStorage
+          if (data.username && data.email && data.address) {
+            localStorage.setItem('username', data.username); 
+            localStorage.setItem('email', data.email); 
+            localStorage.setItem('address', data.address); 
+          }
+          
+        } else {
+          console.error('Error al obtener el perfil:', data.message);
         }
       } catch (error) {
         console.error('Error verificando 2FA:', error);
@@ -47,6 +58,7 @@ const Profile = () => {
 
     check2FAStatus();
   }, []);
+
 
   const validateNoSpecialChars = (value) => {
     const regex = /^[a-zA-Z0-9\sáéíóúÁÉÍÓÚñÑ,.@-]*$/;

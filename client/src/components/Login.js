@@ -54,16 +54,11 @@ const Login = () => {
       return;
     }
 
-    // Si el campo OTP es requerido pero no tiene 6 dígitos, mostrar mensaje y no enviar solicitud
-    if (showOtpField && otp.join('').length !== 6) {
-      return;
-    }
-
     try {
       const response = await fetch('http://localhost:5000/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: trimmedEmail, password: trimmedPassword, otp: showOtpField ? otp.join('') : undefined }),
+        body: JSON.stringify({ email: trimmedEmail, password: trimmedPassword })
       });
 
       const data = await response.json();
@@ -77,17 +72,45 @@ const Login = () => {
         navigate('/profile');
       } else if (data.message === 'Se requiere código de autenticación') {
         setShowOtpField(true);
-        setServerErrorKey('');
-      } else if (data.message === 'Código de autenticación incorrecto') {
-        setServerErrorKey(t('Incorrect OTP authentication code'));
-      } else if (!showOtpField) {
+        localStorage.setItem('tempToken', data.tempToken); // 🔑 Guardar token temporal
+      } else {
         setServerErrorKey(t('Invalid email or password'));
       }
     } catch (error) {
       console.error('Error al iniciar sesión:', error);
       setServerErrorKey('An error occurred while logging in');
     }
-  };
+};
+
+const handleSendOTP = async () => {
+    if (otp.join('').length !== 6) {
+      return;
+    }
+
+    const tempToken = localStorage.getItem('tempToken');
+    try {
+      const response = await fetch('http://localhost:5000/api/auth/verify-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${tempToken}` },
+        body: JSON.stringify({ otp: otp.join('') })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        localStorage.setItem('token', data.token);
+        localStorage.removeItem('tempToken');
+        setIsLoggedIn(true);
+        navigate('/profile');
+      } else {
+        setServerErrorKey(t('Incorrect OTP authentication code'));
+      }
+    } catch (error) {
+      console.error('Error al enviar OTP:', error);
+      setServerErrorKey('An error occurred while verifying OTP');
+    }
+};
+
 
   return (
     <Container className="login-container" style={{ marginTop: '50px', maxWidth: '500px' }}>
@@ -144,9 +167,24 @@ const Login = () => {
           )}
 
 
-            <Button variant="primary" type="submit" className="w-100">
+          {showOtpField ? (
+            <Button 
+              variant="primary" 
+              className="w-100 mt-3" 
+              onClick={handleSendOTP} // Llamar a la función que envía el OTP
+            >
               {t('login-submit')}
             </Button>
+          ) : (
+            <Button 
+              variant="primary" 
+              type="submit" 
+              className="w-100"
+            >
+              {t('login-submit')}
+            </Button>
+          )}
+
           </Form>
 
           {serverErrorKey && <Alert variant="danger" className="mt-3">{serverErrorKey}</Alert>}

@@ -34,6 +34,7 @@ const decrypt = (text) => {
 
 // Registro de usuario
 const register = async (req, res) => {
+  console.log("Función register fue llamada");
   const { name, email, password, address } = req.body;
 
   const checkEmailQuery = 'SELECT * FROM users WHERE email = ?';
@@ -66,6 +67,7 @@ const register = async (req, res) => {
 
 // Login de usuario con validación de 2FA
 const login = (req, res) => {
+  console.log("Función login fue llamada");
   const { email, password, otp } = req.body;
 
   if (!email || !password) return res.status(400).json({ message: 'Por favor, ingresa todos los campos' });
@@ -85,7 +87,11 @@ const login = (req, res) => {
 
       // Si el usuario tiene 2FA activado, validar el código OTP
       if (user.two_factor_secret) {
-        if (!otp) return res.status(401).json({ message: 'Se requiere código de autenticación' });
+        if (!otp) {
+          const tempToken = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '5m' }); // Genera un token temporal válido por 5 minutos
+          return res.status(401).json({ message: 'Se requiere código de autenticación', tempToken });
+      }
+      
 
         let decryptedSecret;
         try {
@@ -112,8 +118,46 @@ const login = (req, res) => {
   });
 };
 
+// Verificación de OTP
+const verifyOTP = (req, res) => {
+  console.log("Función verifyOTP fue llamada");
+  const userId = req.user.id;
+  const { otp } = req.body;
+
+  const sql = 'SELECT * FROM users WHERE id = ?';
+  db.query(sql, [userId], (err, results) => {
+    if (err) return res.status(500).json({ message: 'Error en el servidor' });
+
+    if (results.length === 0) return res.status(404).json({ message: 'Usuario no encontrado' });
+
+    const user = results[0];
+
+    if (!user.two_factor_secret) return res.status(400).json({ message: '2FA no está activado' });
+
+    let decryptedSecret;
+    try {
+      decryptedSecret = decrypt(user.two_factor_secret);
+    } catch (error) {
+      return res.status(500).json({ message: 'Error al descifrar la clave de 2FA' });
+    }
+
+    const verified = speakeasy.totp.verify({
+      secret: decryptedSecret,
+      encoding: 'base32',
+      token: otp,
+    });
+
+    if (!verified) return res.status(401).json({ message: 'Código de autenticación incorrecto' });
+
+    const token = jwt.sign({ id: user.id, email: user.email, username: user.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+    res.json({ token, username: user.username, email: user.email, address: user.address });
+  });
+};
+
 // Generar código QR para 2FA sin activar
 const generate2FA = (req, res) => {
+  console.log("Función generate2FA fue llamada");
   const secret = speakeasy.generateSecret({ length: 20 });
 
   const otpAuthUrl = `otpauth://totp/EpicKick:${req.user.email}?secret=${secret.base32}&issuer=EpicKick`;
@@ -125,52 +169,10 @@ const generate2FA = (req, res) => {
   });
 };
 
-// Activar 2FA con OTP
-const enable2FA = (req, res) => {
-  const userId = req.user.id;
-  const { otp, tempSecret } = req.body;
-
-  // Validación extra para depuración
-  console.log('Intentando activar 2FA para usuario:', userId);
-  console.log('Código OTP recibido:', otp);
-  console.log('Secreto temporal recibido:', tempSecret);
-
-  if (!otp || !tempSecret) {
-    return res.status(400).json({ message: 'Código OTP y secreto temporal son requeridos' });
-  }
-
-  // Verificar el OTP con el secreto temporal
-  const verified = speakeasy.totp.verify({
-    secret: tempSecret,
-    encoding: 'base32',
-    token: otp,
-    window: 1, // Ajustar la tolerancia de tiempo si es necesario
-  });
-
-  if (!verified) {
-    console.log('OTP incorrecto, no se activará 2FA.');
-    return res.status(401).json({ message: 'Código OTP incorrecto' });
-  }
-
-  console.log('✅ OTP correcto, activando 2FA...');
-
-  // Encriptar el secreto antes de guardarlo en la base de datos
-  const encryptedSecret = encrypt(tempSecret);
-
-  const sql = 'UPDATE users SET two_factor_secret = ? WHERE id = ?';
-  db.query(sql, [encryptedSecret, userId], (err, result) => {
-    if (err) {
-      console.error('Error activando 2FA:', err);
-      return res.status(500).json({ message: 'Error activando 2FA' });
-    }
-
-    res.json({ message: '2FA activado correctamente' });
-  });
-};
-
 
 // Desactivar 2FA
 const disable2FA = (req, res) => {
+  console.log("Función disable2FA fue llamada");
   const userId = req.user.id;
 
   const sql = 'UPDATE users SET two_factor_secret = NULL WHERE id = ?';
@@ -203,6 +205,7 @@ const getProfile = (req, res) => {
 
 // Confirmar 2FA con OTP antes de guardarlo en la base de datos
 const confirm2FA = (req, res) => {
+  console.log("Función confirm2FA fue llamada");
   const userId = req.user.id;
   const { otp, tempSecret } = req.body;
 
@@ -214,22 +217,67 @@ const confirm2FA = (req, res) => {
     token: otp,
   });
 
-  if (!verified) return res.status(401).json({ message: 'Código de autenticación incorrecto' });
+  if (!verified) {
+    console.log('Código OTP incorrecto');
+    return res.status(401).json({ message: 'Código de autenticación incorrecto' });
+  }
+
+  console.log('\tOTP correcto, activando 2FA y generando códigos de respaldo...');
 
   // Si el OTP es válido, guardar la clave cifrada en la base de datos
   const encryptedSecret = encrypt(tempSecret);
 
   const sql = 'UPDATE users SET two_factor_secret = ? WHERE id = ?';
   db.query(sql, [encryptedSecret, userId], (err, result) => {
-    if (err) return res.status(500).json({ message: 'Error al confirmar 2FA' });
+    if (err) {
+      console.error('Error al confirmar 2FA:', err);
+      return res.status(500).json({ message: 'Error al confirmar 2FA' });
+    }
 
-    res.json({ message: '2FA confirmado y activado' });
+    // Generar códigos de respaldo
+    const backupCodes = generateBackupCodes();
+
+    // Guardar nuevos códigos de respaldo en la base de datos
+    saveBackupCodes(userId, backupCodes);
+
+    console.log('\tCódigos de respaldo generados y guardados correctamente.');
+    
+    // Devolver los códigos generados al frontend para mostrarlos una sola vez
+    res.json({ 
+      message: '2FA confirmado y activado', 
+      backupCodes: backupCodes.map(codeObj => codeObj.code) 
+    });
+  });
+};
+
+// Generar códigos de respaldo y cifrarlos antes de retornarlos
+const generateBackupCodes = () => {
+  const codes = [];
+  for (let i = 0; i < 10; i++) {
+    const code = Math.random().toString(36).substring(2, 12); // Código de 10 caracteres alfanuméricos
+    const encryptedCode = encrypt(code); // Ciframos el código antes de almacenarlo
+    codes.push({ code: encryptedCode, status: 'unused' });
+  }
+  return codes;
+};
+
+// Guardar códigos de respaldo cifrados en la base de datos
+const saveBackupCodes = (userId, codes) => {
+  const sql = 'INSERT INTO backup_codes (user_id, code, status) VALUES (?, ?, ?)';
+  
+  codes.forEach(codeObj => {
+    db.query(sql, [userId, codeObj.code, codeObj.status], (err) => {
+      if (err) {
+        console.error('Error al guardar el código de respaldo:', err);
+      }
+    });
   });
 };
 
 
 // Actualizar la dirección del usuario
 const updateAddress = (req, res) => {
+  console.log("Función updateAddress fue llamada");
   const { address } = req.body;
   const userId = req.user.id;
 
@@ -252,4 +300,4 @@ const updateAddress = (req, res) => {
   });
 };
 
-module.exports = { register, login, generate2FA, enable2FA, disable2FA,  updateAddress, getProfile, confirm2FA };
+module.exports = { register, login, generate2FA, disable2FA,  updateAddress, getProfile, confirm2FA, verifyOTP };
