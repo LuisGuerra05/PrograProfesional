@@ -1,9 +1,10 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { Button, Container, Row, Col, Card, Form, Alert, Image, InputGroup} from 'react-bootstrap';
+import { Button, Container, Row, Col, Card, Form, Alert, Image, InputGroup, Modal } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { CartContext } from '../context/CartProvider';
 import { useTranslation } from 'react-i18next';
 import { handleOtpChange } from '../utils/otpUtils'; // Importa la función reutilizable
+
 
 const Profile = () => {
   const { t } = useTranslation();
@@ -18,47 +19,43 @@ const Profile = () => {
   const [is2FAEnabled, setIs2FAEnabled] = useState(false);
   const [tempSecret, setTempSecret] = useState('');
   const [otp, setOtp] = useState(Array(6).fill(''));
-
+  const [backupCodes, setBackupCodes] = useState([]);
+  const [showCodesModal, setShowCodesModal] = useState(false);
 
   const username = localStorage.getItem('username');
   const email = localStorage.getItem('email');
   const address = localStorage.getItem('address');
 
+
   useEffect(() => {
-    // Verificar si el usuario tiene 2FA activo
+    // Verificar si el usuario tiene 2FA activo y actualizar la información del perfil
     const check2FAStatus = async () => {
       const token = localStorage.getItem('token');
       if (!token) return;
-
+  
       try {
         const response = await fetch('http://localhost:5000/api/auth/profile', {
           method: 'GET',
           headers: { Authorization: `Bearer ${token}` },
         });
-
+  
         const data = await response.json();
-        
         if (response.ok) {
           setIs2FAEnabled(!!data.two_factor_secret);
           
-          // Asegúrate de que la información del perfil se guarda correctamente en localStorage
-          if (data.username && data.email && data.address) {
-            localStorage.setItem('username', data.username); 
-            localStorage.setItem('email', data.email); 
-            localStorage.setItem('address', data.address); 
-          }
-          
-        } else {
-          console.error('Error al obtener el perfil:', data.message);
+          // Actualizar la información en localStorage para mostrarla en el perfil
+          if (data.username) localStorage.setItem('username', data.username);
+          if (data.email) localStorage.setItem('email', data.email);
+          if (data.address) localStorage.setItem('address', data.address);
         }
       } catch (error) {
         console.error('Error verificando 2FA:', error);
       }
     };
-
+  
     check2FAStatus();
   }, []);
-
+  
 
   const validateNoSpecialChars = (value) => {
     const regex = /^[a-zA-Z0-9\sáéíóúÁÉÍÓÚñÑ,.@-]*$/;
@@ -154,7 +151,7 @@ const Profile = () => {
     if (otp.join('').length !== 6) {
       return;
     }
-
+  
     const token = localStorage.getItem('token');
     try {
       const response = await fetch('http://localhost:5000/api/auth/confirm-2fa', {
@@ -165,19 +162,23 @@ const Profile = () => {
         },
         body: JSON.stringify({ otp: otp.join(''), tempSecret }),
       });
-
+  
       const data = await response.json();
+      console.log("Respuesta recibida del backend:", data);
+  
       if (response.ok) {
         setIs2FAEnabled(true);
         setQrCode('');
         setTempSecret('');
         setOtp(Array(6).fill(''));
+        setBackupCodes(data.backupCodes); // Aquí es donde deberías recibir los códigos desencriptados
+        setShowCodesModal(true);
         setMessage(t('2FA enabled successfully'));
-
+  
         setTimeout(() => {
           setMessage('');
         }, 3000);
-
+  
       } else {
         setMessage(t('Incorrect OTP authentication code'));
       }
@@ -186,6 +187,7 @@ const Profile = () => {
       setMessage('Error al conectar con el servidor.');
     }
   };
+  
 
   const handleDisable2FA = async () => {
     const token = localStorage.getItem('token');
@@ -216,7 +218,24 @@ const Profile = () => {
     }
   };
 
+  const handleDownload = () => {
+    const content = backupCodes.map((code, index) => `${code}`).join('\n');
+    const blob = new Blob([content], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+  
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'EK_Recovery_Codes.txt';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  
+    URL.revokeObjectURL(url);
+  };
+
+  
   return (
+    <>
     <Container style={{ marginTop: '50px' }}>
       <Row className="justify-content-center">
         <Col md={6}>
@@ -372,6 +391,64 @@ const Profile = () => {
         </Col>
       </Row>
     </Container>
+    {/* Modal para mostrar los códigos de respaldo */}
+<Modal show={showCodesModal} backdrop="static" keyboard={false} size="lg" centered>
+    <Modal.Header>
+      <Modal.Title>{t('Save your recovery codes')}</Modal.Title>
+    </Modal.Header>
+    <Modal.Body style={{ minHeight: '460px' }}>
+      <div style={{ backgroundColor: '#f8f9fa', padding: '10px', borderRadius: '5px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px', textAlign: 'center' }}>
+          {backupCodes.map((code, index) => (
+            <div 
+              key={index} 
+              style={{ 
+                backgroundColor: '#fff', 
+                padding: '8px', 
+                borderRadius: '5px', 
+                border: '1px solid #ddd', 
+                fontFamily: 'monospace', 
+                fontSize: '15px'
+              }}
+            >
+              • {code}
+            </div>
+          ))}
+        </div>
+      </div>
+      
+      {/* Explicación y Botón de Descarga */}
+      <div style={{ marginTop: '20px', padding: '10px', backgroundColor: '#eef3f7', borderRadius: '5px' }}>
+        <Button 
+          variant="secondary" 
+          size="sm" 
+          onClick={handleDownload} 
+          style={{ marginRight: '10px', display: 'flex', alignItems: 'center', gap: '5px' }}
+        >
+          <i className="bi bi-download"></i> {t('Download')}
+        </Button>
+        <p style={{ marginTop: '14px', margin: '0 0 10px', fontSize: '13px', color: '#333' }}>
+          {t('Why is saving your recovery codes important?')}<br/>
+          {t('If you lose access to your phone, you can authenticate using your recovery codes. We recommend saving them with a secure password manager.')}
+        </p>
+      </div>
+    </Modal.Body>
+    <Modal.Footer>
+      <Button 
+        variant="primary" 
+        onClick={() => setShowCodesModal(false)} 
+        style={{ 
+          fontWeight: 'bold', 
+          padding: '8px 16px',
+          fontSize: '14px'
+        }}
+      >
+        {t('I have saved my recovery codes')}
+      </Button>
+    </Modal.Footer>
+</Modal>
+
+    </>
   );
 };
 

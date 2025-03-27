@@ -175,13 +175,29 @@ const disable2FA = (req, res) => {
   console.log("Función disable2FA fue llamada");
   const userId = req.user.id;
 
+  // Consulta para desactivar 2FA y eliminar códigos de respaldo
   const sql = 'UPDATE users SET two_factor_secret = NULL WHERE id = ?';
-  db.query(sql, [userId], (err, result) => {
-    if (err) return res.status(500).json({ message: 'Error al desactivar 2FA' });
+  const deleteBackupCodesSql = 'DELETE FROM backup_codes WHERE user_id = ?';
 
-    res.json({ message: '2FA desactivado correctamente' });
+  db.query(sql, [userId], (err, result) => {
+    if (err) {
+      console.error('Error al desactivar 2FA:', err);
+      return res.status(500).json({ message: 'Error al desactivar 2FA' });
+    }
+
+    // Eliminar códigos de respaldo asociados al usuario
+    db.query(deleteBackupCodesSql, [userId], (err, result) => {
+      if (err) {
+        console.error('Error al eliminar códigos de respaldo:', err);
+        return res.status(500).json({ message: 'Error al eliminar códigos de respaldo' });
+      }
+
+      console.log('Códigos de respaldo eliminados correctamente.');
+      res.json({ message: '2FA desactivado correctamente y códigos de respaldo eliminados.' });
+    });
   });
 };
+
 
 
 // Obtener perfil del usuario
@@ -236,27 +252,38 @@ const confirm2FA = (req, res) => {
 
     // Generar códigos de respaldo
     const backupCodes = generateBackupCodes();
+    const backupCodesPlain = backupCodes.map(codeObj => codeObj.code); // Desencriptados para mostrar al usuario
 
-    // Guardar nuevos códigos de respaldo en la base de datos
-    saveBackupCodes(userId, backupCodes);
+    console.log('Códigos generados (originales):', backupCodesPlain);
+
+    // Cifrar cada código antes de guardarlo en la base de datos
+    const encryptedBackupCodes = backupCodes.map(codeObj => ({
+      code: encrypt(codeObj.code), 
+      status: codeObj.status
+    }));
+
+    // Guardar códigos cifrados en la base de datos
+    saveBackupCodes(userId, encryptedBackupCodes);
 
     console.log('\tCódigos de respaldo generados y guardados correctamente.');
-    
-    // Devolver los códigos generados al frontend para mostrarlos una sola vez
+
+    // Devolver los códigos generados y desencriptados al frontend para mostrarlos
     res.json({ 
       message: '2FA confirmado y activado', 
-      backupCodes: backupCodes.map(codeObj => codeObj.code) 
+      backupCodes: backupCodesPlain 
     });
   });
 };
+
+
+
 
 // Generar códigos de respaldo y cifrarlos antes de retornarlos
 const generateBackupCodes = () => {
   const codes = [];
   for (let i = 0; i < 10; i++) {
-    const code = Math.random().toString(36).substring(2, 12); // Código de 10 caracteres alfanuméricos
-    const encryptedCode = encrypt(code); // Ciframos el código antes de almacenarlo
-    codes.push({ code: encryptedCode, status: 'unused' });
+    const code = Math.random().toString(36).substring(2, 12); // Código de 10 caracteres alfanumérico
+    codes.push({ code: code, status: 'unused' });
   }
   return codes;
 };
