@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Form, Button, Container, Row, Col, Alert, InputGroup } from 'react-bootstrap';
+import { Form, Button, Container, Row, Col, Alert, InputGroup, Modal} from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { CartContext } from '../context/CartProvider';
 import './Login.css';
@@ -17,6 +17,10 @@ const Login = () => {
   const [serverErrorKey, setServerErrorKey] = useState('');
   const [attemptedSubmit, setAttemptedSubmit] = useState(false);
   const navigate = useNavigate();
+
+  const [showRecoveryModal, setShowRecoveryModal] = useState(false);
+  const [recoveryCode, setRecoveryCode] = useState('');
+  const [recoveryError, setRecoveryError] = useState('');
 
   const { setIsLoggedIn } = useContext(CartContext);
 
@@ -111,8 +115,35 @@ const handleSendOTP = async () => {
     }
 };
 
+const handleRecoveryLogin = async () => {
+  setRecoveryError('');
+
+  try {
+    const response = await fetch('http://localhost:5000/api/auth/recovery-login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, recoveryCode }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      localStorage.setItem('token', data.token);
+      setIsLoggedIn(true);
+      navigate('/profile');
+    } else {
+      setRecoveryError(t(data.message || 'Invalid recovery code'));
+    }
+  } catch (error) {
+    console.error('Error al usar código de recuperación:', error);
+    setRecoveryError('An error occurred while logging in');
+  }
+};
+
+
 
   return (
+    <>
     <Container className="login-container" style={{ marginTop: '50px', maxWidth: '500px' }}>
       <Row className="justify-content-md-center">
         <Col>
@@ -187,7 +218,38 @@ const handleSendOTP = async () => {
 
           </Form>
 
-          {serverErrorKey && <Alert variant="danger" className="mt-3">{serverErrorKey}</Alert>}
+          {/* Línea divisoria con "Or" */}
+          <div style={{ display: 'flex', alignItems: 'center', margin: '15px 0' }}>
+            <div style={{ flex: 1, height: '1px', backgroundColor: '#ddd' }}></div>
+            <span style={{ margin: '0 10px', color: '#666' }}>{t('Or')}</span>
+            <div style={{ flex: 1, height: '1px', backgroundColor: '#ddd' }}></div>
+          </div>
+
+          <Button 
+            variant="outline-secondary" 
+            size="sm"
+            className="w-100 mt-3 d-flex align-items-center justify-content-center" 
+            style={{ 
+              backgroundColor: '#343a40', 
+              color: '#f0f0f0', 
+              border: '1px solid #444', 
+              ppadding: '10px 12px', 
+              fontSize: '14px',
+              transition: 'background-color 0.3s, color 0.3s'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.backgroundColor = '#495057';
+              e.target.style.color = 'white';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.backgroundColor = '#343a40';
+              e.target.style.color = '#f0f0f0';
+            }}
+            onClick={() => setShowRecoveryModal(true)}
+        >
+            <i className="bi bi-person-fill-lock" style={{ marginRight: '8px' }}></i>
+            {t('Use recovery code')}
+        </Button>
 
           <div className="mt-3 text-center">
             <p>
@@ -195,9 +257,51 @@ const handleSendOTP = async () => {
               <Link to="/register">{t('register-submit')}</Link>
             </p>
           </div>
+
+          {serverErrorKey && <Alert variant="danger" className="mt-3">{serverErrorKey}</Alert>}
         </Col>
       </Row>
     </Container>
+    <Modal show={showRecoveryModal} onHide={() => setShowRecoveryModal(false)} centered>
+      <Modal.Header closeButton>
+      <Modal.Title>
+        <i className="bi bi-key" style={{ marginRight: '8px' }}></i>
+        {t('Recovery code')}
+      </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form.Group className="mb-3">
+          <Form.Label>{t('Email')}</Form.Label>
+          <Form.Control 
+            type="email"
+            placeholder={t('Enter your email')}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </Form.Group>
+        
+        <Form.Group className="mb-3">
+          <Form.Label>{t('Recovery Code')}</Form.Label>
+          <Form.Control 
+            type="text"
+            placeholder={t('Enter your recovery code')}
+            value={recoveryCode}
+            onChange={(e) => setRecoveryCode(e.target.value)}
+          />
+        </Form.Group>
+        
+        {recoveryError && <Alert variant="danger">{recoveryError}</Alert>}
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={() => setShowRecoveryModal(false)}>
+          {t('Cancel')}
+        </Button>
+        <Button className="custom-blue-btn" onClick={handleRecoveryLogin}>
+          {t('Verify')}
+        </Button>
+      </Modal.Footer>
+    </Modal>
+    </>
   );
 };
 

@@ -392,62 +392,61 @@ const Profile = () => {
       </Row>
     </Container>
     {/* Modal para mostrar los códigos de respaldo */}
-<Modal show={showCodesModal} backdrop="static" keyboard={false} size="lg" centered>
-    <Modal.Header>
-      <Modal.Title>{t('Save your recovery codes')}</Modal.Title>
-    </Modal.Header>
-    <Modal.Body style={{ minHeight: '460px' }}>
-      <div style={{ backgroundColor: '#f8f9fa', padding: '10px', borderRadius: '5px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px', textAlign: 'center' }}>
-          {backupCodes.map((code, index) => (
-            <div 
-              key={index} 
-              style={{ 
-                backgroundColor: '#fff', 
-                padding: '8px', 
-                borderRadius: '5px', 
-                border: '1px solid #ddd', 
-                fontFamily: 'monospace', 
-                fontSize: '15px'
-              }}
-            >
-              • {code}
+    <Modal show={showCodesModal} backdrop="static" keyboard={false} size="lg" centered>
+        <Modal.Header>
+          <Modal.Title>{t('Save your recovery codes')}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ minHeight: '460px' }}>
+          <div style={{ backgroundColor: '#f8f9fa', padding: '10px', borderRadius: '5px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px', textAlign: 'center' }}>
+              {backupCodes.map((code, index) => (
+                <div 
+                  key={index} 
+                  style={{ 
+                    backgroundColor: '#fff', 
+                    padding: '8px', 
+                    borderRadius: '5px', 
+                    border: '1px solid #ddd', 
+                    fontFamily: 'monospace', 
+                    fontSize: '15px'
+                  }}
+                >
+                  • {code}
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </div>
-      
-      {/* Explicación y Botón de Descarga */}
-      <div style={{ marginTop: '20px', padding: '10px', backgroundColor: '#eef3f7', borderRadius: '5px' }}>
-        <Button 
-          variant="secondary" 
-          size="sm" 
-          onClick={handleDownload} 
-          style={{ marginRight: '10px', display: 'flex', alignItems: 'center', gap: '5px' }}
-        >
-          <i className="bi bi-download"></i> {t('Download')}
-        </Button>
-        <p style={{ marginTop: '14px', margin: '0 0 10px', fontSize: '13px', color: '#333' }}>
-          {t('Why is saving your recovery codes important?')}<br/>
-          {t('If you lose access to your phone, you can authenticate using your recovery codes. We recommend saving them with a secure password manager.')}
-        </p>
-      </div>
-    </Modal.Body>
-    <Modal.Footer>
-      <Button 
-        variant="primary" 
-        onClick={() => setShowCodesModal(false)} 
-        style={{ 
-          fontWeight: 'bold', 
-          padding: '8px 16px',
-          fontSize: '14px'
-        }}
-      >
-        {t('I have saved my recovery codes')}
-      </Button>
-    </Modal.Footer>
-</Modal>
-
+          </div>
+          
+          {/* Explicación y Botón de Descarga */}
+          <div style={{ marginTop: '20px', padding: '10px', backgroundColor: '#eef3f7', borderRadius: '5px' }}>
+            <Button 
+              variant="secondary" 
+              size="sm" 
+              onClick={handleDownload} 
+              style={{ marginRight: '10px', display: 'flex', alignItems: 'center', gap: '5px' }}
+            >
+              <i className="bi bi-download"></i> {t('Download')}
+            </Button>
+            <p style={{ marginTop: '14px', margin: '0 0 10px', fontSize: '13px', color: '#333' }}>
+              {t('Why is saving your recovery codes important?')}<br/>
+              {t('If you lose access to your phone, you can authenticate using your recovery codes. We recommend saving them with a secure password manager.')}
+            </p>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button 
+            variant="primary" 
+            onClick={() => setShowCodesModal(false)} 
+            style={{ 
+              fontWeight: 'bold', 
+              padding: '8px 16px',
+              fontSize: '14px'
+            }}
+          >
+            {t('I have saved my recovery codes')}
+          </Button>
+        </Modal.Footer>
+    </Modal>
     </>
   );
 };

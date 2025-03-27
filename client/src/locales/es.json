@@ -109,5 +109,7 @@
     "scan-qr-code": "Escanea el siguiente código QR",
     "enter-six-digit-code": "Ingresa el código de 6 dígitos",
     "2FA desactivado correctamente": "2FA desactivado correctamente",
-    "2FA activado correctamente": "2FA activado correctamente"
+    "2FA activado correctamente": "2FA activado correctamente",
+
+    "Or":"O"
 }
