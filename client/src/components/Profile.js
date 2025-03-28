@@ -234,6 +234,30 @@ const Profile = () => {
   };
 
   
+  const handleGenerateCodes = async () => {
+    try {
+        const response = await fetch('http://localhost:5000/api/auth/generate-recovery-codes', {  // Aquí asegúrate que está bien configurado el prefijo
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            setBackupCodes(data.codes);  // Aquí se actualizan los códigos en tu frontend
+            setShowCodesModal(true); // Muestra el modal con los nuevos códigos
+        } else {
+            alert('Failed to generate recovery codes.');
+        }
+    } catch (error) {
+        console.error('Error generating codes:', error);
+    }
+};
+
+
+
   return (
     <>
     <Container style={{ marginTop: '50px' }}>
@@ -285,16 +309,72 @@ const Profile = () => {
                   </>
                 )}
               </p>
-              <p>
-              <strong>{t('Two-Step Authentication (2FA)')}:</strong>{' '}
-              <span 
-                onClick={is2FAEnabled ? handleDisable2FA : handleEnable2FA}
-                className="text-primary"
-                style={{ cursor: 'pointer', textDecoration: 'underline' }}
-              >
-                {is2FAEnabled ? t('Disable') : t('Enable')}
-              </span>
-            </p>
+
+              
+              <div style={{
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'space-between', 
+                backgroundColor: '#f8f9fa', 
+                border: '1px solid #ddd', 
+                padding: '12px 16px', 
+                borderRadius: '6px',
+                marginBottom: '10px',
+                flexDirection: 'column' // Alinea los elementos en columna para incluir la descripción dentro
+            }}>
+                {/* Primera línea: Icono, Texto y Estado */}
+                <div style={{ display: 'flex', alignItems: 'center', width: '100%', justifyContent: 'space-between' }}>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <i className="bi bi-phone" style={{ fontSize: '18px', marginRight: '8px' }}></i>
+                        <strong style={{ marginRight: '8px' }}>{t('Authenticator App')}</strong>
+                        {is2FAEnabled ? (
+                          <span 
+                              style={{ 
+                                  padding: '1px 5px',     // Achicamos el padding
+                                  backgroundColor: 'white', 
+                                  border: '1px solid #28a745', 
+                                  borderRadius: '10px',   // Más pequeño y redondeado
+                                  color: '#28a745', 
+                                  fontWeight: 'bold',
+                                  fontSize: '12px'        // Reducimos el tamaño de fuente
+                              }}
+                          >
+                              {t('Configured')}
+                          </span>
+                      ) : (
+                          <span 
+                              style={{ 
+                                  padding: '1px 5px',     // Achicamos el padding
+                                  backgroundColor: 'white', 
+                                  border: '1px solid red', 
+                                  borderRadius: '10px',   // Más pequeño y redondeado
+                                  color: 'red', 
+                                  fontWeight: 'bold',
+                                  fontSize: '12px'        // Reducimos el tamaño de fuente
+                              }}
+                          >
+                              {t('Not Configured')}
+                          </span>
+                      )}
+                    </div>
+                    
+                    {/* Botón de Edición */}
+                    <Button 
+                    variant={is2FAEnabled ? "outline-danger" : "secondary"} 
+                    onClick={is2FAEnabled ? handleDisable2FA : handleEnable2FA}
+                    style={{ padding: '6px 12px', fontSize: '14px' }}
+                >
+                    {is2FAEnabled ? 'Disable' : 'Enable'}
+                </Button>
+                </div>
+
+                {/* Descripción dentro del recuadro */}
+                <p style={{ color: '#666', fontSize: '13px', marginTop: '8px', marginBottom: '0', width: '100%' }}>
+                    {t('Use an authentication app to get two-factor authentication codes when prompted.')}
+                </p>
+            </div>
+
+
 
 
             {qrCode && (
@@ -370,6 +450,43 @@ const Profile = () => {
               </div>
             )}
 
+            {/* Recuadro de Códigos de Recuperación */}
+            <div 
+                style={{
+                    border: '1px solid #ddd',
+                    borderRadius: '8px',
+                    padding: '15px',
+                    backgroundColor: '#f8f9fa',
+                    marginTop: '20px',
+                    position: 'relative'
+                }}
+            >
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <i className="bi bi-key" style={{ marginRight: '8px', fontSize: '20px' }}></i>
+                        <strong>Recovery Codes</strong>
+                    </div>
+                    {is2FAEnabled ? (
+                        <Button 
+                            variant="secondary" 
+                            size="sm" 
+                            onClick={handleGenerateCodes} 
+                            style={{ marginLeft: '10px' }}
+                        >
+                            {t('Generate new codes')}
+                        </Button>
+                    ) : null}
+                </div>
+                <div style={{ marginTop: '10px', fontSize: '13px', color: '#666' }}>
+                    {is2FAEnabled ? (
+                        <p>Use these recovery codes to log in if you lose access to your authentication app.</p>
+                    ) : (
+                        <p style={{ color: 'red' }}>Two-Factor Authentication is not enabled. No recovery codes available.</p>
+                    )}
+                </div>
+            </div>
+
+            
             {message && (
               <Alert 
                 variant={message === t('Incorrect OTP authentication code') ? "danger" : "success"} 
@@ -378,7 +495,6 @@ const Profile = () => {
                 {t(message)}
               </Alert>
             )}
-
 
               <Button 
                 className="btn btn-primary w-100 mt-3" 

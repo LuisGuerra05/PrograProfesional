@@ -300,6 +300,37 @@ const saveBackupCodes = (userId, encryptedBackupCodes) => {
 };
 
 
+// Función para regenerar códigos de recuperación
+const regenerateRecoveryCodes = (req, res) => {
+
+  const userId = req.user.id; 
+
+  // Generar 10 códigos nuevos
+  const backupCodes = generateBackupCodes();
+
+  // Encriptar los códigos generados
+  const encryptedBackupCodes = backupCodes.map(codeObj => ({
+      code: encrypt(codeObj.code),
+      status: codeObj.status
+  }));
+
+  // Primero eliminar los códigos antiguos del usuario
+  const deleteSql = 'DELETE FROM backup_codes WHERE user_id = ?';
+  db.query(deleteSql, [userId], (deleteErr) => {
+      if (deleteErr) {
+          console.error('Error al eliminar códigos antiguos:', deleteErr);
+          return res.status(500).json({ message: 'Error al eliminar códigos anteriores' });
+      }
+
+      // Guardar los códigos nuevos en la base de datos
+      saveBackupCodes(userId, encryptedBackupCodes);
+
+      // Devolver los códigos sin encriptar al frontend para mostrarlos al usuario
+      const codesToReturn = backupCodes.map(codeObj => codeObj.code);
+      res.json({ message: 'Códigos de recuperación regenerados con éxito', codes: codesToReturn });
+  });
+};
+
 
 // Ruta para usar códigos de recuperación
 const recoveryLogin = (req, res) => {
@@ -381,4 +412,4 @@ const updateAddress = (req, res) => {
   });
 };
 
-module.exports = { register, login, generate2FA, disable2FA,  updateAddress, getProfile, confirm2FA, verifyOTP, recoveryLogin };
+module.exports = { register, login, generate2FA, disable2FA,  updateAddress, getProfile, confirm2FA, verifyOTP, recoveryLogin, regenerateRecoveryCodes };
