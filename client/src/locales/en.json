@@ -119,8 +119,13 @@
     "Not Configured" : "Not Configured",
     "Configured" : "Configured",
     "Use an authentication app to get two-factor authentication codes when prompted." : "Use an authentication app to get two-factor authentication codes when prompted.",
-    "Two-Factor Authentication is not enabled. No recovery codes available." : "Two-Factor Authentication is not enabled. No recovery codes available.",
-    "Generate new codes" : "Generate new codes"
-
-
+    "Two-Factor Authentication is not enabled. No recovery codes available" : "Two-Factor Authentication is not enabled. No recovery codes available",
+    "Generate new codes" : "Generate new codes",
+    "Use these recovery codes to log in if you lose access to your authentication app" : "Use these recovery codes to log in if you lose access to your authentication app",
+    "Recovery codes" : "Recovery codes",
+    "Save your recovery codes": "Save your recovery codes",
+    "Download": "Download",
+    "Why is saving your recovery codes important?": "Why is saving your recovery codes important?",
+    "If you lose access to your phone, you can authenticate using your recovery codes. We recommend saving them with a secure password manager.": "If you lose access to your phone, you can authenticate using your recovery codes. We recommend saving them with a secure password manager.",
+    "I have saved my recovery codes": "I have saved my recovery codes"  
 }

@@ -112,5 +112,20 @@
     "2FA activado correctamente": "2FA activado correctamente",
 
     "Or":"O",
-    "Verify" : "Verificar"
+    "Verify" : "Verificar",
+    "Use recovery code" : "Usar código de recuperación",
+    "Recovery code" : "Código de recuperación",
+    "Authenticator app" : "Aplicación de autenticación",
+    "Not Configured" : "No Configurado",
+    "Configured" : "Configurado",
+    "Use an authentication app to get two-factor authentication codes when prompted." : "Utilice una aplicación de autenticación para obtener códigos de autenticación de dos factores cuando se le solicite",
+    "Two-Factor Authentication is not enabled. No recovery codes available" : "La autenticación de dos factores no está habilitada. No hay códigos de recuperación disponibles",
+    "Generate new codes" : "Generar nuevos códigos",
+    "Use these recovery codes to log in if you lose access to your authentication app" : "Utiliza estos códigos de recuperación para iniciar sesión si pierdes el acceso a tu aplicación de autenticación",
+    "Recovery codes" : "Códigos de recuperación",
+    "Save your recovery codes": "Guarda tus códigos de recuperación",
+    "Download": "Descargar",
+    "Why is saving your recovery codes important?": "¿Por qué es importante guardar tus códigos de recuperación?",
+    "If you lose access to your phone, you can authenticate using your recovery codes. We recommend saving them with a secure password manager.": "Si pierdes el acceso a tu teléfono, puedes autenticarte usando tus códigos de recuperación. Recomendamos guardarlos con un administrador de contraseñas seguro.",
+    "I have saved my recovery codes": "He guardado mis códigos de recuperación"
 }

@@ -479,9 +479,9 @@ const Profile = () => {
                 </div>
                 <div style={{ marginTop: '10px', fontSize: '13px', color: '#666' }}>
                     {is2FAEnabled ? (
-                        <p>Use these recovery codes to log in if you lose access to your authentication app.</p>
+                        <p>{t('Use these recovery codes to log in if you lose access to your authentication app')}</p>
                     ) : (
-                        <p style={{ color: 'red' }}>Two-Factor Authentication is not enabled. No recovery codes available.</p>
+                        <p style={{ color: 'red' }}>{t('Two-Factor Authentication is not enabled. No recovery codes available')}</p>
                     )}
                 </div>
             </div>
