@@ -151,13 +151,13 @@ const handleRecoveryLogin = async () => {
           <Form onSubmit={handleLogin} noValidate>
             <Form.Group className="mb-3">
               <Form.Label>{t('login-email')}</Form.Label>
-              <Form.Control type="email" value={email} onChange={(e) => handleFieldChange('email', e.target.value)} required />
+              <Form.Control type="email" placeholder={t('login-email')} value={email} onChange={(e) => handleFieldChange('email', e.target.value)} required />
               {attemptedSubmit && fieldErrors.email && <div style={{ color: 'red' }}>{fieldErrors.email}</div>}
             </Form.Group>
 
             <Form.Group className="mb-3">
               <Form.Label>{t('login-password')}</Form.Label>
-              <Form.Control type="password" value={password} onChange={(e) => handleFieldChange('password', e.target.value)} required />
+              <Form.Control type="password" placeholder={t('login-password')} value={password} onChange={(e) => handleFieldChange('password', e.target.value)} required />
               {attemptedSubmit && fieldErrors.password && <div style={{ color: 'red' }}>{fieldErrors.password}</div>}
             </Form.Group>
 
@@ -271,20 +271,20 @@ const handleRecoveryLogin = async () => {
       </Modal.Header>
       <Modal.Body>
         <Form.Group className="mb-3">
-          <Form.Label>{t('Email')}</Form.Label>
+          <Form.Label>{t('login-email')}</Form.Label>
           <Form.Control 
             type="email"
-            placeholder={t('Enter your email')}
+            placeholder={t('login-email')}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
         </Form.Group>
         
         <Form.Group className="mb-3">
-          <Form.Label>{t('Recovery Code')}</Form.Label>
+          <Form.Label>{t('Recovery code')}</Form.Label>
           <Form.Control 
             type="text"
-            placeholder={t('Enter your recovery code')}
+            placeholder={t('Recovery code')}
             value={recoveryCode}
             onChange={(e) => setRecoveryCode(e.target.value)}
           />

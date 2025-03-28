@@ -111,5 +111,16 @@
     "2FA disabled successfully": "2FA disabled successfully",
     "2FA enabled successfully": "2FA enabled successfully",
 
-    "Or":"Or"
+    "Or":"Or",
+    "Verify" : "Verify",
+    "Use recovery code" : "Use recovery code",
+    "Recovery code" : "Recovery code",
+    "Authenticator app" : "Authenticator app",
+    "Not Configured" : "Not Configured",
+    "Configured" : "Configured",
+    "Use an authentication app to get two-factor authentication codes when prompted." : "Use an authentication app to get two-factor authentication codes when prompted.",
+    "Two-Factor Authentication is not enabled. No recovery codes available." : "Two-Factor Authentication is not enabled. No recovery codes available.",
+    "Generate new codes" : "Generate new codes"
+
+
 }

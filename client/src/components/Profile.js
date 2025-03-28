@@ -326,7 +326,7 @@ const Profile = () => {
                 <div style={{ display: 'flex', alignItems: 'center', width: '100%', justifyContent: 'space-between' }}>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                         <i className="bi bi-phone" style={{ fontSize: '18px', marginRight: '8px' }}></i>
-                        <strong style={{ marginRight: '8px' }}>{t('Authenticator App')}</strong>
+                        <strong style={{ marginRight: '8px' }}>{t('Authenticator app')}</strong>
                         {is2FAEnabled ? (
                           <span 
                               style={{ 
@@ -364,7 +364,7 @@ const Profile = () => {
                     onClick={is2FAEnabled ? handleDisable2FA : handleEnable2FA}
                     style={{ padding: '6px 12px', fontSize: '14px' }}
                 >
-                    {is2FAEnabled ? 'Disable' : 'Enable'}
+                    {is2FAEnabled ? t('Disable') : t('Enable')}
                 </Button>
                 </div>
 
@@ -464,7 +464,7 @@ const Profile = () => {
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                         <i className="bi bi-key" style={{ marginRight: '8px', fontSize: '20px' }}></i>
-                        <strong>Recovery Codes</strong>
+                        <strong>{t('Recovery codes')}</strong>
                     </div>
                     {is2FAEnabled ? (
                         <Button 

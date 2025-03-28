@@ -111,5 +111,6 @@
     "2FA desactivado correctamente": "2FA desactivado correctamente",
     "2FA activado correctamente": "2FA activado correctamente",
 
-    "Or":"O"
+    "Or":"O",
+    "Verify" : "Verificar"
 }
