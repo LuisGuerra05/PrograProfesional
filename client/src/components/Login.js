@@ -1,11 +1,12 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Form, Button, Container, Row, Col, Alert, InputGroup, Modal} from 'react-bootstrap';
+import { Form, Button, Container, Row, Col, Alert, InputGroup, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { CartContext } from '../context/CartProvider';
+import { toast, ToastContainer } from 'react-toastify'; // Importar react-toastify
+import 'react-toastify/dist/ReactToastify.css'; // Importar estilos de react-toastify
 import './Login.css';
 import { handleOtpChange } from '../utils/otpUtils'; // Importa la función desde utils
-
 
 const Login = () => {
   const { t } = useTranslation();
@@ -131,6 +132,17 @@ const handleRecoveryLogin = async () => {
       localStorage.setItem('token', data.token);
       setIsLoggedIn(true);
       navigate('/profile');
+
+      // Mostrar alerta tipo toast con los códigos restantes
+      toast.success(`✅ ${t('Recovery code used successfully!')} ${t('Remaining codes')}: ${data.remainingCodes}`, {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose: 5000, // Duración de la alerta en milisegundos
+        hideProgressBar: false, // Mostrar barra de progreso
+        closeOnClick: true, // Cerrar al hacer clic
+        pauseOnHover: true, // Pausar al pasar el mouse
+        draggable: true, // Permitir arrastrar la alerta
+        progress: undefined,
+      });
     } else {
       setRecoveryError(t(data.message || 'Invalid recovery code'));
     }
@@ -301,6 +313,9 @@ const handleRecoveryLogin = async () => {
         </Button>
       </Modal.Footer>
     </Modal>
+
+    {/* Contenedor de Toast */}
+    <ToastContainer />
     </>
   );
 };
