@@ -334,54 +334,62 @@ const regenerateRecoveryCodes = (req, res) => {
 
 // Ruta para usar códigos de recuperación
 const recoveryLogin = (req, res) => {
-    const { email, recoveryCode } = req.body;
+  const { email, recoveryCode } = req.body;
 
-    if (!email || !recoveryCode) {
-        return res.status(400).json({ message: 'El correo y el código de recuperación son requeridos' });
-    }
+  if (!email || !recoveryCode) {
+      return res.status(400).json({ message: 'El correo y el código de recuperación son requeridos' });
+  }
 
-    // Buscar el usuario por su correo
-    const findUserSql = 'SELECT id FROM users WHERE email = ?';
-    db.query(findUserSql, [email], (err, userResults) => {
-        if (err || userResults.length === 0) {
-            console.error('Usuario no encontrado o error al buscar el usuario:', err);
-            return res.status(404).json({ message: 'Usuario no encontrado' });
-        }
+  // Buscar el usuario por su correo
+  const findUserSql = 'SELECT id FROM users WHERE email = ?';
+  db.query(findUserSql, [email], (err, userResults) => {
+      if (err || userResults.length === 0) {
+          console.error('Usuario no encontrado o error al buscar el usuario:', err);
+          return res.status(404).json({ message: 'Usuario no encontrado' });
+      }
 
-        const userId = userResults[0].id;
+      const userId = userResults[0].id;
 
-        // Buscar códigos de recuperación del usuario
-        const sql = 'SELECT code, status FROM backup_codes WHERE user_id = ?';
-        db.query(sql, [userId], (err, results) => {
-            if (err) {
-                console.error('Error al recuperar códigos de recuperación:', err);
-                return res.status(500).json({ message: 'Server error' });
-            }
+      // Buscar códigos de recuperación del usuario
+      const sql = 'SELECT code, status FROM backup_codes WHERE user_id = ?';
+      db.query(sql, [userId], (err, results) => {
+          if (err) {
+              console.error('Error al recuperar códigos de recuperación:', err);
+              return res.status(500).json({ message: 'Server error' });
+          }
 
-            const validCode = results.find(codeObj => {
-                const decryptedCode = decrypt(codeObj.code);
-                return decryptedCode === recoveryCode && codeObj.status === 'not_used';
-            });
+          const validCode = results.find(codeObj => {
+              const decryptedCode = decrypt(codeObj.code);
+              return decryptedCode === recoveryCode && codeObj.status === 'not_used';
+          });
 
-            if (!validCode) {
-                return res.status(401).json({ message: 'Invalid recovery code' });
-            }
+          if (!validCode) {
+              return res.status(401).json({ message: 'Código de recuperación inválido' });
+          }
 
-            // Marcar el código como usado en la base de datos
-            const updateSql = 'UPDATE backup_codes SET status = ? WHERE code = ?';
-            db.query(updateSql, ['used', validCode.code], (updateErr) => {
-                if (updateErr) {
-                    console.error('Error al actualizar el estado del código de recuperación:', updateErr);
-                    return res.status(500).json({ message: 'Server error' });
-                }
+          // Marcar el código como usado en la base de datos
+          const updateSql = 'UPDATE backup_codes SET status = ? WHERE code = ?';
+          db.query(updateSql, ['used', validCode.code], (updateErr) => {
+              if (updateErr) {
+                  console.error('Error al actualizar el estado del código de recuperación:', updateErr);
+                  return res.status(500).json({ message: 'Server error' });
+              }
 
-                // Generar un token para el usuario y enviarlo al frontend
-                const token = jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn: '1h' });
-                res.json({ token });
-            });
-        });
+              // Calcular códigos restantes
+              const remainingCodes = results.filter(codeObj => codeObj.status === 'not_used').length - 1;
 
-    });
+              // Generar un token para el usuario y enviarlo al frontend
+              const token = jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+              // Enviar alerta al usuario
+              res.json({
+                  token,
+                  message: `Se ha utilizado un código de recuperación. Te quedan ${remainingCodes} códigos restantes.`,
+                  remainingCodes
+              });
+          });
+      });
+  });
 };
 
 
