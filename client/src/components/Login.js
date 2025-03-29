@@ -149,13 +149,13 @@ const handleRecoveryLogin = async () => {
         <Col>
           <h1 className="text-center">{t('login-title')}</h1>
           <Form onSubmit={handleLogin} noValidate>
-            <Form.Group className="mb-3">
+            <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>{t('login-email')}</Form.Label>
               <Form.Control type="email" placeholder={t('login-email')} value={email} onChange={(e) => handleFieldChange('email', e.target.value)} required />
               {attemptedSubmit && fieldErrors.email && <div style={{ color: 'red' }}>{fieldErrors.email}</div>}
             </Form.Group>
 
-            <Form.Group className="mb-3">
+            <Form.Group className="mb-3" controlId="formBasicPassword">
               <Form.Label>{t('login-password')}</Form.Label>
               <Form.Control type="password" placeholder={t('login-password')} value={password} onChange={(e) => handleFieldChange('password', e.target.value)} required />
               {attemptedSubmit && fieldErrors.password && <div style={{ color: 'red' }}>{fieldErrors.password}</div>}
