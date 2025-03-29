@@ -11,14 +11,18 @@ const resources = {
 };
 
 i18n
-  .use(LanguageDetector) // Detectar automáticamente el idioma del navegador
-  .use(initReactI18next) // Conectar con React
+  .use(LanguageDetector)
+  .use(initReactI18next)
   .init({
     resources,
-    fallbackLng: 'en', // Idioma predeterminado si no se detecta otro
+    fallbackLng: 'en',
     interpolation: {
-      escapeValue: false, // React ya escapa los valores
+      escapeValue: false,
     },
+    detection: {
+      order: ['localStorage', 'navigator'], // <- importante
+      caches: ['localStorage'], // <- guarda ahí el idioma
+    }
   });
 
 export default i18n;
