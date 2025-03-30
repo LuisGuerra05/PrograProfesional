@@ -128,7 +128,5 @@
     "Why is saving your recovery codes important?": "¿Por qué es importante guardar tus códigos de recuperación?",
     "If you lose access to your phone, you can authenticate using your recovery codes. We recommend saving them with a secure password manager.": "Si pierdes el acceso a tu teléfono, puedes autenticarte usando tus códigos de recuperación. Recomendamos guardarlos con un administrador de contraseñas seguro.",
     "I have saved my recovery codes": "He guardado mis códigos de recuperación",
-
-    "Recovery code used successfully!": "¡Código de recuperación usado correctamente!",
-    "Remaining codes": "Códigos restantes"
+    "Recovery code toast message": "Código de recuperación usado (quedan {{count}})"
 }

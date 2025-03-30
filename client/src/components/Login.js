@@ -134,7 +134,7 @@ const handleRecoveryLogin = async () => {
       setIsLoggedIn(true);
 
       // Mostrar alerta tipo toast con los códigos restantes
-      toast.success(`${t('Recovery code used successfully!')} ${t('Remaining codes')}: ${data.remainingCodes}`, {
+      toast.success(t('Recovery code toast message', { count: data.remainingCodes }), {
         className: 'custom-toast',
         progressClassName: 'Toastify__progress-bar--blue',
         progressStyle: { backgroundColor: 'rgba(0, 123, 255, 0.85)' }
@@ -143,7 +143,7 @@ const handleRecoveryLogin = async () => {
       // Espera 1 segundo y luego navega
       setTimeout(() => {
         navigate('/profile');
-      }, 5000);
+      }, 3000);
 
     } else {
       setRecoveryError(t(data.message || 'Invalid recovery code'));
