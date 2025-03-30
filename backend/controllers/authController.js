@@ -334,6 +334,7 @@ const regenerateRecoveryCodes = (req, res) => {
 
 // Ruta para usar códigos de recuperación
 const recoveryLogin = (req, res) => {
+  console.log("Función recoveryLogin fue llamada");
   const { email, recoveryCode } = req.body;
 
   if (!email || !recoveryCode) {
@@ -376,6 +377,7 @@ const recoveryLogin = (req, res) => {
               }
 
               // Calcular códigos restantes
+              console.log("Calculo de codigos restantes");
               const remainingCodes = results.filter(codeObj => codeObj.status === 'not_used').length - 1;
 
               // Generar un token para el usuario y enviarlo al frontend

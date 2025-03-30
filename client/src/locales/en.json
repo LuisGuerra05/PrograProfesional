@@ -127,5 +127,7 @@
     "Download": "Download",
     "Why is saving your recovery codes important?": "Why is saving your recovery codes important?",
     "If you lose access to your phone, you can authenticate using your recovery codes. We recommend saving them with a secure password manager.": "If you lose access to your phone, you can authenticate using your recovery codes. We recommend saving them with a secure password manager.",
-    "I have saved my recovery codes": "I have saved my recovery codes"  
+    "I have saved my recovery codes": "I have saved my recovery codes",
+    "Recovery code used successfully!": "Recovery code used successfully!",
+    "Remaining codes": "Remaining codes"
 }

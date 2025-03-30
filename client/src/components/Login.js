@@ -132,18 +132,19 @@ const handleRecoveryLogin = async () => {
     if (response.ok) {
       localStorage.setItem('token', data.token);
       setIsLoggedIn(true);
-      navigate('/profile');
 
       // Mostrar alerta tipo toast con los códigos restantes
-      toast.success(`✅ ${t('Recovery code used successfully!')} ${t('Remaining codes')}: ${data.remainingCodes}`, {
-        position: toast.POSITION.TOP_RIGHT,
-        autoClose: 5000, // Duración de la alerta en milisegundos
-        hideProgressBar: false, // Mostrar barra de progreso
-        closeOnClick: true, // Cerrar al hacer clic
-        pauseOnHover: true, // Pausar al pasar el mouse
-        draggable: true, // Permitir arrastrar la alerta
-        progress: undefined,
+      toast.success(`${t('Recovery code used successfully!')} ${t('Remaining codes')}: ${data.remainingCodes}`, {
+        className: 'custom-toast',
+        progressClassName: 'Toastify__progress-bar--blue',
+        progressStyle: { backgroundColor: 'rgba(0, 123, 255, 0.85)' }
       });
+      
+      // Espera 1 segundo y luego navega
+      setTimeout(() => {
+        navigate('/profile');
+      }, 5000);
+
     } else {
       setRecoveryError(t(data.message || 'Invalid recovery code'));
     }
@@ -162,13 +163,13 @@ const handleRecoveryLogin = async () => {
         <Col>
           <h1 className="text-center">{t('login-title')}</h1>
           <Form onSubmit={handleLogin} noValidate>
-            <Form.Group className="mb-3">
+            <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>{t('login-email')}</Form.Label>
               <Form.Control type="email" placeholder={t('login-email')} value={email} onChange={(e) => handleFieldChange('email', e.target.value)} required />
               {attemptedSubmit && fieldErrors.email && <div style={{ color: 'red' }}>{fieldErrors.email}</div>}
             </Form.Group>
 
-            <Form.Group className="mb-3">
+            <Form.Group className="mb-3" controlId="formBasicPassword">
               <Form.Label>{t('login-password')}</Form.Label>
               <Form.Control type="password" placeholder={t('login-password')} value={password} onChange={(e) => handleFieldChange('password', e.target.value)} required />
               {attemptedSubmit && fieldErrors.password && <div style={{ color: 'red' }}>{fieldErrors.password}</div>}
