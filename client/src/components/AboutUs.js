@@ -2,6 +2,7 @@
 import React from 'react';
 import './AboutUs.css';
 import { useTranslation } from 'react-i18next';
+import { CLOUDINARY_BASE_URL } from '../utils/config';
 
 function AboutUs() {
   const { t } = useTranslation();
@@ -13,22 +14,22 @@ function AboutUs() {
       </p>
       <div className="features-container">
         <div className="feature-card">
-          <img src="/images/feature1.png" alt="Calidad Garantizada" />
+          <img src={`${CLOUDINARY_BASE_URL}/images/UI/feature1.png`} alt="Calidad Garantizada" />
           <h3>{t('sub1-about-us')}</h3>
           <p>{t('sub1-p-about-us')}</p>
         </div>
         <div className="feature-card">
-          <img src="/images/feature2.jpg" alt="Pasión por el Fútbol" />
+          <img src={`${CLOUDINARY_BASE_URL}/images/UI/feature2.jpg`} alt="Pasión por el Fútbol" />
           <h3>{t('sub2-about-us')}</h3>
           <p>{t('sub2-p-about-us')}</p>
         </div>
         <div className="feature-card">
-          <img src="/images/feature3.png" alt="Envíos a Todo el Mundo" />
+          <img src={`${CLOUDINARY_BASE_URL}/images/UI/feature3.png`} alt="Envíos a Todo el Mundo" />
           <h3>{t('sub3-about-us')}</h3>
           <p>{t('sub3-p-about-us')}</p>
         </div>
         <div className="feature-card">
-          <img src="/images/feature4.png" alt="Atención al Cliente" />
+          <img src={`${CLOUDINARY_BASE_URL}/images/UI/feature4.png`} alt="Atención al Cliente" />
           <h3>{t('sub4-about-us')}</h3>
           <p>{t('sub4-p-about-us')}</p>
         </div>

@@ -7,57 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { FaTrash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import '../App.css';
-
-// Diccionario de mapeo entre nombres de equipos y nombres de carpetas
-const teamFolderMap = {
-  'FC Barcelona': 'Barca',
-  'Atlético de Madrid': 'Atletico',
-  'Real Madrid': 'Madrid',
-  'Athletic Club': 'Bilbao',
-  'Celta de Vigo': 'Calta',
-  'Espanyol': 'Espanyol',
-  'Getafe': 'Getafe',
-  'Girona': 'Girona',
-  'Leganés': 'Leganes',
-  'Deportivo Alavés': 'Alaves',
-  'Osasuna': 'Osasuna',
-  'RCD Mallorca': 'Mallorca',
-  'Rayo Vallecano': 'Rayo',
-  'Real Betis': 'Betis',
-  'Real Sociedad': 'Sociedad',
-  'Sevilla FC': 'Sevilla',
-  'U.D. Las Palmas': 'Palmas',
-  'Valencia': 'Valencia',
-  'Real Valladolid': 'Valladolid',
-  'Villarreal': 'Villarreal'
-};
-
-// Función para generar la URL de la imagen
-const getImageUrl = (team, name) => {
-  const basePath = '/images';
-  const teamFolder = teamFolderMap[team] || team.replace(/\s+/g, '').toLowerCase();
-  const productType = name.includes('Local') ? 'Local' :
-                      name.includes('Visita') ? 'Visita' :
-                      name.includes('Tercera') ? 'Tercera' : 
-                      name.includes('Cuarta') ? 'Cuarta' : 'Portero';
-  const fileName = `${teamFolder}_${productType}_24_1.jpg`;
-  return `${basePath}/${teamFolder}/${productType}/${fileName}`;
-};
-
-// Función para obtener la clave de traducción según el nombre del producto
-const getProductTranslationKey = (name) => {
-  if (name.includes('Local')) {
-    return 'Home Jersey';
-  } else if (name.includes('Visita')) {
-    return 'Away Jersey';
-  } else if (name.includes('Tercera')) {
-    return 'Third Jersey';
-  } else if (name.includes('Cuarta')) {
-    return 'Fourth Jersey';
-  } else {
-    return 'Goalkeeper Jersey';
-  }
-};
+import { getImageUrl, getProductTranslationKey } from '../utils/imageHelpers';
 
 const Cart = () => {
   const { cart, addToCart, removeFromCart, removeProduct, clearCart } = useContext(CartContext);

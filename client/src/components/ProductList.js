@@ -6,52 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './ProductList.css';
 import { CartContext } from '../context/CartProvider';
-
-const teamFolderMap = {
-  'FC Barcelona': 'Barca',
-  'Atlético de Madrid': 'Atletico',
-  'Real Madrid': 'Madrid',
-  'Athletic Club': 'Bilbao',
-  'Celta de Vigo': 'Calta',
-  'Espanyol': 'Espanyol',
-  'Getafe': 'Getafe',
-  'Girona': 'Girona',
-  'Leganés': 'Leganes',
-  'Deportivo Alavés': 'Alaves',
-  'Osasuna': 'Osasuna',
-  'RCD Mallorca': 'Mallorca',
-  'Rayo Vallecano': 'Rayo',
-  'Real Betis': 'Betis',
-  'Real Sociedad': 'Sociedad',
-  'Sevilla FC': 'Sevilla',
-  'U.D. Las Palmas': 'Palmas',
-  'Valencia': 'Valencia',
-  'Valladolid': 'Valladolid',
-  'Villarreal': 'Villarreal'
-};
-
-// Función para generar la URL de la imagen
-const getImageUrl = (team, name) => {
-  const basePath = '/images';
-  const teamFolder = teamFolderMap[team] || team.replace(/\s+/g, '').toLowerCase();
-  const productType = name.includes('Local') ? 'Local' :
-                      name.includes('Visita') ? 'Visita' :
-                      name.includes('Tercera') ? 'Tercera' : 
-                      name.includes('Cuarta') ? 'Cuarta' : 'Portero';
-  const fileName = `${teamFolder}_${productType}_24_1.jpg`;
-  return `${basePath}/${teamFolder}/${productType}/${fileName}`;
-};
-
-// Función para traducir el nombre del producto
-const getProductTranslationKey = (name) => {
-  if (!name) return 'Unknown Jersey';
-
-  if (name.includes('Local')) return 'Home Jersey';
-  if (name.includes('Visita')) return 'Away Jersey';
-  if (name.includes('Tercera')) return 'Third Jersey';
-  if (name.includes('Cuarta')) return 'Fourth Jersey';
-  return 'Goalkeeper Jersey';
-};
+import { teamFolderMap, getImageUrl, getProductTranslationKey } from '../utils/imageHelpers';
 
 const ProductList = () => {
   const { addToCart } = useContext(CartContext);

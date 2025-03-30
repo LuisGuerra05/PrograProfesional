@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // Estilos básicos del carrusel
 import './ProductCarousel.css'; // Estilos específicos para el carrusel de productos
+import { CLOUDINARY_BASE_URL } from '../utils/config';
 
 const ProductCarousel = ({ productId }) => {
   const [images, setImages] = useState([]);
@@ -34,7 +35,8 @@ const ProductCarousel = ({ productId }) => {
       <Carousel className="product-carousel">
         {images.map((image, index) => (
           <div key={index} className="product-carousel-slide">
-            <img src={image.image_url} alt={`Imagen ${index + 1}`} className="product-carousel-image" />
+            <img src={`${CLOUDINARY_BASE_URL}/${image.image_url}`}
+             alt={`Imagen ${index + 1}`} className="product-carousel-image" />
           </div>
         ))}
       </Carousel>

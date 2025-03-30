@@ -9,6 +9,7 @@ import './LanguageSwitch.css';
 import LanguageSwitcher from './LanguageSwitcher'; 
 import { CartContext } from './context/CartProvider'; // Importa el contexto del carrito
 import Footer from './Footer';  // Importa el footer
+import { CLOUDINARY_BASE_URL } from './utils/config';
 
 function Layout({ children }) {
   const { t, i18n } = useTranslation();
@@ -90,7 +91,7 @@ function Layout({ children }) {
         <Container>
           <Navbar.Brand as={Link} to="/">
             <div style={{ display: 'flex', alignItems: 'center', gap: '1px' }}>
-              <img src="/images/main-logo-icon.svg" alt="Logo" className="logo" style={{ width: '125px', height: 'auto' }} />
+              <img src={`${CLOUDINARY_BASE_URL}/images/UI/main-logo-icon.svg`} alt="Logo" className="logo" style={{ width: '125px', height: 'auto' }} />
               <span style={{ fontSize: '24px', fontWeight: 'bold' }}>{t('Epic Kick')}</span>
             </div>
           </Navbar.Brand>
