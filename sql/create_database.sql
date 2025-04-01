@@ -95,8 +95,14 @@ CREATE TABLE IF NOT EXISTS cart_items (
   UNIQUE KEY unique_cart_item (cart_id, product_id, size)
 );
 
-
-
+-- Primer Usuario
+INSERT INTO users (username, email, address, password)
+VALUES (
+  'Luis Guerra',
+  'ldgb2004@gmail.com',
+  'Nuestra Señora del Rosario 550',
+  '$2b$10$D57AtGevWZLozpJDYhzaOOdKS3irFmP.HstDYvHTqlzpIvueusrRK'
+);
 
 -- FC Barcelona
 

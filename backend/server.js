@@ -5,7 +5,8 @@ const path = require('path'); // Módulo para manejar rutas de archivo
 const db = require('./models/db'); // Conexión a la base de datos
 const authRoutes = require('./routes/authRoutes'); // Importar las rutas de autenticación
 const productRoutes = require('./routes/productRoutes'); // Importar las rutas de productos
-const cartRoutes = require('./routes/cartRoutes');
+const cartRoutes = require('./routes/cartRoutes'); // Importar las rutas del carrito de compras
+const reviewRoutes = require('./routes/reviewRoutes'); // Importar las rutas de las reseñas
 
 const app = express();
 
@@ -20,6 +21,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/auth', authRoutes); // Usar las rutas de autenticación bajo /api/auth
 app.use('/api', productRoutes); // Usar las rutas de productos bajo /api/products
 app.use('/api/cart', cartRoutes); // Usar las rutas de carrito de compras /api/cart
+app.use('/api/reviews', reviewRoutes); // Usar las rutas de las reseñas /api/reviews
+
 
 // Ruta de prueba para verificar si el servidor está funcionando
 app.get('/', (req, res) => {
