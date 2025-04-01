@@ -1,0 +1,32 @@
+.product-reviews {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #ccc;
+  }
+  
+  .average-rating {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1rem;
+    margin-bottom: 15px;
+  }
+  
+  .reviews-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .review-item {
+    background-color: #f8f9fa;
+    padding: 12px;
+    border-radius: 8px;
+  }
+  
+  .review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  

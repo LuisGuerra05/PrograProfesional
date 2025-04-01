@@ -18,4 +18,7 @@ router.put('/', authenticate, reviewController.updateReview);
 // Eliminar una reseña (requiere login)
 router.delete('/', authenticate, reviewController.deleteReview);
 
+// Obtener distribución de calificaciones
+router.get('/distribution/:productId', reviewController.getRatingDistribution);
+
 module.exports = router;

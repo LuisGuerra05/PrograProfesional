@@ -48,6 +48,22 @@ exports.updateReview = (req, res) => {
       res.json({ message: 'Reseña actualizada con éxito' });
     });
   };
+
+exports.getRatingDistribution = (req, res) => {
+  const productId = req.params.productId;
+  Review.getRatingDistribution(productId, (err, results) => {
+    if (err) return res.status(500).json({ message: 'Error al obtener distribución' });
+
+    // Convertimos resultados en un formato que incluya todas las estrellas (1 a 5)
+    const distribution = [1, 2, 3, 4, 5].reduce((acc, star) => {
+      const found = results.find((r) => r.rating === star);
+      acc[star] = found ? found.count : 0;
+      return acc;
+    }, {});
+    
+    res.json(distribution);
+  });
+};
   
 exports.deleteReview = (req, res) => {
   const userId = req.user.id;

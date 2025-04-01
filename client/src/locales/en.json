@@ -128,5 +128,18 @@
     "Why is saving your recovery codes important?": "Why is saving your recovery codes important?",
     "If you lose access to your phone, you can authenticate using your recovery codes. We recommend saving them with a secure password manager.": "If you lose access to your phone, you can authenticate using your recovery codes. We recommend saving them with a secure password manager.",
     "I have saved my recovery codes": "I have saved my recovery codes",
-    "Recovery code toast message": "Recovery code used ({{count}} left)"
+    "Recovery code toast message": "Recovery code used ({{count}} left)",
+
+    "product-description": "Official {{team}} jersey for the 2024-2025 season. Made by {{brand}}, this shirt is crafted with high-quality materials to provide comfort, durability, and style both on and off the field.",
+
+    "product-review-title": "Product reviews",
+    "reviews": "Reviews",
+    "no-reviews": "No reviews yet.",
+    "overall-rating": "Overall rating",
+    "ratings": "ratings",
+    "write-review": "Write a review",
+    "see-more-reviews": "See more reviews",
+    "hide-reviews": "Hide reviews",
+    "review-actions": "Ratings"
+
 }

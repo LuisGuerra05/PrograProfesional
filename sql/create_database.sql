@@ -95,20 +95,39 @@ CREATE TABLE IF NOT EXISTS cart_items (
   UNIQUE KEY unique_cart_item (cart_id, product_id, size)
 );
 
--- Primer Usuario
+-- Usuario 1
 INSERT INTO users (username, email, address, password)
 VALUES (
   'Luis Guerra',
   'ldgb2004@gmail.com',
-  'Nuestra Señora del Rosario 550',
+  'Los Álamos 456',
   '$2b$10$D57AtGevWZLozpJDYhzaOOdKS3irFmP.HstDYvHTqlzpIvueusrRK'
 );
+
+-- Usuario 2
+INSERT INTO users (username, email, address, password)
+VALUES (
+  'Renato Calvo ',
+  'renato@gmail.com',
+  'Calle Falsa 123',
+  '$2b$10$EGwrYzuNKEw2mofiTiiwVuNv.gF6r3vSE7jJIKkdwQzKSkkqoinei'
+);
+
+-- Usuario 3
+INSERT INTO users (username, email, address, password)
+VALUES (
+  'Marcelo Pino',
+  'marcelo@gmail.com',
+  'Av. Siempre Viva 742',
+  '$2b$10$7d6Hgkq/rrE6Z9lJUfZ.UukLjTVm7kkT.j5iEUxz.p0qXFLdv3UNa'
+);
+
 
 -- FC Barcelona
 
 -- Camiseta Local
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Local 2024-2025', 'FC Barcelona', 19.99, 100, 'Nike');
+VALUES ('Camiseta Local 2024-2025', 'FC Barcelona', 119.99, 100, 'Nike');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -120,7 +139,7 @@ VALUES
 
 -- Camiseta Visita
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Visita 2024-2025', 'FC Barcelona', 17.99, 100, 'Nike');
+VALUES ('Camiseta Visita 2024-2025', 'FC Barcelona', 117.99, 100, 'Nike');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -132,7 +151,7 @@ VALUES
 
 -- Camiseta Tercera
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Tercera 2024-2025', 'FC Barcelona', 17.99, 100, 'Nike');
+VALUES ('Camiseta Tercera 2024-2025', 'FC Barcelona', 117.99, 100, 'Nike');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -144,7 +163,7 @@ VALUES
 
 -- Camiseta Cuarta
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Cuarta 2024-2025', 'FC Barcelona', 17.99, 100, 'Nike');
+VALUES ('Camiseta Cuarta 2024-2025', 'FC Barcelona', 117.99, 100, 'Nike');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -153,7 +172,7 @@ VALUES
 
 -- Camiseta Portero
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Portero 2024-2025', 'FC Barcelona', 14.99, 100, 'Nike');
+VALUES ('Camiseta Portero 2024-2025', 'FC Barcelona', 114.99, 100, 'Nike');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -166,7 +185,7 @@ VALUES
 
 -- Camiseta Local
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Local 2024-2025', 'Atlético de Madrid', 19.99, 100, 'Nike');
+VALUES ('Camiseta Local 2024-2025', 'Atlético de Madrid', 119.99, 100, 'Nike');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -177,7 +196,7 @@ VALUES
 
 -- Camiseta Visita
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Visita 2024-2025', 'Atlético de Madrid', 17.99, 100, 'Nike');
+VALUES ('Camiseta Visita 2024-2025', 'Atlético de Madrid', 117.99, 100, 'Nike');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -189,7 +208,7 @@ VALUES
 
 -- Camiseta Tercera
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Tercera 2024-2025', 'Atlético de Madrid', 17.99, 100, 'Nike');
+VALUES ('Camiseta Tercera 2024-2025', 'Atlético de Madrid', 117.99, 100, 'Nike');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -199,7 +218,7 @@ VALUES
 
 -- Camiseta Portero
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Portero 2024-2025', 'Atlético de Madrid', 14.99, 100, 'Nike');
+VALUES ('Camiseta Portero 2024-2025', 'Atlético de Madrid', 114.99, 100, 'Nike');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -210,7 +229,7 @@ VALUES
 
 -- Camiseta Local
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Local 2024-2025', 'Real Madrid', 19.99, 100, 'Adidas');
+VALUES ('Camiseta Local 2024-2025', 'Real Madrid', 119.99, 100, 'Adidas');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -221,7 +240,7 @@ VALUES
 
 -- Camiseta Visita
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Visita 2024-2025', 'Real Madrid', 17.99, 100, 'Adidas');
+VALUES ('Camiseta Visita 2024-2025', 'Real Madrid', 117.99, 100, 'Adidas');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -232,7 +251,7 @@ VALUES
 
 -- Camiseta Tercera
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Tercera 2024-2025', 'Real Madrid', 17.99, 100, 'Adidas');
+VALUES ('Camiseta Tercera 2024-2025', 'Real Madrid', 117.99, 100, 'Adidas');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -243,7 +262,7 @@ VALUES
 
 -- Camiseta Portero
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Portero 2024-2025', 'Real Madrid', 14.99, 100, 'Adidas');
+VALUES ('Camiseta Portero 2024-2025', 'Real Madrid', 114.99, 100, 'Adidas');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -255,7 +274,7 @@ VALUES
 
 -- Camiseta Local
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Local 2024-2025', 'Athletic Club', 19.99, 100, 'Castore');
+VALUES ('Camiseta Local 2024-2025', 'Athletic Club', 119.99, 100, 'Castore');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -267,7 +286,7 @@ VALUES
 
 -- Camiseta Visita
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Visita 2024-2025', 'Athletic Club', 17.99, 100, 'Castore');
+VALUES ('Camiseta Visita 2024-2025', 'Athletic Club', 117.99, 100, 'Castore');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -278,7 +297,7 @@ VALUES
 
 -- Camiseta Tercera
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Tercera 2024-2025', 'Athletic Club', 17.99, 100, 'Castore');
+VALUES ('Camiseta Tercera 2024-2025', 'Athletic Club', 117.99, 100, 'Castore');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -289,7 +308,7 @@ VALUES
 
 -- Camiseta Portero
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Portero 2024-2025', 'Athletic Club', 14.99, 100, 'Castore');
+VALUES ('Camiseta Portero 2024-2025', 'Athletic Club', 114.99, 100, 'Castore');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -302,7 +321,7 @@ VALUES
 
 -- Camiseta Local
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Local 2024-2025', 'Celta de Vigo', 19.99, 100, 'Hummel');
+VALUES ('Camiseta Local 2024-2025', 'Celta de Vigo', 119.99, 100, 'Hummel');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -314,7 +333,7 @@ VALUES
 
 -- Camiseta Visita
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Visita 2024-2025', 'Celta de Vigo', 17.99, 100, 'Hummel');
+VALUES ('Camiseta Visita 2024-2025', 'Celta de Vigo', 117.99, 100, 'Hummel');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -325,7 +344,7 @@ VALUES
 
 -- Camiseta Tercera
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Tercera 2024-2025', 'Celta de Vigo', 17.99, 100, 'Hummel');
+VALUES ('Camiseta Tercera 2024-2025', 'Celta de Vigo', 117.99, 100, 'Hummel');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -336,7 +355,7 @@ VALUES
 
 -- Camiseta Portero
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Portero 2024-2025', 'Celta de Vigo', 14.99, 100, 'Hummel');
+VALUES ('Camiseta Portero 2024-2025', 'Celta de Vigo', 114.99, 100, 'Hummel');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -349,7 +368,7 @@ VALUES
 
 -- Camiseta Local
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Local 2024-2025', 'Deportivo Alavés', 19.99, 100, 'Puma');
+VALUES ('Camiseta Local 2024-2025', 'Deportivo Alavés', 119.99, 100, 'Puma');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -361,7 +380,7 @@ VALUES
 
 -- Camiseta Visita
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Visita 2024-2025', 'Deportivo Alavés', 17.99, 100, 'Puma');
+VALUES ('Camiseta Visita 2024-2025', 'Deportivo Alavés', 117.99, 100, 'Puma');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -373,7 +392,7 @@ VALUES
 
 -- Camiseta Tercera
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Tercera 2024-2025', 'Deportivo Alavés', 17.99, 100, 'Puma');
+VALUES ('Camiseta Tercera 2024-2025', 'Deportivo Alavés', 117.99, 100, 'Puma');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -387,7 +406,7 @@ VALUES
 
 -- Camiseta Local
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Local 2024-2025', 'Espanyol', 19.99, 100, 'Kelme');
+VALUES ('Camiseta Local 2024-2025', 'Espanyol', 119.99, 100, 'Kelme');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -397,7 +416,7 @@ VALUES
 
 -- Camiseta Visita
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Visita 2024-2025', 'Espanyol', 17.99, 100, 'Kelme');
+VALUES ('Camiseta Visita 2024-2025', 'Espanyol', 117.99, 100, 'Kelme');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -407,7 +426,7 @@ VALUES
 
 -- Camiseta Tercera
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Tercera 2024-2025', 'Espanyol', 17.99, 100, 'Kelme');
+VALUES ('Camiseta Tercera 2024-2025', 'Espanyol', 117.99, 100, 'Kelme');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -418,7 +437,7 @@ VALUES
 
 -- Camiseta Local
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Local 2024-2025', 'Getafe', 19.99, 100, 'Joma');
+VALUES ('Camiseta Local 2024-2025', 'Getafe', 119.99, 100, 'Joma');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -429,7 +448,7 @@ VALUES
 
 -- Camiseta Visita
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Visita 2024-2025', 'Getafe', 17.99, 100, 'Joma');
+VALUES ('Camiseta Visita 2024-2025', 'Getafe', 117.99, 100, 'Joma');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -440,7 +459,7 @@ VALUES
 
 -- Camiseta Tercera
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Tercera 2024-2025', 'Getafe', 17.99, 100, 'Joma');
+VALUES ('Camiseta Tercera 2024-2025', 'Getafe', 117.99, 100, 'Joma');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -452,7 +471,7 @@ VALUES
 
 -- Camiseta Local
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Local 2024-2025', 'Girona', 19.99, 100, 'Puma');
+VALUES ('Camiseta Local 2024-2025', 'Girona', 119.99, 100, 'Puma');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -462,7 +481,7 @@ VALUES
 
 -- Camiseta Visita
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Visita 2024-2025', 'Girona', 17.99, 100, 'Puma');
+VALUES ('Camiseta Visita 2024-2025', 'Girona', 117.99, 100, 'Puma');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -472,7 +491,7 @@ VALUES
 
 -- Camiseta Tercera
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Tercera 2024-2025', 'Girona', 17.99, 100, 'Puma');
+VALUES ('Camiseta Tercera 2024-2025', 'Girona', 117.99, 100, 'Puma');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -484,7 +503,7 @@ VALUES
 
 -- Camiseta Local
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Local 2024-2025', 'Leganés', 19.99, 100, 'Joma');
+VALUES ('Camiseta Local 2024-2025', 'Leganés', 119.99, 100, 'Joma');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -496,7 +515,7 @@ VALUES
 
 -- Camiseta Visita
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Visita 2024-2025', 'Leganés', 17.99, 100, 'Joma');
+VALUES ('Camiseta Visita 2024-2025', 'Leganés', 117.99, 100, 'Joma');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -507,7 +526,7 @@ VALUES
 
 -- Camiseta Tercera
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Tercera 2024-2025', 'Leganés', 17.99, 100, 'Joma');
+VALUES ('Camiseta Tercera 2024-2025', 'Leganés', 117.99, 100, 'Joma');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -518,7 +537,7 @@ VALUES
 
 -- Camiseta Portero
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Portero 2024-2025', 'Leganés', 14.99, 100, 'Joma');
+VALUES ('Camiseta Portero 2024-2025', 'Leganés', 114.99, 100, 'Joma');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -529,7 +548,7 @@ VALUES
 
 -- Camiseta Local
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Local 2024-2025', 'Osasuna', 19.99, 100, 'Macron');
+VALUES ('Camiseta Local 2024-2025', 'Osasuna', 119.99, 100, 'Macron');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -540,7 +559,7 @@ VALUES
 
 -- Camiseta Visita
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Visita 2024-2025', 'Osasuna', 17.99, 100, 'Macron');
+VALUES ('Camiseta Visita 2024-2025', 'Osasuna', 117.99, 100, 'Macron');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -551,7 +570,7 @@ VALUES
 
 -- Camiseta Tercera
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Tercera 2024-2025', 'Osasuna', 17.99, 100, 'Macron');
+VALUES ('Camiseta Tercera 2024-2025', 'Osasuna', 117.99, 100, 'Macron');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -562,7 +581,7 @@ VALUES
 
 -- Camiseta Portero
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Portero 2024-2025', 'Osasuna', 14.99, 100, 'Macron');
+VALUES ('Camiseta Portero 2024-2025', 'Osasuna', 114.99, 100, 'Macron');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -575,7 +594,7 @@ VALUES
 
 -- Camiseta Local
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Local 2024-2025', 'RCD Mallorca', 19.99, 100, 'Nike');
+VALUES ('Camiseta Local 2024-2025', 'RCD Mallorca', 119.99, 100, 'Nike');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -587,7 +606,7 @@ VALUES
 
 -- Camiseta Visita
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Visita 2024-2025', 'RCD Mallorca', 17.99, 100, 'Nike');
+VALUES ('Camiseta Visita 2024-2025', 'RCD Mallorca', 117.99, 100, 'Nike');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -599,7 +618,7 @@ VALUES
 
 -- Camiseta Tercera
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Tercera 2024-2025', 'RCD Mallorca', 17.99, 100, 'Nike');
+VALUES ('Camiseta Tercera 2024-2025', 'RCD Mallorca', 117.99, 100, 'Nike');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -611,7 +630,7 @@ VALUES
 
 -- Camiseta Portero
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Portero 2024-2025', 'RCD Mallorca', 14.99, 100, 'Nike');
+VALUES ('Camiseta Portero 2024-2025', 'RCD Mallorca', 114.99, 100, 'Nike');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -622,7 +641,7 @@ VALUES
 
 -- Camiseta Local
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Local 2024-2025', 'Rayo Vallecano', 19.99, 100, 'Umbro');
+VALUES ('Camiseta Local 2024-2025', 'Rayo Vallecano', 119.99, 100, 'Umbro');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -630,7 +649,7 @@ VALUES
 
 -- Camiseta Visita
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Visita 2024-2025', 'Rayo Vallecano', 17.99, 100, 'Umbro');
+VALUES ('Camiseta Visita 2024-2025', 'Rayo Vallecano', 117.99, 100, 'Umbro');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -638,7 +657,7 @@ VALUES
 
 -- Camiseta Tercera
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Tercera 2024-2025', 'Rayo Vallecano', 17.99, 100, 'Umbro');
+VALUES ('Camiseta Tercera 2024-2025', 'Rayo Vallecano', 117.99, 100, 'Umbro');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -648,7 +667,7 @@ VALUES
 
 -- Camiseta Local
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Local 2024-2025', 'Real Betis', 19.99, 100, 'Hummel');
+VALUES ('Camiseta Local 2024-2025', 'Real Betis', 119.99, 100, 'Hummel');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -659,7 +678,7 @@ VALUES
 
 -- Camiseta Visita
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Visita 2024-2025', 'Real Betis', 17.99, 100, 'Hummel');
+VALUES ('Camiseta Visita 2024-2025', 'Real Betis', 117.99, 100, 'Hummel');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -670,7 +689,7 @@ VALUES
 
 -- Camiseta Tercera
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Tercera 2024-2025', 'Real Betis', 17.99, 100, 'Hummel');
+VALUES ('Camiseta Tercera 2024-2025', 'Real Betis', 117.99, 100, 'Hummel');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -681,7 +700,7 @@ VALUES
 
 -- Camiseta Portero
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Portero 2024-2025', 'Real Betis', 14.99, 100, 'Hummel');
+VALUES ('Camiseta Portero 2024-2025', 'Real Betis', 114.99, 100, 'Hummel');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -692,7 +711,7 @@ VALUES
 
 -- Camiseta Local
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Local 2024-2025', 'Real Sociedad', 19.99, 100, 'Macron');
+VALUES ('Camiseta Local 2024-2025', 'Real Sociedad', 119.99, 100, 'Macron');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -704,7 +723,7 @@ VALUES
 
 -- Camiseta Visita
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Visita 2024-2025', 'Real Sociedad', 17.99, 100, 'Macron');
+VALUES ('Camiseta Visita 2024-2025', 'Real Sociedad', 117.99, 100, 'Macron');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -715,7 +734,7 @@ VALUES
 
 -- Camiseta Tercera
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Tercera 2024-2025', 'Real Sociedad', 17.99, 100, 'Macron');
+VALUES ('Camiseta Tercera 2024-2025', 'Real Sociedad', 117.99, 100, 'Macron');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -726,7 +745,7 @@ VALUES
 
 -- Camiseta Portero
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Portero 2024-2025', 'Real Sociedad', 14.99, 100, 'Macron');
+VALUES ('Camiseta Portero 2024-2025', 'Real Sociedad', 114.99, 100, 'Macron');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -736,7 +755,7 @@ VALUES
 
 -- Camiseta Local
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Local 2024-2025', 'Sevilla FC', 19.99, 100, 'Castore');
+VALUES ('Camiseta Local 2024-2025', 'Sevilla FC', 119.99, 100, 'Castore');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -746,7 +765,7 @@ VALUES
 
 -- Camiseta Visita
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Visita 2024-2025', 'Sevilla FC', 17.99, 100, 'Castore');
+VALUES ('Camiseta Visita 2024-2025', 'Sevilla FC', 117.99, 100, 'Castore');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -756,7 +775,7 @@ VALUES
 
 -- Camiseta Tercera
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Tercera 2024-2025', 'Sevilla FC', 17.99, 100, 'Castore');
+VALUES ('Camiseta Tercera 2024-2025', 'Sevilla FC', 117.99, 100, 'Castore');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -766,7 +785,7 @@ VALUES
 
 -- Camiseta Portero
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Portero 2024-2025', 'Sevilla FC', 14.99, 100, 'Castore');
+VALUES ('Camiseta Portero 2024-2025', 'Sevilla FC', 114.99, 100, 'Castore');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -776,7 +795,7 @@ VALUES
 
 -- Camiseta Local
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Local 2024-2025', 'U.D. Las Palmas', 19.99, 100, 'Hummel');
+VALUES ('Camiseta Local 2024-2025', 'U.D. Las Palmas', 119.99, 100, 'Hummel');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -787,7 +806,7 @@ VALUES
 
 -- Camiseta Visita
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Visita 2024-2025', 'U.D. Las Palmas', 17.99, 100, 'Hummel');
+VALUES ('Camiseta Visita 2024-2025', 'U.D. Las Palmas', 117.99, 100, 'Hummel');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -797,7 +816,7 @@ VALUES
 
 -- Camiseta Tercera
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Tercera 2024-2025', 'U.D. Las Palmas', 17.99, 100, 'Hummel');
+VALUES ('Camiseta Tercera 2024-2025', 'U.D. Las Palmas', 117.99, 100, 'Hummel');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -808,7 +827,7 @@ VALUES
 
 -- Camiseta Local
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Local 2024-2025', 'Valencia', 19.99, 100, 'Puma');
+VALUES ('Camiseta Local 2024-2025', 'Valencia', 119.99, 100, 'Puma');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -820,7 +839,7 @@ VALUES
 
 -- Camiseta Visita
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Visita 2024-2025', 'Valencia', 17.99, 100, 'Puma');
+VALUES ('Camiseta Visita 2024-2025', 'Valencia', 117.99, 100, 'Puma');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -832,7 +851,7 @@ VALUES
 
 -- Camiseta Tercera
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Tercera 2024-2025', 'Valencia', 17.99, 100, 'Puma');
+VALUES ('Camiseta Tercera 2024-2025', 'Valencia', 117.99, 100, 'Puma');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -842,7 +861,7 @@ VALUES
 
 -- Camiseta Portero
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Portero 2024-2025', 'Valencia', 14.99, 100, 'Puma');
+VALUES ('Camiseta Portero 2024-2025', 'Valencia', 114.99, 100, 'Puma');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -853,7 +872,7 @@ VALUES
 
 -- Camiseta Local
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Local 2024-2025', 'Valladolid', 19.99, 100, 'Kappa');
+VALUES ('Camiseta Local 2024-2025', 'Valladolid', 119.99, 100, 'Kappa');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -864,7 +883,7 @@ VALUES
 
 -- Camiseta Visita
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Visita 2024-2025', 'Valladolid', 17.99, 100, 'Kappa');
+VALUES ('Camiseta Visita 2024-2025', 'Valladolid', 117.99, 100, 'Kappa');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -876,7 +895,7 @@ VALUES
 
 -- Camiseta Tercera
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Tercera 2024-2025', 'Valladolid', 17.99, 100, 'Kappa');
+VALUES ('Camiseta Tercera 2024-2025', 'Valladolid', 117.99, 100, 'Kappa');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -887,7 +906,7 @@ VALUES
 
 -- Camiseta Portero
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Portero 2024-2025', 'Valladolid', 14.99, 100, 'Kappa');
+VALUES ('Camiseta Portero 2024-2025', 'Valladolid', 114.99, 100, 'Kappa');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -898,7 +917,7 @@ VALUES
 
 -- Camiseta Local
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Local 2024-2025', 'Villarreal', 19.99, 100, 'Joma');
+VALUES ('Camiseta Local 2024-2025', 'Villarreal', 119.99, 100, 'Joma');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -909,7 +928,7 @@ VALUES
 
 -- Camiseta Visita
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Visita 2024-2025', 'Villarreal', 17.99, 100, 'Joma');
+VALUES ('Camiseta Visita 2024-2025', 'Villarreal', 117.99, 100, 'Joma');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -920,7 +939,7 @@ VALUES
 
 -- Camiseta Tercera
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Tercera 2024-2025', 'Villarreal', 17.99, 100, 'Joma');
+VALUES ('Camiseta Tercera 2024-2025', 'Villarreal', 117.99, 100, 'Joma');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -930,7 +949,7 @@ VALUES
 
 -- Camiseta Portero
 INSERT INTO products (name, team, price, stock, brand)
-VALUES ('Camiseta Portero 2024-2025', 'Villarreal', 14.99, 100, 'Joma');
+VALUES ('Camiseta Portero 2024-2025', 'Villarreal', 114.99, 100, 'Joma');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO product_images (product_id, image_url)
 VALUES 
@@ -938,3 +957,17 @@ VALUES
 (@product_id, '/images/Villarreal/Portero/Villarreal_Portero_24_2.jpg'),
 (@product_id, '/images/Villarreal/Portero/Villarreal_Portero_24_3.jpg'),
 (@product_id, '/images/Villarreal/Portero/Villarreal_Portero_24_4.jpg');
+
+
+
+-- Reseña del usuario 1 (Luis Guerra)
+INSERT INTO reviews (product_id, user_id, rating, comment)
+VALUES (1, 1, 5, 'La calidad es excelente, muy recomendada.');
+
+-- Reseña del usuario 2 (Renato Calvo)
+INSERT INTO reviews (product_id, user_id, rating, comment)
+VALUES (1, 2, 4, 'Muy buena camiseta, aunque la talla corre un poco justa.');
+
+-- Reseña del usuario 3 (Marcelo Pino)
+INSERT INTO reviews (product_id, user_id, rating, comment)
+VALUES (1, 3, 5, 'Colores vibrantes y tela cómoda. ¡Me encantó!');

@@ -29,7 +29,18 @@ const Review = {
   getAverageRating: (productId, callback) => {
     const sql = 'SELECT AVG(rating) as average FROM reviews WHERE product_id = ?';
     db.query(sql, [productId], callback);
+  },
+
+  getRatingDistribution: (productId, callback) => {
+    const sql = `
+      SELECT rating, COUNT(*) as count
+      FROM reviews
+      WHERE product_id = ?
+      GROUP BY rating
+    `;
+    db.query(sql, [productId], callback);
   }
+  
 };
 
 module.exports = Review;
