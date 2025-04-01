@@ -140,6 +140,7 @@
     "write-review": "Write a review",
     "see-more-reviews": "See more reviews",
     "hide-reviews": "Hide reviews",
-    "review-actions": "Ratings"
+    "review-actions": "Ratings", 
+    "edit-review": "Edit review"
 
 }

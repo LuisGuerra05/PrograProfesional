@@ -25,12 +25,33 @@ const ProductDetail = () => {
   const { addToCart } = useContext(CartContext);
   const [errorMessageKey, setErrorMessageKey] = useState('');
   const [showReviews, setShowReviews] = useState(false);
+  const [hasReviewed, setHasReviewed] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     fetch(`http://localhost:5000/api/products/${id}`)
       .then((res) => res.json())
       .then((data) => setProduct(data))
       .catch((err) => console.error('Error al cargar el producto:', err));
+  }, [id]);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+
+    setIsLoggedIn(true);
+
+    fetch(`http://localhost:5000/api/reviews/hasReviewed/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("✅ hasReviewed response:", data);
+        setHasReviewed(data.hasReviewed);
+      })
+      .catch((err) => console.error('Error al verificar reseña:', err));
   }, [id]);
 
   const handleSizeSelect = (size) => {
@@ -91,11 +112,7 @@ const ProductDetail = () => {
                 </div>
               </div>
 
-              <Button
-                className="add-to-cart-btn"
-                style={{ marginTop: '30px' }}
-                onClick={handleAddToCart}
-              >
+              <Button className="add-to-cart-btn" style={{ marginTop: '30px' }} onClick={handleAddToCart}>
                 {t('add-to-cart')}
               </Button>
 
@@ -124,9 +141,7 @@ const ProductDetail = () => {
                 }}
                 onClick={() => setShowReviews(!showReviews)}
               >
-                <span>
-                  {t('review-actions')}
-                </span>
+                <span>{t('review-actions')}</span>
                 <span style={{ fontSize: '18px' }}>{showReviews ? '▲' : '▼'}</span>
               </Button>
 
@@ -140,18 +155,26 @@ const ProductDetail = () => {
                     backgroundColor: '#fefefe'
                   }}
                 >
-                  <Button
-                    variant="light"
-                    className="w-100 mb-2 text-start"
-                    style={{
-                      border: '1px solid #ddd',
-                      fontWeight: '500',
-                      backgroundColor: '#f9f9f9'
-                    }}
-                    onClick={() => alert('Abrir modal de reseña (pendiente)')}
-                  >
-                    {t('write-review')}
-                  </Button>
+                  {isLoggedIn && (
+                    <Button
+                      variant="light"
+                      className="w-100 mb-2 text-start"
+                      style={{
+                        border: '1px solid #ddd',
+                        fontWeight: '500',
+                        backgroundColor: '#f9f9f9'
+                      }}
+                      onClick={() => {
+                        if (hasReviewed) {
+                          alert('Abrir modal para editar reseña');
+                        } else {
+                          alert('Abrir modal para crear reseña');
+                        }
+                      }}
+                    >
+                      {hasReviewed ? t('edit-review') : t('write-review')}
+                    </Button>
+                  )}
                   <Button
                     variant="light"
                     className="w-100 text-start"
@@ -170,7 +193,6 @@ const ProductDetail = () => {
           </Col>
         </Row>
 
-        {/* Mostrar reseñas solo si se activa desde el botón */}
         {showReviews && (
           <div style={{ marginTop: '30px' }}>
             <ProductReviews productId={product.id} />

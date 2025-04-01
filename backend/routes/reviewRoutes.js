@@ -21,4 +21,7 @@ router.delete('/', authenticate, reviewController.deleteReview);
 // Obtener distribución de calificaciones
 router.get('/distribution/:productId', reviewController.getRatingDistribution);
 
+// Verificar si el usuario ya hizo una reseña
+router.get('/hasReviewed/:productId', authenticate, reviewController.hasUserReviewed);
+
 module.exports = router;
