@@ -8,6 +8,7 @@ import { CartContext } from '../context/CartProvider';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ProductReviews from './ProductReviews';
+import ReviewModal from './ReviewModal';
 
 const getProductTranslationKey = (name) => {
   if (name.includes('Local')) return 'Home Jersey';
@@ -27,6 +28,7 @@ const ProductDetail = () => {
   const [showReviews, setShowReviews] = useState(false);
   const [hasReviewed, setHasReviewed] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showReviewModal, setShowReviewModal] = useState(false);
 
   useEffect(() => {
     fetch(`http://localhost:5000/api/products/${id}`)
@@ -156,24 +158,27 @@ const ProductDetail = () => {
                   }}
                 >
                   {isLoggedIn && (
-                    <Button
-                      variant="light"
-                      className="w-100 mb-2 text-start"
-                      style={{
-                        border: '1px solid #ddd',
-                        fontWeight: '500',
-                        backgroundColor: '#f9f9f9'
-                      }}
-                      onClick={() => {
-                        if (hasReviewed) {
-                          alert('Abrir modal para editar reseña');
-                        } else {
-                          alert('Abrir modal para crear reseña');
-                        }
-                      }}
-                    >
-                      {hasReviewed ? t('edit-review') : t('write-review')}
-                    </Button>
+                    <>
+                      <Button
+                        variant="light"
+                        className="w-100 mb-2 text-start"
+                        style={{
+                          border: '1px solid #ddd',
+                          fontWeight: '500',
+                          backgroundColor: '#f9f9f9'
+                        }}
+                        onClick={() => setShowReviewModal(true)}
+                      >
+                        {hasReviewed ? t('edit-review') : t('write-review')}
+                      </Button>
+                      {showReviewModal && (
+                        <ReviewModal
+                          productId={product.id}
+                          hasReviewed={hasReviewed}
+                          onClose={() => setShowReviewModal(false)}
+                        />
+                      )}
+                    </>
                   )}
                   <Button
                     variant="light"

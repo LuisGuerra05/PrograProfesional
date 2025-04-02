@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FaStar, FaRegStar } from 'react-icons/fa';
 import { useTranslation } from 'react-i18next';
+import ReviewModal from './ReviewModal';
 
 const BLUE = '#007bff'; // Color azul botón
 
@@ -47,6 +48,7 @@ const ProductReviews = ({ productId }) => {
   const [average, setAverage] = useState(0);
   const [distribution, setDistribution] = useState({});
   const [totalRatings, setTotalRatings] = useState(0);
+  const [showModal, setShowModal] = useState(false); // Nuevo estado para mostrar el modal
 
   useEffect(() => {
     fetch(`http://localhost:5000/api/reviews/${productId}`)
@@ -72,14 +74,18 @@ const ProductReviews = ({ productId }) => {
   return (
     <div className="product-reviews" style={{ marginTop: '30px' }}>
       {/* Título general */}
-      <h3 style={{marginBottom: '30px' }}>
+      <h3 style={{ marginBottom: '30px' }}>
         {t('product-review-title')}
       </h3>
+
+
+      {/* Mostrar el modal si showModal es true */}
+      {showModal && <ReviewModal productId={productId} onClose={() => setShowModal(false)} />}
 
       <div className="row">
         {/* Opiniones individuales */}
         <div className="col-md-6">
-        <h5 style={{ marginBottom: '15px' }}>{t('reviews')}</h5>
+          <h5 style={{ marginBottom: '15px' }}>{t('reviews')}</h5>
           <div className="reviews-list">
             {reviews.length > 0 ? (
               reviews.map((review) => {

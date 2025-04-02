@@ -85,3 +85,14 @@ exports.hasUserReviewed = (req, res) => {
     res.json({ hasReviewed });
   });
 };
+
+exports.getUserReview = (req, res) => {
+  const userId = req.user.id;
+  const productId = req.params.productId;
+
+  Review.exists(userId, productId, (err, rows) => {
+    if (err) return res.status(500).json({ message: 'Error al obtener la reseña del usuario' });
+    if (rows.length === 0) return res.status(404).json({ message: 'No hay reseña' });
+    res.json(rows[0]);
+  });
+};
