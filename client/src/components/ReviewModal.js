@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { FaStar } from 'react-icons/fa';
 import './ReviewModal.css';
+import { useTranslation } from 'react-i18next';
 
 const ReviewModal = ({ productId, onClose, hasReviewed = false, onReviewSubmitted }) => {
+  const { t, i18n } = useTranslation();
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
   const [hover, setHover] = useState(0);
@@ -62,7 +64,7 @@ const ReviewModal = ({ productId, onClose, hasReviewed = false, onReviewSubmitte
   return (
     <Modal show onHide={onClose} centered>
       <Modal.Header closeButton>
-        <Modal.Title>{hasReviewed ? 'Editar Reseña' : 'Escribir Reseña'}</Modal.Title>
+        <Modal.Title>{hasReviewed ? t('edit-review') : t('write-review')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <div className="star-rating mb-3">
@@ -81,7 +83,7 @@ const ReviewModal = ({ productId, onClose, hasReviewed = false, onReviewSubmitte
           <Form.Control
             as="textarea"
             rows={4}
-            placeholder="Escribe tu reseña (mínimo 10 caracteres)"
+            placeholder={t('review-placeholder')}
             value={comment}
             onChange={(e) => setComment(e.target.value)}
           />
@@ -89,10 +91,10 @@ const ReviewModal = ({ productId, onClose, hasReviewed = false, onReviewSubmitte
       </Modal.Body>
       <Modal.Footer className="modal-buttons">
         <Button variant="secondary" onClick={onClose}>
-          Cerrar
+          {t('Cancel')}
         </Button>
         <Button variant="primary" onClick={handleSubmit} disabled={submitting}>
-          {hasReviewed ? 'Actualizar Reseña' : 'Enviar Reseña'}
+          {hasReviewed ? t('update-review') : t('submit-review')}
         </Button>
       </Modal.Footer>
     </Modal>

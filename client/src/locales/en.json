@@ -137,10 +137,13 @@
     "no-reviews": "No reviews yet.",
     "overall-rating": "Overall rating",
     "ratings": "ratings",
-    "write-review": "Write a review",
+    "write-review": "Write review",
     "see-more-reviews": "See more reviews",
     "hide-reviews": "Hide reviews",
     "review-actions": "Ratings", 
-    "edit-review": "Edit review"
+    "edit-review": "Edit review",
 
+    "review-placeholder": "Write your review (minimum 10 characters)",
+    "update-review": "Update review",
+    "submit-review": "Submit review"
 }

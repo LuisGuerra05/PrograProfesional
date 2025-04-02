@@ -137,9 +137,13 @@
     "no-reviews": "No hay reseñas todavía.",
     "overall-rating": "Calificación general",
     "ratings": "calificaciones",
-    "write-review": "Escriba una reseña",
+    "write-review": "Escriba reseña",
     "see-more-reviews": "Ver más reseñas",
     "hide-reviews": "Ocultar reseñas",
     "review-actions": "Evaluaciones",
-    "edit-review": "Editar reseña"
+    "edit-review": "Editar reseña",
+
+    "review-placeholder": "Escribe tu reseña (mínimo 10 caracteres)",
+    "update-review": "Actualizar reseña",
+    "submit-review": "Enviar reseña"
 }
