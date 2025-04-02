@@ -31,13 +31,13 @@ const ReviewModal = ({ productId, onClose, hasReviewed = false, onReviewSubmitte
       alert('Por favor, completa la reseña con al menos 10 caracteres y una calificación.');
       return;
     }
-
+  
     setSubmitting(true);
-
+  
     const token = localStorage.getItem('token');
     const url = 'http://localhost:5000/api/reviews';
     const method = hasReviewed ? 'PUT' : 'POST';
-
+  
     const response = await fetch(url, {
       method,
       headers: {
@@ -46,17 +46,18 @@ const ReviewModal = ({ productId, onClose, hasReviewed = false, onReviewSubmitte
       },
       body: JSON.stringify({ productId, rating, comment })
     });
-
+  
     const data = await response.json();
     setSubmitting(false);
-
+  
     if (response.ok) {
-      if (onReviewSubmitted) onReviewSubmitted(); // ✅ recargar reseñas
+      window.location.reload(); 
       onClose();
     } else {
       alert('Error al enviar la reseña: ' + (data.message || ''));
     }
   };
+  
 
   return (
     <Modal show onHide={onClose} centered>
