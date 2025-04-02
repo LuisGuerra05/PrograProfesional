@@ -26,15 +26,6 @@ const ReviewModal = ({ productId, onClose, hasReviewed = false }) => {
       }
   }, [hasReviewed, productId]);
 
-  const getUserIdFromToken = (token) => {
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      return payload.id;
-    } catch (e) {
-      return null;
-    }
-  };
-
   const handleSubmit = async () => {
     if (rating === 0 || comment.length < 10) {
       alert('Por favor, completa la reseña con al menos 10 caracteres y una calificación.');
