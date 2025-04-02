@@ -3,7 +3,7 @@ import { FaStar, FaRegStar } from 'react-icons/fa';
 import { useTranslation } from 'react-i18next';
 import ReviewModal from './ReviewModal';
 
-const BLUE = '#007bff'; // Color azul botón
+const BLUE = '#007bff';
 
 const renderStars = (rating) => {
   const fullStars = Math.round(rating);
@@ -20,7 +20,6 @@ const renderStars = (rating) => {
   );
 };
 
-// ⭐ Mostrar promedio arriba del precio
 const ShowAverageStars = ({ productId }) => {
   const [average, setAverage] = useState(null);
 
@@ -41,16 +40,15 @@ const ShowAverageStars = ({ productId }) => {
   );
 };
 
-// ⭐ Mostrar reseñas individuales + análisis
 const ProductReviews = ({ productId }) => {
   const { t, i18n } = useTranslation();
   const [reviews, setReviews] = useState([]);
   const [average, setAverage] = useState(0);
   const [distribution, setDistribution] = useState({});
   const [totalRatings, setTotalRatings] = useState(0);
-  const [showModal, setShowModal] = useState(false); // Nuevo estado para mostrar el modal
+  const [showModal, setShowModal] = useState(false);
 
-  useEffect(() => {
+  const fetchReviewData = () => {
     fetch(`http://localhost:5000/api/reviews/${productId}`)
       .then((res) => res.json())
       .then((data) => setReviews(data))
@@ -69,21 +67,27 @@ const ProductReviews = ({ productId }) => {
         setTotalRatings(total);
       })
       .catch((err) => console.error('Error distribución:', err));
+  };
+
+  useEffect(() => {
+    fetchReviewData();
   }, [productId]);
 
   return (
     <div className="product-reviews" style={{ marginTop: '30px' }}>
-      {/* Título general */}
-      <h3 style={{ marginBottom: '30px' }}>
-        {t('product-review-title')}
-      </h3>
+      <h3 style={{ marginBottom: '30px' }}>{t('product-review-title')}</h3>
 
+      {showModal && (
+      <ReviewModal
+        productId={productId}
+        hasReviewed={true}
+        onClose={() => setShowModal(false)}
+        onReviewSubmitted={fetchReviewData} //  recarga al guardar
+      />
+    )}
 
-      {/* Mostrar el modal si showModal es true */}
-      {showModal && <ReviewModal productId={productId} onClose={() => setShowModal(false)} />}
 
       <div className="row">
-        {/* Opiniones individuales */}
         <div className="col-md-6">
           <h5 style={{ marginBottom: '15px' }}>{t('reviews')}</h5>
           <div className="reviews-list">
@@ -113,7 +117,6 @@ const ProductReviews = ({ productId }) => {
           </div>
         </div>
 
-        {/* Análisis de distribución */}
         <div className="col-md-6">
           <div style={{ border: '1px solid #ddd', borderRadius: '8px', padding: '20px' }}>
             <h5 style={{ marginBottom: '15px' }}>{t('overall-rating')}</h5>

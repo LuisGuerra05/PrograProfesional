@@ -1,48 +1,25 @@
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .modal-content {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    text-align: center;
-    width: 400px;
-  }
-  
-  .rating {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 15px;
-  }
-  
-  .star {
-    cursor: pointer;
-    font-size: 24px;
-  }
-  
-  .modal-buttons button {
-    margin: 10px;
-    padding: 10px;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .modal-buttons button:first-child {
-    background: #007bff;
-    color: white;
-  }
-  
-  .modal-buttons button:last-child {
-    background: gray;
-    color: white;
-  }
-  
+.star-rating {
+  display: flex;
+  justify-content: flex-start; /* Alinea a la izquierda */
+  gap: 8px;
+  margin-bottom: 1rem;
+}
+
+.star {
+  cursor: pointer;
+  font-size: 28px;
+  transition: color 0.2s;
+  color: #ccc;
+}
+
+.star:hover,
+.star.active {
+  color: #007bff; /* Azul Bootstrap */
+}
+
+.modal-buttons .btn {
+  min-height: 42px; /* ajusta si usas otro tamaño en el resto de tu sitio */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
