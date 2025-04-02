@@ -24,7 +24,7 @@ router.get('/distribution/:productId', reviewController.getRatingDistribution);
 // Verificar si el usuario ya hizo una reseña
 router.get('/hasReviewed/:productId', authenticate, reviewController.hasUserReviewed);
 
-router.get('/userReview/:productId', authenticateToken, reviewController.getUserReview);
+router.get('/userReview/:productId', authenticate, reviewController.getUserReview);
 
 
 module.exports = router;
