@@ -2,11 +2,21 @@ const Review = require('../models/reviewModel');
 
 exports.getReviewsByProduct = (req, res) => {
   const productId = req.params.productId;
+  const currentUserId = req.user?.id; // Puede venir o no
+
   Review.getByProductId(productId, (err, results) => {
     if (err) return res.status(500).json({ message: 'Error al obtener reseñas' });
-    res.json(results);
+
+    // Añadir marca a la reseña del usuario actual
+    const reviewsWithUserFlag = results.map((review) => ({
+      ...review,
+      isUserReview: currentUserId ? review.user_id === currentUserId : false
+    }));
+
+    res.json(reviewsWithUserFlag);
   });
 };
+
 
 exports.createReview = (req, res) => {
   const userId = req.user.id;

@@ -4,7 +4,7 @@ const reviewController = require('../controllers/reviewController');
 const authenticate = require('../middleware/authenticate');
 
 // Obtener reseñas de un producto
-router.get('/:productId', reviewController.getReviewsByProduct);
+router.get('/:productId',  authenticate, reviewController.getReviewsByProduct);
 
 // Obtener promedio de calificación
 router.get('/average/:productId', reviewController.getAverageRating);

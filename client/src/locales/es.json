@@ -145,5 +145,6 @@
 
     "review-placeholder": "Escribe tu reseña (mínimo 10 caracteres)",
     "update-review": "Actualizar reseña",
-    "submit-review": "Enviar reseña"
+    "submit-review": "Enviar reseña",
+     "your-review": "(Tu reseña)"
 }

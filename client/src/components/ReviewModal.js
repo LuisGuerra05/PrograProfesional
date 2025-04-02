@@ -5,7 +5,7 @@ import './ReviewModal.css';
 import { useTranslation } from 'react-i18next';
 
 const ReviewModal = ({ productId, onClose, hasReviewed = false, onReviewSubmitted }) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
   const [hover, setHover] = useState(0);

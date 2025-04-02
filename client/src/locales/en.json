@@ -145,5 +145,6 @@
 
     "review-placeholder": "Write your review (minimum 10 characters)",
     "update-review": "Update review",
-    "submit-review": "Submit review"
+    "submit-review": "Submit review",
+    "your-review": "(Your review)"
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { FaStar, FaRegStar } from 'react-icons/fa';
 import { useTranslation } from 'react-i18next';
 import ReviewModal from './ReviewModal';
@@ -48,8 +48,14 @@ const ProductReviews = ({ productId }) => {
   const [totalRatings, setTotalRatings] = useState(0);
   const [showModal, setShowModal] = useState(false);
 
-  const fetchReviewData = () => {
-    fetch(`http://localhost:5000/api/reviews/${productId}`)
+  const fetchReviewData = useCallback(() => {
+    const token = localStorage.getItem('token');
+
+    fetch(`http://localhost:5000/api/reviews/${productId}`, {
+      headers: {
+        Authorization: token ? `Bearer ${token}` : ''
+      }
+    })
       .then((res) => res.json())
       .then((data) => setReviews(data))
       .catch((err) => console.error('Error reseñas:', err));
@@ -67,25 +73,24 @@ const ProductReviews = ({ productId }) => {
         setTotalRatings(total);
       })
       .catch((err) => console.error('Error distribución:', err));
-  };
+  }, [productId]);
 
   useEffect(() => {
     fetchReviewData();
-  }, [productId]);
+  }, [fetchReviewData]);
 
   return (
     <div className="product-reviews" style={{ marginTop: '30px' }}>
       <h3 style={{ marginBottom: '30px' }}>{t('product-review-title')}</h3>
 
       {showModal && (
-      <ReviewModal
-        productId={productId}
-        hasReviewed={true}
-        onClose={() => setShowModal(false)}
-        onReviewSubmitted={fetchReviewData} //  recarga al guardar
-      />
-    )}
-
+        <ReviewModal
+          productId={productId}
+          hasReviewed={true}
+          onClose={() => setShowModal(false)}
+          onReviewSubmitted={fetchReviewData}
+        />
+      )}
 
       <div className="row">
         <div className="col-md-6">
@@ -102,8 +107,18 @@ const ProductReviews = ({ productId }) => {
                 return (
                   <div key={review.id} className="review-item" style={{ marginBottom: '15px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <div style={{ display: 'flex', gap: '5px' }}>
+                      <div style={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
                         {renderStars(review.rating)}
+                        {review.isUserReview && (
+                          <span style={{
+                            fontSize: '0.8em',
+                            color: '#555',
+                            fontWeight: '600',
+                            marginLeft: '8px'
+                          }}>
+                            {t('your-review')}
+                          </span>
+                        )}
                       </div>
                       <small style={{ color: '#666' }}>{formattedDate}</small>
                     </div>
