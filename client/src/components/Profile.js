@@ -311,69 +311,43 @@ const Profile = () => {
               </p>
 
               
-              <div style={{
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'space-between', 
-                backgroundColor: '#f8f9fa', 
-                border: '1px solid #ddd', 
-                padding: '12px 16px', 
-                borderRadius: '6px',
-                marginBottom: '10px',
-                flexDirection: 'column' // Alinea los elementos en columna para incluir la descripción dentro
-            }}>
-                {/* Primera línea: Icono, Texto y Estado */}
-                <div style={{ display: 'flex', alignItems: 'center', width: '100%', justifyContent: 'space-between' }}>
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <i className="bi bi-phone" style={{ fontSize: '18px', marginRight: '8px' }}></i>
-                        <strong style={{ marginRight: '8px' }}>{t('Authenticator app')}</strong>
-                        {is2FAEnabled ? (
-                          <span 
-                              style={{ 
-                                  padding: '1px 5px',     // Achicamos el padding
-                                  backgroundColor: 'white', 
-                                  border: '1px solid #28a745', 
-                                  borderRadius: '10px',   // Más pequeño y redondeado
-                                  color: '#28a745', 
-                                  fontWeight: 'bold',
-                                  fontSize: '12px'        // Reducimos el tamaño de fuente
-                              }}
-                          >
-                              {t('Configured')}
-                          </span>
-                      ) : (
-                          <span 
-                              style={{ 
-                                  padding: '1px 5px',     // Achicamos el padding
-                                  backgroundColor: 'white', 
-                                  border: '1px solid red', 
-                                  borderRadius: '10px',   // Más pequeño y redondeado
-                                  color: 'red', 
-                                  fontWeight: 'bold',
-                                  fontSize: '12px'        // Reducimos el tamaño de fuente
-                              }}
-                          >
-                              {t('Not Configured')}
-                          </span>
-                      )}
-                    </div>
-                    
-                    {/* Botón de Edición */}
-                    <Button 
-                    variant={is2FAEnabled ? "outline-danger" : "secondary"} 
-                    onClick={is2FAEnabled ? handleDisable2FA : handleEnable2FA}
-                    style={{ padding: '6px 12px', fontSize: '14px' }}
-                >
-                    {is2FAEnabled ? t('Disable') : t('Enable')}
-                </Button>
+              {/* 🔒 Autenticación de Dos Factores */}
+              <div className="p-3 mb-3 rounded" style={{ backgroundColor: '#f8f9fa', border: '1px solid #ddd' }}>
+                <div className="d-flex flex-wrap justify-content-between align-items-start">
+                  <div className="d-flex align-items-center mb-2">
+                    <i className="bi bi-phone" style={{ fontSize: '18px', marginRight: '8px' }}></i>
+                    <strong style={{ marginRight: '8px' }}>{t('Authenticator app')}</strong>
+                  </div>
+                  
+                  <div className="d-flex flex-wrap align-items-center gap-2 mb-2">
+                    <span
+                      style={{
+                        padding: '1px 5px',
+                        backgroundColor: 'white',
+                        border: `1px solid ${is2FAEnabled ? '#28a745' : 'red'}`,
+                        borderRadius: '10px',
+                        color: is2FAEnabled ? '#28a745' : 'red',
+                        fontWeight: 'bold',
+                        fontSize: '12px'
+                      }}
+                    >
+                      {is2FAEnabled ? t('Configured') : t('Not Configured')}
+                    </span>
+
+                    <Button
+                      variant={is2FAEnabled ? "outline-danger" : "secondary"}
+                      onClick={is2FAEnabled ? handleDisable2FA : handleEnable2FA}
+                      style={{ padding: '6px 12px', fontSize: '14px' }}
+                    >
+                      {is2FAEnabled ? t('Disable') : t('Enable')}
+                    </Button>
+                  </div>
                 </div>
 
-                {/* Descripción dentro del recuadro */}
-                <p style={{ color: '#666', fontSize: '13px', marginTop: '8px', marginBottom: '0', width: '100%' }}>
-                    {t('Use an authentication app to get two-factor authentication codes when prompted.')}
+                <p style={{ color: '#666', fontSize: '13px', marginTop: '8px', marginBottom: '0' }}>
+                  {t('Use an authentication app to get two-factor authentication codes when prompted.')}
                 </p>
-            </div>
-
+              </div>
 
 
 
@@ -450,41 +424,43 @@ const Profile = () => {
               </div>
             )}
 
-            {/* Recuadro de Códigos de Recuperación */}
+            {/* Códigos de Recuperación */}
             <div 
-                style={{
-                    border: '1px solid #ddd',
-                    borderRadius: '8px',
-                    padding: '15px',
-                    backgroundColor: '#f8f9fa',
-                    marginTop: '20px',
-                    position: 'relative'
-                }}
+              className="p-3 mt-3 rounded"
+              style={{
+                border: '1px solid #ddd',
+                backgroundColor: '#f8f9fa',
+                position: 'relative'
+              }}
             >
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <i className="bi bi-key" style={{ marginRight: '8px', fontSize: '20px' }}></i>
-                        <strong>{t('Recovery codes')}</strong>
-                    </div>
-                    {is2FAEnabled ? (
-                        <Button 
-                            variant="secondary" 
-                            size="sm" 
-                            onClick={handleGenerateCodes} 
-                            style={{ marginLeft: '10px' }}
-                        >
-                            {t('Generate new codes')}
-                        </Button>
-                    ) : null}
+              <div className="d-flex flex-wrap justify-content-between align-items-center">
+                <div className="d-flex align-items-center mb-2">
+                  <i className="bi bi-key" style={{ marginRight: '8px', fontSize: '20px' }}></i>
+                  <strong>{t('Recovery codes')}</strong>
                 </div>
-                <div style={{ marginTop: '10px', fontSize: '13px', color: '#666' }}>
-                    {is2FAEnabled ? (
-                        <p>{t('Use these recovery codes to log in if you lose access to your authentication app')}</p>
-                    ) : (
-                        <p style={{ color: 'red' }}>{t('Two-Factor Authentication is not enabled. No recovery codes available')}</p>
-                    )}
-                </div>
+
+                {is2FAEnabled && (
+                  <Button 
+                    variant="secondary" 
+                    size="sm" 
+                    onClick={handleGenerateCodes}
+                    className="mb-2"
+                    style={{ whiteSpace: 'nowrap' }} // 👈 Esto evita el salto de línea
+                  >
+                    {t('Generate new codes')}
+                  </Button>
+                )}
+              </div>
+
+              <div style={{ marginTop: '10px', fontSize: '13px', color: '#666' }}>
+                {is2FAEnabled ? (
+                  <p>{t('Use these recovery codes to log in if you lose access to your authentication app')}</p>
+                ) : (
+                  <p style={{ color: 'red' }}>{t('Two-Factor Authentication is not enabled. No recovery codes available')}</p>
+                )}
+              </div>
             </div>
+
 
             
             {message && (

@@ -151,5 +151,9 @@
     "delete-confirmation": "Are you sure you want to delete your review?",
     "delete-success": "Review deleted successfully",
     "delete-error": "Error deleting the review",
-    "review-validation": "Please complete the review with at least 10 characters and a rating."
+    "review-validation": "Please complete the review with at least 10 characters and a rating",
+    "review-submit-error": "Error submitting review: ",
+    "review-deleted-success": "Review deleted successfully",
+    "review-delete-error": "Error deleting review: ",
+    "confirm-delete-message": "Are you sure you want to delete your review?"
 }

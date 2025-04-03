@@ -7,7 +7,7 @@ const LanguageSwitcher = () => {
   const { i18n } = useTranslation(); // Desestructurar i18n del hook
 
   // Obtenemos el idioma seleccionado actualmente desde i18n
-  const selectedLanguage = i18n.language === 'es' ? 'Español' : 'English';
+  const selectedLanguage = i18n.language.startsWith('es') ? 'Español' : 'English';
 
   const toggleDropdown = () => setDropdownOpen(!isDropdownOpen);
 

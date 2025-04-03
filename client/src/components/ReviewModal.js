@@ -11,6 +11,7 @@ const ReviewModal = ({ productId, onClose, hasReviewed = false, onReviewSubmitte
   const [comment, setComment] = useState('');
   const [hover, setHover] = useState(0);
   const [submitting, setSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(''); // Nuevo estado para errores
 
   useEffect(() => {
     if (hasReviewed) {
@@ -31,10 +32,11 @@ const ReviewModal = ({ productId, onClose, hasReviewed = false, onReviewSubmitte
 
   const handleSubmit = async () => {
     if (rating === 0 || comment.length < 10) {
-      alert('Por favor, completa la reseña con al menos 10 caracteres y una calificación.');
+      setErrorMessage(t('review-validation'));
       return;
     }
 
+    setErrorMessage('');
     setSubmitting(true);
 
     const token = localStorage.getItem('token');
@@ -54,16 +56,14 @@ const ReviewModal = ({ productId, onClose, hasReviewed = false, onReviewSubmitte
     setSubmitting(false);
 
     if (response.ok) {
-      window.location.reload();
       onClose();
+      window.location.reload();
     } else {
-      alert('Error al enviar la reseña: ' + (data.message || ''));
+      setErrorMessage('Error al enviar la reseña: ' + (data.message || ''));
     }
   };
 
   const handleDeleteReview = async () => {
-    const confirmDelete = window.confirm('¿Estás seguro de que deseas eliminar tu reseña?');
-    if (!confirmDelete) return;
 
     const token = localStorage.getItem('token');
     const response = await fetch('http://localhost:5000/api/reviews', {
@@ -113,28 +113,33 @@ const ReviewModal = ({ productId, onClose, hasReviewed = false, onReviewSubmitte
             onChange={(e) => setComment(e.target.value)}
           />
         </Form.Group>
+
+        {errorMessage && (
+          <div style={{ fontSize: '0.9rem', marginTop: '0.5rem', color: 'red' }}>
+            {errorMessage}
+          </div>
+        )}
+
       </Modal.Body>
+
       <Modal.Footer className="d-flex justify-content-between align-items-center w-100">
-  {/* Botón eliminar a la izquierda */}
-  {hasReviewed ? (
-    <Button id="delete-review-btn" variant="danger" onClick={handleDeleteReview} className="py-2">
-      {t('delete-review')}
-    </Button>
-  ) : (
-    <div />
-  )}
+        {hasReviewed ? (
+          <Button id="delete-review-btn" variant="danger" onClick={handleDeleteReview} className="py-2">
+            {t('delete-review')}
+          </Button>
+        ) : (
+          <div />
+        )}
 
-  {/* Botones a la derecha */}
-  <div>
-    <Button variant="secondary" onClick={onClose} className="me-2 py-2">
-      {t('Cancel')}
-    </Button>
-    <Button variant="primary" onClick={handleSubmit} disabled={submitting} className="py-2">
-      {hasReviewed ? t('update-review') : t('submit-review')}
-    </Button>
-  </div>
-</Modal.Footer>
-
+        <div>
+          <Button variant="secondary" onClick={onClose} className="me-2 py-2">
+            {t('Cancel')}
+          </Button>
+          <Button variant="primary" onClick={handleSubmit} disabled={submitting} className="py-2">
+            {hasReviewed ? t('update-review') : t('submit-review')}
+          </Button>
+        </div>
+      </Modal.Footer>
     </Modal>
   );
 };

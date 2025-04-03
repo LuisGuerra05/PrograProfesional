@@ -152,5 +152,9 @@
     "delete-confirmation": "¿Estás seguro de que deseas eliminar tu reseña?",
     "delete-success": "Reseña eliminada con éxito",
     "delete-error": "Error al eliminar la reseña",
-    "review-validation": "Por favor, completa la reseña con al menos 10 caracteres y una calificación."
+    "review-validation": "Por favor, completa la reseña con al menos 10 caracteres y una calificación",
+    "review-submit-error": "Error al enviar la reseña: ",
+    "review-deleted-success": "Reseña eliminada con éxito",
+    "review-delete-error": "Error al eliminar la reseña: ",
+    "confirm-delete-message": "¿Estás seguro de que deseas eliminar tu reseña?"
 }
