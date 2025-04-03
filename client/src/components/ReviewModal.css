@@ -27,15 +27,3 @@
   font-weight: 500;
 }
 
-#delete-review-btn {
-  background-color: #dc3545 !important; /* rojo Bootstrap */
-  color: white !important;
-  border: 1px solid #dc3545 !important;
-  transition: background-color 0.2s ease;
-}
-
-#delete-review-btn:hover {
-  background-color: #c82333 !important; /* rojo más oscuro para hover */
-  border-color: #bd2130 !important;
-}
-

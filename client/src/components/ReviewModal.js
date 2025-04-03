@@ -78,12 +78,18 @@ const ReviewModal = ({ productId, onClose, hasReviewed = false, onReviewSubmitte
     const data = await response.json();
 
     if (response.ok) {
-      toast.success('Reseña eliminada con éxito');
+      toast.success(t('review-deleted-success'), {
+        autoClose: 3000, // Mostrar el toast por 3 segundos
+      });
+    
       onClose();
-      window.location.reload();
+    
+      setTimeout(() => {
+        window.location.reload();
+      }, 3000); // Recargar justo después que el toast se oculta
     } else {
       toast.error('Error al eliminar la reseña: ' + (data.message || ''));
-    }
+    }    
   };
 
   return (
@@ -124,7 +130,7 @@ const ReviewModal = ({ productId, onClose, hasReviewed = false, onReviewSubmitte
 
       <Modal.Footer className="d-flex justify-content-between align-items-center w-100">
         {hasReviewed ? (
-          <Button id="delete-review-btn" variant="danger" onClick={handleDeleteReview} className="py-2">
+          <Button id="delete-review-btn" variant="outline-danger" onClick={handleDeleteReview} className="py-2">
             {t('delete-review')}
           </Button>
         ) : (

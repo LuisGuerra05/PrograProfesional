@@ -135,6 +135,7 @@ const handleRecoveryLogin = async () => {
 
       // Mostrar alerta tipo toast con los códigos restantes
       toast.success(t('Recovery code toast message', { count: data.remainingCodes }), {
+        autoClose: 3000, // Duración de 3 segundos
         className: 'custom-toast',
         progressClassName: 'Toastify__progress-bar--blue',
         progressStyle: { backgroundColor: 'rgba(0, 123, 255, 0.85)' }
