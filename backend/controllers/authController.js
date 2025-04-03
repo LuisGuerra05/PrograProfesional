@@ -422,4 +422,10 @@ const updateAddress = (req, res) => {
   });
 };
 
-module.exports = { register, login, generate2FA, disable2FA,  updateAddress, getProfile, confirm2FA, verifyOTP, recoveryLogin, regenerateRecoveryCodes };
+// Validar si el token aún es válido
+const validateToken = (req, res) => {
+  // Si llega a esta función, es porque pasó el middleware "authenticate"
+  res.status(200).json({ message: 'Token válido' });
+};
+
+module.exports = { validateToken, register, login, generate2FA, disable2FA,  updateAddress, getProfile, confirm2FA, verifyOTP, recoveryLogin, regenerateRecoveryCodes };

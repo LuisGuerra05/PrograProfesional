@@ -7,19 +7,39 @@ const CartContext = React.createContext();
 
 const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
-
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
 
-  // Función para verificar si el usuario está logueado
+  // Verifica si el token es válido
+  const validateToken = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setIsLoggedIn(false);
+      return;
+    }
+
+    try {
+      await axios.get('http://localhost:5000/api/auth/validate-token', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setIsLoggedIn(true);
+    } catch (error) {
+      console.warn('Token inválido o expirado. Haciendo logout automático.');
+      localStorage.clear();
+      setIsLoggedIn(false);
+      setCart([]);
+    }
+  };
+
   const isUserLoggedIn = () => {
     return !!localStorage.getItem('token');
   };
 
-  // Función para cargar el carrito desde la base de datos
   const loadCartFromDatabase = () => {
     const token = localStorage.getItem('token');
     axios
-      .get('http://localhost:5000/api/cart', { headers: { Authorization: `Bearer ${token}` } })
+      .get('http://localhost:5000/api/cart', {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((response) => {
         setCart(response.data.cartItems);
       })
@@ -29,11 +49,11 @@ const CartProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    validateToken(); // Revisión inicial del token al cargar
+
     if (isLoggedIn) {
-      // Si el usuario está logueado, cargar el carrito desde la base de datos
       loadCartFromDatabase();
     } else {
-      // Si no está logueado, cargar el carrito desde el localStorage
       const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
       setCart(storedCart);
     }
@@ -61,14 +81,12 @@ const CartProvider = ({ children }) => {
 
       let updatedCart;
       if (existingIndex >= 0) {
-        // El producto ya existe en el carrito, incrementamos la cantidad
         updatedCart = cart.map((item, index) =>
           index === existingIndex
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
       } else {
-        // El producto no existe en el carrito, lo agregamos
         const cartItem = {
           product_id: product.id,
           name: product.name,
@@ -102,17 +120,15 @@ const CartProvider = ({ children }) => {
           console.error('Error al disminuir la cantidad del producto en la base de datos:', error);
         });
     } else {
-      const updatedCart = cart.map((item) => {
-        if (item.product_id === productId && item.size === size) {
-          const newQuantity = item.quantity - 1;
-          if (newQuantity > 0) {
-            return { ...item, quantity: newQuantity };
-          } else {
-            return null; // Marcar para eliminar
+      const updatedCart = cart
+        .map((item) => {
+          if (item.product_id === productId && item.size === size) {
+            const newQuantity = item.quantity - 1;
+            return newQuantity > 0 ? { ...item, quantity: newQuantity } : null;
           }
-        }
-        return item;
-      }).filter((item) => item !== null); // Eliminar los productos con cantidad 0
+          return item;
+        })
+        .filter((item) => item !== null);
 
       setCart(updatedCart);
       localStorage.setItem('cart', JSON.stringify(updatedCart));
@@ -147,10 +163,13 @@ const CartProvider = ({ children }) => {
   const clearCart = (clearInDatabase = true) => {
     if (isUserLoggedIn()) {
       if (clearInDatabase) {
-        // Si el usuario está logueado y queremos vaciar el carrito en la base de datos
         const token = localStorage.getItem('token');
         axios
-          .post('http://localhost:5000/api/cart/clear', {}, { headers: { Authorization: `Bearer ${token}` } })
+          .post(
+            'http://localhost:5000/api/cart/clear',
+            {},
+            { headers: { Authorization: `Bearer ${token}` } }
+          )
           .then(() => {
             setCart([]);
           })
@@ -158,18 +177,26 @@ const CartProvider = ({ children }) => {
             console.error('Error al vaciar el carrito en la base de datos:', error);
           });
       } else {
-        // Si no queremos vaciar el carrito en la base de datos, solo limpiamos el estado local
         setCart([]);
       }
     } else {
-      // Si el usuario no está logueado, vaciar el carrito del localStorage
       setCart([]);
       localStorage.removeItem('cart');
     }
   };
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, removeProduct, clearCart, isLoggedIn, setIsLoggedIn }}>
+    <CartContext.Provider
+      value={{
+        cart,
+        addToCart,
+        removeFromCart,
+        removeProduct,
+        clearCart,
+        isLoggedIn,
+        setIsLoggedIn,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );

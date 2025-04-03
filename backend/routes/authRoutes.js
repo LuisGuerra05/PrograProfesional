@@ -1,10 +1,12 @@
 // authRoutes.js
 
 const express = require('express');
-const { register, login, generate2FA, disable2FA, updateAddress, getProfile, confirm2FA, verifyOTP, recoveryLogin, regenerateRecoveryCodes } = require('../controllers/authController');
+const { validateToken, register, login, generate2FA, disable2FA, updateAddress, getProfile, confirm2FA, verifyOTP, recoveryLogin, regenerateRecoveryCodes } = require('../controllers/authController');
 const authenticate = require('../middleware/authenticate');
 
 const router = express.Router();
+
+router.get('/validate-token', authenticate, validateToken);
 
 router.post('/register', register);
 router.post('/login', login);
