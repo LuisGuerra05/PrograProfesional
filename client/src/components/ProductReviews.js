@@ -50,11 +50,12 @@ const ProductReviews = ({ productId }) => {
 
   const fetchReviewData = useCallback(() => {
     const token = localStorage.getItem('token');
+    const url = token
+      ? `http://localhost:5000/api/reviews/${productId}`
+      : `http://localhost:5000/api/reviews/public/${productId}`;
 
-    fetch(`http://localhost:5000/api/reviews/${productId}`, {
-      headers: {
-        Authorization: token ? `Bearer ${token}` : ''
-      }
+    fetch(url, {
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
     })
       .then((res) => res.json())
       .then((data) => setReviews(data))

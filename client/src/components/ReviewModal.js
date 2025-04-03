@@ -1,26 +1,26 @@
 import React, { useState, useEffect } from 'react';
+import { Modal, Button, Form } from 'react-bootstrap';
 import { FaStar } from 'react-icons/fa';
 import './ReviewModal.css';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
-const ReviewModal = ({ productId, onClose, hasReviewed = false }) => {
+const ReviewModal = ({ productId, onClose, hasReviewed = false, onReviewSubmitted }) => {
+  const { t } = useTranslation();
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
   const [hover, setHover] = useState(0);
+  const [submitting, setSubmitting] = useState(false);
 
-  // Cargar reseña existente si ya hizo una
   useEffect(() => {
     if (hasReviewed) {
       const token = localStorage.getItem('token');
       fetch(`http://localhost:5000/api/reviews/userReview/${productId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+        headers: { Authorization: `Bearer ${token}` }
       })
         .then(res => res.json())
         .then(data => {
-          if (data?.rating && data?.comment) {
+          if (data && data.rating && data.comment) {
             setRating(data.rating);
             setComment(data.comment);
           }
@@ -31,9 +31,11 @@ const ReviewModal = ({ productId, onClose, hasReviewed = false }) => {
 
   const handleSubmit = async () => {
     if (rating === 0 || comment.length < 10) {
-      toast.error('Completa la reseña con al menos 10 caracteres y una calificación.');
+      alert('Por favor, completa la reseña con al menos 10 caracteres y una calificación.');
       return;
     }
+
+    setSubmitting(true);
 
     const token = localStorage.getItem('token');
     const url = 'http://localhost:5000/api/reviews';
@@ -49,12 +51,13 @@ const ReviewModal = ({ productId, onClose, hasReviewed = false }) => {
     });
 
     const data = await response.json();
+    setSubmitting(false);
 
     if (response.ok) {
-      toast.success(data.message || 'Reseña guardada con éxito');
+      window.location.reload();
       onClose();
     } else {
-      toast.error(data.message || 'Error al enviar la reseña');
+      alert('Error al enviar la reseña: ' + (data.message || ''));
     }
   };
 
@@ -75,25 +78,25 @@ const ReviewModal = ({ productId, onClose, hasReviewed = false }) => {
     const data = await response.json();
 
     if (response.ok) {
-      toast.success('Reseña eliminada con éxito.');
+      toast.success('Reseña eliminada con éxito');
       onClose();
-      window.location.reload(); // Recargar para que el estado se actualice
+      window.location.reload();
     } else {
-      toast.error('Error al eliminar la reseña: ' + data.message);
+      toast.error('Error al eliminar la reseña: ' + (data.message || ''));
     }
   };
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <h2>{hasReviewed ? 'Edita tu reseña' : 'Comparte tu reseña'}</h2>
-
-        <div className="rating">
+    <Modal show onHide={onClose} centered>
+      <Modal.Header closeButton>
+        <Modal.Title>{hasReviewed ? t('edit-review') : t('write-review')}</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <div className="star-rating mb-3">
           {[1, 2, 3, 4, 5].map((star) => (
             <FaStar
               key={star}
-              className="star"
-              color={star <= (hover || rating) ? '#FFD700' : '#ccc'}
+              className={`star ${star <= (hover || rating) ? 'active' : ''}`}
               onMouseEnter={() => setHover(star)}
               onMouseLeave={() => setHover(0)}
               onClick={() => setRating(star)}
@@ -101,38 +104,38 @@ const ReviewModal = ({ productId, onClose, hasReviewed = false }) => {
           ))}
         </div>
 
-        <textarea
-          placeholder="Escribe tu reseña (mínimo 10 caracteres)"
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-        ></textarea>
+        <Form.Group controlId="reviewComment">
+          <Form.Control
+            as="textarea"
+            rows={4}
+            placeholder={t('review-placeholder')}
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+          />
+        </Form.Group>
+      </Modal.Body>
+      <Modal.Footer className="d-flex justify-content-between align-items-center w-100">
+  {/* Botón eliminar a la izquierda */}
+  {hasReviewed ? (
+    <Button id="delete-review-btn" variant="danger" onClick={handleDeleteReview} className="py-2">
+      {t('delete-review')}
+    </Button>
+  ) : (
+    <div />
+  )}
 
-        <div className="modal-buttons">
-          <button onClick={handleSubmit}>
-            {hasReviewed ? 'Actualizar Reseña' : 'Enviar Reseña'}
-          </button>
-          <button onClick={onClose}>Cerrar</button>
-        </div>
+  {/* Botones a la derecha */}
+  <div>
+    <Button variant="secondary" onClick={onClose} className="me-2 py-2">
+      {t('Cancel')}
+    </Button>
+    <Button variant="primary" onClick={handleSubmit} disabled={submitting} className="py-2">
+      {hasReviewed ? t('update-review') : t('submit-review')}
+    </Button>
+  </div>
+</Modal.Footer>
 
-        {hasReviewed && (
-          <button
-            onClick={handleDeleteReview}
-            style={{
-              marginTop: '10px',
-              backgroundColor: '#f8d7da',
-              color: '#721c24',
-              border: '1px solid #f5c6cb',
-              padding: '8px 12px',
-              borderRadius: '5px',
-              cursor: 'pointer',
-              width: '100%'
-            }}
-          >
-            Borrar reseña
-          </button>
-        )}
-      </div>
-    </div>
+    </Modal>
   );
 };
 

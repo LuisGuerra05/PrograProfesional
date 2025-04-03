@@ -144,7 +144,12 @@
     "edit-review": "Edit review",
 
     "review-placeholder": "Write your review (minimum 10 characters)",
-    "update-review": "Update review",
-    "submit-review": "Submit review",
-    "your-review": "(Your review)"
+    "update-review": "Update",
+    "submit-review": "Submit",
+    "your-review": "(Your review)",
+    "delete-review": "Delete",
+    "delete-confirmation": "Are you sure you want to delete your review?",
+    "delete-success": "Review deleted successfully",
+    "delete-error": "Error deleting the review",
+    "review-validation": "Please complete the review with at least 10 characters and a rating."
 }

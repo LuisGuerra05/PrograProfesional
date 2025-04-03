@@ -144,7 +144,13 @@
     "edit-review": "Editar reseña",
 
     "review-placeholder": "Escribe tu reseña (mínimo 10 caracteres)",
-    "update-review": "Actualizar reseña",
-    "submit-review": "Enviar reseña",
-     "your-review": "(Tu reseña)"
+    "update-review": "Actualizar",
+    "submit-review": "Enviar",
+    "your-review": "(Tu reseña)",
+
+    "delete-review": "Borrar",
+    "delete-confirmation": "¿Estás seguro de que deseas eliminar tu reseña?",
+    "delete-success": "Reseña eliminada con éxito",
+    "delete-error": "Error al eliminar la reseña",
+    "review-validation": "Por favor, completa la reseña con al menos 10 caracteres y una calificación."
 }
