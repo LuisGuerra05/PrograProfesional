@@ -1,4 +1,5 @@
 const Review = require('../models/reviewModel');
+const { moderateComment } = require('../helpers/openai');
 
 exports.getReviewsByProduct = (req, res) => {
   const productId = req.params.productId;
