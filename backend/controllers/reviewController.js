@@ -34,6 +34,11 @@ exports.createReview = async (req, res) => {
       if (err) return res.status(500).json({ message: 'Error al validar reseña existente' });
       if (rows.length > 0) return res.status(400).json({ message: 'Ya dejaste una reseña para este producto' });
 
+      // Detectar datos personales
+      if (containsPersonalInfo(comment)) {
+        return res.status(400).json({ message: 'Tu comentario contiene información personal (correo o teléfono).' });
+      }
+
       // Evaluar con IA
       const moderationResult = await moderateComment(comment);
       if (moderationResult.flagged) {
@@ -73,6 +78,11 @@ exports.updateReview = async (req, res) => {
   }
 
   try {
+    // Detectar datos personales
+    if (containsPersonalInfo(comment)) {
+      return res.status(400).json({ message: 'Tu comentario contiene información personal (correo o teléfono).' });
+    }
+
     // Evaluar con IA
     const moderationResult = await moderateComment(comment);
     if (moderationResult.flagged) {
