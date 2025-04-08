@@ -1,5 +1,6 @@
 const Review = require('../models/reviewModel');
 const { moderateComment } = require('../helpers/openai');
+const { containsPersonalInfo } = require('../helpers/personalInfo');
 
 exports.getReviewsByProduct = (req, res) => {
   const productId = req.params.productId;
@@ -19,7 +20,7 @@ exports.getReviewsByProduct = (req, res) => {
 };
 
 
-exports.createReview = (req, res) => {
+exports.createReview = async (req, res) => {
   const userId = req.user.id;
   const { productId, rating, comment } = req.body;
 
@@ -27,16 +28,33 @@ exports.createReview = (req, res) => {
     return res.status(400).json({ message: 'Calificación inválida' });
   }
 
-  Review.exists(userId, productId, (err, rows) => {
-    if (err) return res.status(500).json({ message: 'Error al validar reseña existente' });
-    if (rows.length > 0) return res.status(400).json({ message: 'Ya dejaste una reseña para este producto' });
+  try {
+    // Verificar si ya hizo una reseña
+    Review.exists(userId, productId, async (err, rows) => {
+      if (err) return res.status(500).json({ message: 'Error al validar reseña existente' });
+      if (rows.length > 0) return res.status(400).json({ message: 'Ya dejaste una reseña para este producto' });
 
-    Review.create(userId, productId, rating, comment, (err) => {
-      if (err) return res.status(500).json({ message: 'Error al crear reseña' });
-      res.status(201).json({ message: 'Reseña creada con éxito' });
+      // Evaluar con IA
+      const moderationResult = await moderateComment(comment);
+      if (moderationResult.flagged) {
+        return res.status(400).json({
+          message: 'Tu comentario fue bloqueado por contenido inapropiado.',
+          detalles: moderationResult.categories
+        });
+      }
+
+      // Crear reseña si todo está bien
+      Review.create(userId, productId, rating, comment, (err) => {
+        if (err) return res.status(500).json({ message: 'Error al crear reseña' });
+        res.status(201).json({ message: 'Reseña creada con éxito' });
+      });
     });
-  });
+  } catch (error) {
+    console.error('Error en moderación:', error);
+    res.status(500).json({ message: 'Error al procesar el comentario' });
+  }
 };
+
 
 exports.getAverageRating = (req, res) => {
   const productId = req.params.productId;
@@ -46,16 +64,36 @@ exports.getAverageRating = (req, res) => {
   });
 };
 
-exports.updateReview = (req, res) => {
+exports.updateReview = async (req, res) => {
   const userId = req.user.id;
   const { productId, rating, comment } = req.body;
 
-  Review.update(userId, productId, rating, comment, (err, result) => {
-    if (err) return res.status(500).json({ message: 'Error al actualizar la reseña' });
-    if (result.affectedRows === 0) return res.status(404).json({ message: 'Reseña no encontrada' });
-    res.json({ message: 'Reseña actualizada con éxito' });
-  });
+  if (!rating || rating < 1 || rating > 5) {
+    return res.status(400).json({ message: 'Calificación inválida' });
+  }
+
+  try {
+    // Evaluar con IA
+    const moderationResult = await moderateComment(comment);
+    if (moderationResult.flagged) {
+      return res.status(400).json({
+        message: 'Tu comentario fue bloqueado por contenido inapropiado.',
+        detalles: moderationResult.categories
+      });
+    }
+
+    // Actualizar reseña si todo está bien
+    Review.update(userId, productId, rating, comment, (err, result) => {
+      if (err) return res.status(500).json({ message: 'Error al actualizar la reseña' });
+      if (result.affectedRows === 0) return res.status(404).json({ message: 'Reseña no encontrada' });
+      res.json({ message: 'Reseña actualizada con éxito' });
+    });
+  } catch (error) {
+    console.error('Error en moderación:', error);
+    res.status(500).json({ message: 'Error al procesar el comentario' });
+  }
 };
+
 
 exports.getRatingDistribution = (req, res) => {
   const productId = req.params.productId;

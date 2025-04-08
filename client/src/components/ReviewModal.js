@@ -59,8 +59,12 @@ const ReviewModal = ({ productId, onClose, hasReviewed = false, onReviewSubmitte
       onClose();
       window.location.reload();
     } else {
+      console.error('❌ Comentario bloqueado o error:', data.message);
+      if (data.detalles) {
+        console.log('📋 Categorías detectadas por la IA:', data.detalles);
+      }
       setErrorMessage('Error al enviar la reseña: ' + (data.message || ''));
-    }
+    }    
   };
 
   const handleDeleteReview = async () => {
