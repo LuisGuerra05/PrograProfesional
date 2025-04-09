@@ -14,6 +14,11 @@ Puedes ver el video de la entrega final aquí: [Link Video Entrega Final](https:
   - [Tabla de contenidos](#tabla-de-contenidos)
   - [Descripción del Proyecto](#descripción-del-proyecto)
   - [Características Principales](#características-principales)
+  - [Funcionalidades Desarrolladas](#funcionalidades-desarrolladas)
+    - [1. Autenticación en dos pasos (2FA) para los usuarios](#1-autenticación-en-dos-pasos-2fa-para-los-usuarios)
+    - [2. Implementación de reseñas y calificaciones de productos](#2-implementación-de-reseñas-y-calificaciones-de-productos)
+    - [3. Bloqueo automático de comentarios con Inteligencia Artificial (IA)](#3-bloqueo-automático-de-comentarios-con-inteligencia-artificial-ia)
+    - [4. Buscador y filtros avanzados con un servicio externo (Algolia)](#4-buscador-y-filtros-avanzados-con-un-servicio-externo-algolia)
   - [Requisitos](#requisitos)
   - [Configuración del Proyecto](#configuración-del-proyecto)
     - [Paso 1: Clonar el repositorio](#paso-1-clonar-el-repositorio)
@@ -56,6 +61,52 @@ Este proyecto es una tienda de camisetas de fútbol en línea que cumple con los
 - **Seguridad en Credenciales**: Las credenciales de acceso a la base de datos están protegidas en archivos .env y no se suben al repositorio público para mantener la seguridad de la información. Para la autenticación de usuarios, utilizamos JSON Web Tokens (JWT), asegurando que las sesiones sean seguras y fáciles de manejar. Además, para aumentar la seguridad de las contraseñas, implementamos una capa adicional de protección mediante un pepper y 10 rounds de salt, lo que asegura que incluso si una contraseña se ve comprometida, siga siendo extremadamente difícil de descifrar sin este valor extra.
 
 
+---
+## Funcionalidades Desarrolladas
+
+### 1. Autenticación en dos pasos (2FA) para los usuarios
+
+Se implementó un sistema de **autenticación en dos pasos (2FA)** basado en **Google Authenticator**, con el objetivo de reforzar la seguridad del inicio de sesión. Esta funcionalidad permite a los usuarios escanear un **código QR** generado al activar el 2FA, que se presenta desde la sección de perfil. A partir de ese momento, cada vez que el usuario inicie sesión, deberá ingresar un **código temporal de 6 dígitos** generado por su app de autenticación (por ejemplo, Google Authenticator o Authy).
+
+Además, se generan automáticamente **cinco códigos de recuperación de un solo uso**, los cuales son mostrados al usuario y pueden ser descargados en un archivo `.txt`. Estos códigos permiten acceder a la cuenta en caso de perder el acceso a la aplicación de autenticación. La verificación del código TOTP se realiza en el backend utilizando `pyotp`, y la interfaz muestra validaciones dinámicas del estado del 2FA. El usuario también puede desactivarlo en cualquier momento desde su perfil.
+
+---
+
+### 2. Implementación de reseñas y calificaciones de productos
+
+Se desarrolló un sistema completo de **reseñas y calificaciones** donde los usuarios autenticados pueden dejar **una única reseña por producto**. Cada reseña incluye:
+
+- Una calificación de 1 a 5 estrellas.
+- Un comentario textual validado y almacenado en la base de datos.
+- Fecha de publicación.
+- Detección automática para identificar si la reseña corresponde al usuario actual ("Tu reseña").
+
+Además, se muestra un resumen general del producto, que incluye:
+
+- **Promedio de calificación** (con estrellas).
+- **Distribución por estrellas** (gráfico con barras).
+- Total de calificaciones.
+
+El diseño es responsivo, está integrado visualmente al resto del sitio y permite editar o eliminar la reseña desde un modal personalizado. Toda la gestión se sincroniza automáticamente con la base de datos vía API.
+
+---
+
+### 3. Bloqueo automático de comentarios con Inteligencia Artificial (IA)
+
+Antes de guardar o actualizar una reseña, el sistema evalúa el comentario del usuario utilizando la **API de moderación de OpenAI** (modelo `text-moderation-latest`). Si la IA detecta **contenido inapropiado** (por ejemplo, lenguaje ofensivo, amenazas, referencias sexuales o bullying), el comentario es bloqueado y se informa al usuario en tiempo real. La verificación se realiza directamente desde el backend, y se detallan las categorías que activaron el bloqueo.
+
+Adicionalmente, se implementó una **verificación manual** usando expresiones regulares (regex) para detectar información personal como:
+
+- Direcciones de correo electrónico.
+- Números de teléfono nacionales e internacionales.
+
+En caso de que el comentario incluya información sensible, también es bloqueado y se notifica al usuario, reforzando así la **privacidad y seguridad** del sistema. Esta lógica asegura que ningún comentario inapropiado o riesgoso sea almacenado en la base de datos.
+
+---
+### 4. Buscador y filtros avanzados con un servicio externo (Algolia)
+
+En progreso.
+  
 ---
 
 ## Requisitos
