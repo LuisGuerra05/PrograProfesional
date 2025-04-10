@@ -2,11 +2,11 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Form, Button, Container, Row, Col, Alert, InputGroup, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { CartContext } from '../context/CartProvider';
+import { CartContext } from '../../context/CartProvider';
 import { toast, ToastContainer } from 'react-toastify'; // Importar react-toastify
 import 'react-toastify/dist/ReactToastify.css'; // Importar estilos de react-toastify
 import './Login.css';
-import { handleOtpChange } from '../utils/otpUtils'; // Importa la función desde utils
+import { handleOtpChange } from '../../utils/otpUtils'; // Importa la función desde utils
 
 
 const Login = () => {

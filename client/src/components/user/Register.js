@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form, Button, Container, Row, Col, Alert } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { CartContext } from '../context/CartProvider';
+import { CartContext } from '../../context/CartProvider';
 import './Register.css';
 
 const Register = () => {

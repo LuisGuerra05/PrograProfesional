@@ -1,9 +1,9 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Button, Container, Row, Col, Card, Form, Alert, Image, InputGroup, Modal } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { CartContext } from '../context/CartProvider';
+import { CartContext } from '../../context/CartProvider';
 import { useTranslation } from 'react-i18next';
-import { handleOtpChange } from '../utils/otpUtils'; // Importa la función reutilizable
+import { handleOtpChange } from '../../utils/otpUtils'; // Importa la función reutilizable
 
 
 const Profile = () => {

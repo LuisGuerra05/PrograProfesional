@@ -5,8 +5,8 @@ import { Card, Button, Container, Row, Col, Modal, Form, Dropdown } from 'react-
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './ProductList.css';
-import { CartContext } from '../context/CartProvider';
-import { teamFolderMap, getImageUrl, getProductTranslationKey } from '../utils/imageHelpers';
+import { CartContext } from '../../context/CartProvider';
+import { teamFolderMap, getImageUrl, getProductTranslationKey } from '../../utils/imageHelpers';
 
 const ProductList = () => {
   const { addToCart } = useContext(CartContext);

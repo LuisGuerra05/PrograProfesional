@@ -2,7 +2,7 @@
 import React from 'react';
 import './AboutUs.css';
 import { useTranslation } from 'react-i18next';
-import { CLOUDINARY_BASE_URL } from '../utils/config';
+import { CLOUDINARY_BASE_URL } from '../../utils/config';
 
 function AboutUs() {
   const { t } = useTranslation();

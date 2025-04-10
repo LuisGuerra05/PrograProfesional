@@ -4,12 +4,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import { FaCartShopping } from "react-icons/fa6";
 import { CgProfile } from "react-icons/cg";
-import './App.css';
+import '../../styles/App.css';
 import './LanguageSwitch.css'; 
 import LanguageSwitcher from './LanguageSwitcher'; 
-import { CartContext } from './context/CartProvider'; // Importa el contexto del carrito
+import { CartContext } from '../../context/CartProvider'; // Importa el contexto del carrito
 import Footer from './Footer';  // Importa el footer
-import { CLOUDINARY_BASE_URL } from './utils/config';
+import { CLOUDINARY_BASE_URL } from '../../utils/config';
 
 function Layout({ children }) {
   const { t, i18n } = useTranslation();

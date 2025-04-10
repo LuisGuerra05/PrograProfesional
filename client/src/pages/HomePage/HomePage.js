@@ -1,8 +1,8 @@
 import React from 'react';
 import './HomePage.css';
-import PromotionsCarousel from './components/PromotionsCarousel';
+import PromotionsCarousel from '../../components/carousel/PromotionsCarousel';
 import { useTranslation } from 'react-i18next';
-import { teams } from './utils/imageHelpers';
+import { teams } from '../../utils/imageHelpers';
 
 function HomePage() {
   const { t } = useTranslation();

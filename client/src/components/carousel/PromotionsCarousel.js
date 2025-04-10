@@ -3,7 +3,7 @@ import { Carousel } from 'react-responsive-carousel';
 import { useTranslation } from 'react-i18next';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // Import the carousel styles
 import './PromotionsCarousel.css'; // Optional CSS file for custom styles
-import { CLOUDINARY_BASE_URL } from '../utils/config';
+import { CLOUDINARY_BASE_URL } from '../../utils/config';
 
 function PromotionsCarousel() {
   const { t } = useTranslation(); // Hook para la traducción

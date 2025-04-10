@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import ProductList from './ProductList';
+import ProductList from '../../components/product/ProductList';
 import { useLocation } from 'react-router-dom';
 
 const ProductsPage = () => {

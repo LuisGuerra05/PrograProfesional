@@ -1,13 +1,13 @@
 // frontend/components/Cart.js
 
 import React, { useContext, useState } from 'react';
-import { CartContext } from '../context/CartProvider';
+import { CartContext } from '../../context/CartProvider';
 import { Button, Container, Row, Col, Card, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { FaTrash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import '../App.css';
-import { getImageUrl, getProductTranslationKey } from '../utils/imageHelpers';
+import '../../styles/App.css';
+import { getImageUrl, getProductTranslationKey } from '../../utils/imageHelpers';
 
 const Cart = () => {
   const { cart, addToCart, removeFromCart, removeProduct, clearCart } = useContext(CartContext);

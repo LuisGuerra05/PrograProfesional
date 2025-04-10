@@ -2,13 +2,13 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import ProductCarousel from './ProductCarousel';
+import ProductCarousel from '../carousel/ProductCarousel';
 import './ProductDetail.css';
-import { CartContext } from '../context/CartProvider';
+import { CartContext } from '../../context/CartProvider';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import ProductReviews from './ProductReviews';
-import ReviewModal from './ReviewModal';
+import ProductReviews from '../review/ProductReviews';
+import ReviewModal from '../review/ReviewModal';
 
 const getProductTranslationKey = (name) => {
   if (name.includes('Local')) return 'Home Jersey';

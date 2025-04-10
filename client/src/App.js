@@ -2,18 +2,18 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import Layout from './Layout';
-import HomePage from './HomePage';
-import Register from './components/Register';
-import Login from './components/Login';
-import UserList from './components/UserList';
-import ProductPage from './components/ProductsPage';
-import ProductDetail from './components/ProductDetail';
-import Cart from './components/Cart';
-import Profile from './components/Profile';
-import AboutUs from './components/AboutUs';
-import ProtectedRoute from './ProtectedRoute';
-import { CartProvider } from './context/CartProvider'; // Importa el CartProvider
+import Layout from './components/common/Layout';
+import HomePage from './pages/HomePage/HomePage';
+import Register from './components/user/Register';
+import Login from './components/user/Login';
+import UserList from './components/user/UserList';
+import ProductPage from './pages/ProductsPage/ProductsPage';
+import ProductDetail from './components/product/ProductDetail';
+import Cart from './pages/Cart/Cart';
+import Profile from './components/user/Profile';
+import AboutUs from './pages/AboutUs/AboutUs';
+import ProtectedRoute from './routes/ProtectedRoute';
+import { CartProvider } from './context/CartProvider';
 
 
 function App() {
