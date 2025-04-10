@@ -155,5 +155,7 @@
     "review-submit-error": "Error submitting review: ",
     "review-deleted-success": "Review deleted successfully",
     "review-delete-error": "Error deleting review: ",
-    "confirm-delete-message": "Are you sure you want to delete your review?"
+    "confirm-delete-message": "Are you sure you want to delete your review?",
+
+     "loading-message": "Signing in..."
 }

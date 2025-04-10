@@ -3,10 +3,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Form, Button, Container, Row, Col, Alert, InputGroup, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { CartContext } from '../../context/CartProvider';
-import { toast, ToastContainer } from 'react-toastify'; // Importar react-toastify
-import 'react-toastify/dist/ReactToastify.css'; // Importar estilos de react-toastify
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; 
 import './Login.css';
-import { handleOtpChange } from '../../utils/otpUtils'; // Importa la función desde utils
+import { handleOtpChange } from '../../utils/otpUtils'; 
+import LoadingScreen from '../common/LoadingScreen';
 
 
 const Login = () => {
@@ -25,6 +26,8 @@ const Login = () => {
   const [recoveryError, setRecoveryError] = useState('');
 
   const { setIsLoggedIn } = useContext(CartContext);
+  const [isLoading, setIsLoading] = useState(false);
+
 
   useEffect(() => {
     if (attemptedSubmit) {
@@ -75,7 +78,14 @@ const Login = () => {
         localStorage.setItem('email', data.email);
         localStorage.setItem('address', data.address);
         setIsLoggedIn(true);
-        navigate('/profile');
+        
+        // Mostrar loading y luego navegar
+        setIsLoading(true);
+        setTimeout(() => {
+          setIsLoading(false);
+          navigate('/profile');
+        }, 2000); // 2 segundos simulados
+
       } else if (data.message === 'Se requiere código de autenticación') {
         setShowOtpField(true);
         localStorage.setItem('tempToken', data.tempToken); // 🔑 Guardar token temporal
@@ -107,7 +117,13 @@ const handleSendOTP = async () => {
         localStorage.setItem('token', data.token);
         localStorage.removeItem('tempToken');
         setIsLoggedIn(true);
-        navigate('/profile');
+        
+        // Mostrar pantalla de carga antes de navegar
+        setIsLoading(true);
+        setTimeout(() => {
+          setIsLoading(false);
+          navigate('/profile');
+        }, 2000);
       } else {
         setServerErrorKey(t('Incorrect OTP authentication code'));
       }
@@ -159,6 +175,8 @@ const handleRecoveryLogin = async () => {
 
   return (
     <>
+    {isLoading && <LoadingScreen />}
+
     <Container className="login-container" style={{ marginTop: '50px', maxWidth: '500px' }}>
       <Row className="justify-content-md-center">
         <Col>
