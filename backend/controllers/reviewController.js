@@ -39,7 +39,6 @@ exports.createReview = async (req, res) => {
         return res.status(400).json({ message: 'Tu comentario contiene información personal (correo o teléfono).' });
       }
 
-      /*
       // Evaluar con IA
       const moderationResult = await moderateComment(comment);
       if (moderationResult.flagged) {
@@ -48,7 +47,6 @@ exports.createReview = async (req, res) => {
           detalles: moderationResult.categories
         });
       }
-      */
 
       // Crear reseña si todo está bien
       Review.create(userId, productId, rating, comment, (err) => {
@@ -85,7 +83,7 @@ exports.updateReview = async (req, res) => {
       return res.status(400).json({ message: 'Tu comentario contiene información personal (correo o teléfono).' });
     }
 
-    /*
+    
     // Evaluar con IA
     const moderationResult = await moderateComment(comment);
     if (moderationResult.flagged) {
@@ -94,7 +92,7 @@ exports.updateReview = async (req, res) => {
         detalles: moderationResult.categories
       });
     }
-    */
+    
 
     // Actualizar reseña si todo está bien
     Review.update(userId, productId, rating, comment, (err, result) => {
