@@ -158,5 +158,8 @@
     "review-delete-error": "Error al eliminar la reseña: ",
     "confirm-delete-message": "¿Estás seguro de que deseas eliminar tu reseña?",
 
-    "loading-message": "Iniciando sesión..."
+    "loading-message": "Iniciando sesión...",
+    "review-blocked-inappropriate": "Tu comentario fue bloqueado por contenido inapropiado",
+    "review-blocked-personal-info": "Tu comentario contiene información personal (correo o teléfono)",
+    "review-error-generic": "Error al enviar la reseña. Intenta nuevamente"
 }

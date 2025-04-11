@@ -157,5 +157,8 @@
     "review-delete-error": "Error deleting review: ",
     "confirm-delete-message": "Are you sure you want to delete your review?",
 
-     "loading-message": "Signing in..."
+    "loading-message": "Signing in...",
+    "review-blocked-inappropriate": "Your comment was blocked due to inappropriate content",
+    "review-blocked-personal-info": "Your comment contains personal information (email or phone)",
+    "review-error-generic": "Failed to submit review. Please try again"
 }

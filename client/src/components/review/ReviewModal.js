@@ -63,7 +63,13 @@ const ReviewModal = ({ productId, onClose, hasReviewed = false, onReviewSubmitte
       if (data.detalles) {
         console.log('📋 Categorías detectadas por la IA:', data.detalles);
       }
-      setErrorMessage('Error al enviar la reseña: ' + (data.message || ''));
+      if (data.message?.includes('contenido inapropiado')) {
+        setErrorMessage(t('review-blocked-inappropriate'));
+      } else if (data.message?.includes('información personal')) {
+        setErrorMessage(t('review-blocked-personal-info'));
+      } else {
+        setErrorMessage(t('review-error-generic'));
+      }      
     }    
   };
 
