@@ -37,6 +37,12 @@ Puedes ver el video de la entrega final aquí: [Link Video Entrega Final](https:
 
 Este proyecto es una tienda de camisetas de fútbol en línea que cumple con los requisitos de diseño y funcionalidad requeridos. El objetivo principal es proporcionar una experiencia de usuario fluida y atractiva, permitiendo a los usuarios navegar por una amplia selección de camisetas, gestionar su carrito de compras y completar transacciones de manera segura.
 
+## Estructura del Proyecto
+La estructura completa del proyecto, incluyendo detalles sobre las carpetas y archivos principales, está documentada en Confluence. Puedes consultarla en el siguiente enlace:
+[Estructura del Frontend - Confluence](https://epic-kick.atlassian.net/wiki/spaces/~71202023faf5519c4b406e8bf88f79d6868aec/pages/327682/Estructura+del+Proyecto+Frontend?atlOrigin=eyJpIjoiYjhhZjYzNzcyNmZiNDI2OTkzMDBiZDg3YzExYWI4NjAiLCJwIjoiaiJ9)
+[Estructura del Backend - Confluence](https://epic-kick.atlassian.net/wiki/spaces/~71202023faf5519c4b406e8bf88f79d6868aec/pages/2326531/Estructura+del+Proyecto+Backend?atlOrigin=eyJpIjoiMjM1M2FiZGFjODE0NGYyNmJkYTM5YjM0OGZiM2U1YmMiLCJwIjoiaiJ9)
+
+
 ## Características Principales
 - **Autenticación de Usuarios**: Los usuarios pueden registrarse y acceder a su cuenta utilizando un sistema seguro de autenticación con contraseñas cifradas en la base de datos, y validación mediante JWT (JSON Web Tokens).
 
