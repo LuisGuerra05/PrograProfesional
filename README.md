@@ -13,6 +13,7 @@ Puedes ver el video de la entrega final aquí: [Link Video Entrega Final](https:
 - [Proyecto Semestral - Tienda de Camisetas de Fútbol](#proyecto-semestral---tienda-de-camisetas-de-fútbol)
   - [Tabla de contenidos](#tabla-de-contenidos)
   - [Descripción del Proyecto](#descripción-del-proyecto)
+  - [Estructura del Proyecto](#estructura-del-proyecto)
   - [Características Principales](#características-principales)
   - [Funcionalidades Desarrolladas](#funcionalidades-desarrolladas)
     - [1. Autenticación en dos pasos (2FA) para los usuarios](#1-autenticación-en-dos-pasos-2fa-para-los-usuarios)
@@ -39,8 +40,8 @@ Este proyecto es una tienda de camisetas de fútbol en línea que cumple con los
 
 ## Estructura del Proyecto
 La estructura completa del proyecto, incluyendo detalles sobre las carpetas y archivos principales, está documentada en Confluence. Puedes consultarla en el siguiente enlace:
-[Estructura del Frontend - Confluence](https://epic-kick.atlassian.net/wiki/spaces/~71202023faf5519c4b406e8bf88f79d6868aec/pages/327682/Estructura+del+Proyecto+Frontend?atlOrigin=eyJpIjoiYjhhZjYzNzcyNmZiNDI2OTkzMDBiZDg3YzExYWI4NjAiLCJwIjoiaiJ9)
-[Estructura del Backend - Confluence](https://epic-kick.atlassian.net/wiki/spaces/~71202023faf5519c4b406e8bf88f79d6868aec/pages/2326531/Estructura+del+Proyecto+Backend?atlOrigin=eyJpIjoiMjM1M2FiZGFjODE0NGYyNmJkYTM5YjM0OGZiM2U1YmMiLCJwIjoiaiJ9)
+[Estructura del Frontend - Confluence](https://epic-kick.atlassian.net/wiki/x/AgAF)
+[Estructura del Backend - Confluence](https://epic-kick.atlassian.net/wiki/x/DYAv)
 
 
 ## Características Principales
