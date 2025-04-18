@@ -9,27 +9,6 @@ const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
 
-  // Verifica si el token es válido
-  const validateToken = async () => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      setIsLoggedIn(false);
-      return;
-    }
-
-    try {
-      await axios.get('http://localhost:5000/api/auth/validate-token', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setIsLoggedIn(true);
-    } catch (error) {
-      console.warn('Token inválido o expirado. Haciendo logout automático.');
-      localStorage.clear();
-      setIsLoggedIn(false);
-      setCart([]);
-    }
-  };
-
   const isUserLoggedIn = () => {
     return !!localStorage.getItem('token');
   };
@@ -49,8 +28,6 @@ const CartProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    validateToken(); // Revisión inicial del token al cargar
-
     if (isLoggedIn) {
       loadCartFromDatabase();
     } else {
@@ -58,6 +35,28 @@ const CartProvider = ({ children }) => {
       setCart(storedCart);
     }
   }, [isLoggedIn]);
+
+  // 🆕 Validación del token al cargar la app
+  useEffect(() => {
+    const validateToken = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) return;
+
+      try {
+        await axios.get('http://localhost:5000/api/auth/validate-token', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        // Token válido, no se hace nada
+      } catch (error) {
+        console.warn('🔐 Token inválido o expirado. Haciendo logout automático.');
+        localStorage.clear();
+        setIsLoggedIn(false);
+        setCart([]);
+      }
+    };
+
+    validateToken();
+  }, []);
 
   const addToCart = (product, selectedSize) => {
     if (isUserLoggedIn()) {
