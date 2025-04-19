@@ -16,9 +16,10 @@ const Register = () => {
   const [error, setError] = useState('');
   const [fieldErrors, setFieldErrors] = useState({});
   const [emailExistsError, setEmailExistsError] = useState('');
+  
 
   const navigate = useNavigate();
-  const { setIsLoggedIn } = useContext(CartContext);
+  const { setIsLoggedIn, loadCartFromDatabase } = useContext(CartContext);
 
   // Actualización de mensajes de error al cambiar el idioma
   useEffect(() => {
@@ -163,8 +164,30 @@ const Register = () => {
         localStorage.setItem('username', data.username);
         localStorage.setItem('email', trimmedEmail);
         localStorage.setItem('address', trimmedAddress);
-
+      
         setIsLoggedIn(true);
+      
+        // Hacer merge del carrito local si existe
+        const guestCart = JSON.parse(localStorage.getItem('cart')) || [];
+        if (guestCart.length > 0) {
+          try {
+            await fetch('http://localhost:5000/api/cart/merge', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${data.token}`,
+              },
+              body: JSON.stringify({ guestCart }),
+            });
+            localStorage.removeItem('cart');
+          } catch (mergeError) {
+            console.error('Error al fusionar el carrito después del registro:', mergeError);
+          }
+        }
+
+        // 🛒 Forzar recarga del carrito desde la base de datos
+        loadCartFromDatabase();
+
         navigate('/');
       } else {
         setError(t('Unknown registration error.'));
