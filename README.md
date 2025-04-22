@@ -1,16 +1,22 @@
-# Proyecto Semestral - Tienda de Camisetas de Fútbol
+# Proyecto Semestral - EPIC KICK: Tienda de Camisetas de Fútbol
 
 Este proyecto es un sitio web de e-commerce para la venta de camisetas de fútbol. Está desarrollado con **Node.js** y **Express** en el backend, y **React** en el frontend. La base de datos utilizada es **MySQL**.
 
-Puedes ver el video de la primera entrega aquí: [Link Video Primera Entrega](https://www.youtube.com/watch?v=5kOdmAvwMZs&ab_channel=LuisGuerra)
+Este proyecto se desarrolla de forma continua a través de dos ramos distintos:
 
-Puedes ver el video de la entrega final aquí: [Link Video Entrega Final](https://www.youtube.com/watch?v=DFOU04Sa63g&ab_channel=LuisGuerra)
+- **Diseño de Software 2024-2** (UAI)  
+  - Primera entrega: [Ver video](https://www.youtube.com/watch?v=5kOdmAvwMZs&ab_channel=LuisGuerra)  
+  - Entrega final: [Ver video](https://www.youtube.com/watch?v=DFOU04Sa63g&ab_channel=LuisGuerra)
+
+- **Programación Profesional 2025-1** (UAI)  
+  - Primera entrega: [Ver video](https://youtu.be/4sm-HUOfB5o)
 
 ---
 
+
 ## Tabla de contenidos
 
-- [Proyecto Semestral - Tienda de Camisetas de Fútbol](#proyecto-semestral---tienda-de-camisetas-de-fútbol)
+- [Proyecto Semestral - EPIC KICK: Tienda de Camisetas de Fútbol](#proyecto-semestral---epic-kick-tienda-de-camisetas-de-fútbol)
   - [Tabla de contenidos](#tabla-de-contenidos)
   - [Descripción del Proyecto](#descripción-del-proyecto)
   - [Estructura del Proyecto](#estructura-del-proyecto)
