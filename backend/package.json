@@ -10,6 +10,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "algoliasearch": "^4.14.2",
     "async": "^3.2.6",
     "axios": "^1.8.4",
     "bcrypt": "^5.1.1",
