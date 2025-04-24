@@ -1,13 +1,16 @@
+// 🔁 AlgoliaWrapper.js (completo y corregido)
 import React from 'react';
 import algoliasearch from 'algoliasearch/lite';
 import {
   InstantSearch,
   SearchBox,
-  connectHits
+  connectHits,
+  Configure,
+  Panel
 } from 'react-instantsearch-dom';
 
 import ProductList from '../product/ProductList';
-import AlgoliaTeamFilter from '../search/AlgoliaTeamFilter'; // nuevo filtro
+import AlgoliaTeamFilter from '../search/AlgoliaTeamFilter';
 
 const searchClient = algoliasearch(
   process.env.REACT_APP_ALGOLIA_APP_ID,
@@ -24,14 +27,18 @@ const AlgoliaWrapper = () => {
       searchClient={searchClient}
       indexName={process.env.REACT_APP_ALGOLIA_INDEX_NAME}
     >
+      <Configure hitsPerPage={100} />
+
       <div className="row" style={{ padding: '0 30px' }}>
-        {/* Filtro de equipo (columna izquierda) */}
-        <div className="col-xl-3 mb-3">
-        <AlgoliaTeamFilter attribute="team" />
+        {/* Filtro de equipo (izquierda) */}
+        <div className="col-12 col-md-4 col-lg-3 mb-3">
+          <Panel header="" collapsed={false}>
+            <AlgoliaTeamFilter attribute="team" />
+          </Panel>
         </div>
 
-        {/* Buscador + resultados (columna derecha) */}
-        <div className="col-xl-9">
+        {/* Resultados (derecha) */}
+        <div className="col-12 col-md-8 col-lg-9">
           <div style={{ marginBottom: '10px' }}>
             <SearchBox
               translations={{ placeholder: 'Buscar camisetas...' }}
