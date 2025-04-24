@@ -1,4 +1,4 @@
-// 🔁 AlgoliaWrapper.js (completo y corregido)
+// 🔁 AlgoliaWrapper.js (con paginación)
 import React from 'react';
 import algoliasearch from 'algoliasearch/lite';
 import {
@@ -6,9 +6,12 @@ import {
   SearchBox,
   connectHits,
   Configure,
-  Panel
+  Panel,
+  Pagination
 } from 'react-instantsearch-dom';
 import { useTranslation } from 'react-i18next';
+import '../../styles/pagination.css'; // Ajusta la ruta relativa
+
 
 import ProductList from '../product/ProductList';
 import AlgoliaTeamFilter from '../search/AlgoliaTeamFilter';
@@ -30,7 +33,7 @@ const AlgoliaWrapper = () => {
       searchClient={searchClient}
       indexName={process.env.REACT_APP_ALGOLIA_INDEX_NAME}
     >
-      <Configure hitsPerPage={100} />
+      <Configure hitsPerPage={20} /> {/* Limitar los productos a mostrar por página */}
 
       <div className="row" style={{ padding: '0 30px' }}>
         {/* Filtro de equipo (izquierda) */}
@@ -49,6 +52,12 @@ const AlgoliaWrapper = () => {
             />
           </div>
           <CustomHits />
+          {/* Paginación */}
+          <Pagination
+            showLast={true}
+            showFirst={true}
+            padding={2}
+          />
         </div>
       </div>
     </InstantSearch>
