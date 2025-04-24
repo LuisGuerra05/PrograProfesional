@@ -161,5 +161,7 @@
     "loading-message": "Iniciando sesión...",
     "review-blocked-inappropriate": "Tu comentario fue bloqueado por contenido inapropiado",
     "review-blocked-personal-info": "Tu comentario contiene información personal (correo o teléfono)",
-    "review-error-generic": "Error al enviar la reseña. Intenta nuevamente"
+    "review-error-generic": "Error al enviar la reseña. Intenta nuevamente",
+
+    "searchPlaceholder": "Buscar camisetas..."
 }

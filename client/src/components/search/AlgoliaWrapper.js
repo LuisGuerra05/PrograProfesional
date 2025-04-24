@@ -8,6 +8,7 @@ import {
   Configure,
   Panel
 } from 'react-instantsearch-dom';
+import { useTranslation } from 'react-i18next';
 
 import ProductList from '../product/ProductList';
 import AlgoliaTeamFilter from '../search/AlgoliaTeamFilter';
@@ -22,6 +23,8 @@ const CustomHits = connectHits(({ hits }) => {
 });
 
 const AlgoliaWrapper = () => {
+  const { t } = useTranslation();
+
   return (
     <InstantSearch
       searchClient={searchClient}
@@ -41,7 +44,7 @@ const AlgoliaWrapper = () => {
         <div className="col-12 col-md-8 col-lg-9">
           <div style={{ marginBottom: '10px' }}>
             <SearchBox
-              translations={{ placeholder: 'Buscar camisetas...' }}
+              translations={{ placeholder: t('searchPlaceholder') }}
               className="form-control mb-4"
             />
           </div>
