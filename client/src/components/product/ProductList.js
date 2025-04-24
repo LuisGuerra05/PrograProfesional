@@ -1,78 +1,27 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router-dom';
-import { Card, Button, Container, Row, Col, Modal, Form, Dropdown } from 'react-bootstrap';
+import { Card, Button, Container, Row, Col, Modal } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './ProductList.css';
 import { CartContext } from '../../context/CartProvider';
-import { teamFolderMap, getImageUrl, getProductTranslationKey } from '../../utils/imageHelpers';
+import { getImageUrl, getProductTranslationKey } from '../../utils/imageHelpers';
 
 const ProductList = ({ products: externalProducts }) => {
   const { addToCart } = useContext(CartContext);
-  const [products, setProducts] = useState([]);
+  const [, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
-  const [selectedTeams, setSelectedTeams] = useState(Object.keys(teamFolderMap));
-  const [selectAll, setSelectAll] = useState(true);
   const { t } = useTranslation();
-  const location = useLocation();
 
   useEffect(() => {
     if (externalProducts) {
       setProducts(externalProducts);
       setFilteredProducts(externalProducts);
-      return;
     }
-
-    fetch('http://localhost:5000/api/products')
-      .then(response => response.json())
-      .then(data => {
-        setProducts(data);
-        const params = new URLSearchParams(location.search);
-        const teamParam = params.get('team');
-
-        if (teamParam) {
-          setSelectedTeams([teamParam]);
-          setFilteredProducts(data.filter(product => product.team === teamParam));
-          setSelectAll(false);
-        } else {
-          setFilteredProducts(data);
-        }
-      })
-      .catch(error => console.error('Error al cargar los productos:', error));
-  }, [location.search, externalProducts]);
-
-  const handleTeamCheckboxChange = (team) => {
-    let newSelectedTeams;
-    if (team === 'all') {
-      if (selectAll) {
-        newSelectedTeams = [];
-        setSelectAll(false);
-      } else {
-        newSelectedTeams = Object.keys(teamFolderMap);
-        setSelectAll(true);
-      }
-    } else {
-      newSelectedTeams = selectedTeams.includes(team)
-        ? selectedTeams.filter((t) => t !== team)
-        : [...selectedTeams, team];
-      setSelectAll(newSelectedTeams.length === Object.keys(teamFolderMap).length);
-    }
-
-    setSelectedTeams(newSelectedTeams);
-
-    if (newSelectedTeams.length > 0) {
-      const filtered = products.filter(product =>
-        newSelectedTeams.some(selectedTeam => selectedTeam.toLowerCase() === product.team.toLowerCase())
-      );
-      setFilteredProducts(filtered);
-    } else {
-      setFilteredProducts([]);
-    }
-  };
+  }, [externalProducts]);
 
   const handleAddToCart = (e, product) => {
     e.stopPropagation();
@@ -109,59 +58,7 @@ const ProductList = ({ products: externalProducts }) => {
     <Container fluid style={{ paddingTop: '45px' }}>
       <ToastContainer />
       <Row className="product-list-row">
-        <Col lg={12} className="dropdown-filter">
-          <Dropdown>
-            <Dropdown.Toggle variant="outline-secondary" className="dropdown-button">
-              {t('Filter by team')}
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <Form.Check
-                type="checkbox"
-                label="Todos"
-                value="all"
-                onChange={() => handleTeamCheckboxChange('all')}
-                checked={selectAll}
-              />
-              {Object.keys(teamFolderMap).map((team) => (
-                <Form.Check 
-                  key={team}
-                  type="checkbox"
-                  label={team}
-                  value={team}
-                  onChange={() => handleTeamCheckboxChange(team)}
-                  checked={selectedTeams.includes(team)}
-                />
-              ))}
-            </Dropdown.Menu>
-          </Dropdown>
-        </Col>
-
-        <Col xl={3} className="team-filter">
-          <div className="checkbox-container">
-            <Form.Group>
-              <Form.Label>{t('Filter by team')}</Form.Label>
-              <Form.Check
-                type="checkbox"
-                label={t('All')}
-                value="all"
-                onChange={() => handleTeamCheckboxChange('all')}
-                checked={selectAll}
-              />
-              {Object.keys(teamFolderMap).map((team) => (
-                <Form.Check 
-                  key={team}
-                  type="checkbox"
-                  label={team}
-                  value={team}
-                  onChange={() => handleTeamCheckboxChange(team)}
-                  checked={selectedTeams.includes(team)}
-                />
-              ))}
-            </Form.Group>
-          </div>
-        </Col>
-
-        <Col xl={9} className="col-products">
+        <Col xl={12} className="col-products">
           <Row>
             {filteredProducts.length > 0 ? (
               filteredProducts.map(product => (

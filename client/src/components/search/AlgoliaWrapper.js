@@ -7,6 +7,7 @@ import {
 } from 'react-instantsearch-dom';
 
 import ProductList from '../product/ProductList';
+import AlgoliaTeamFilter from '../search/AlgoliaTeamFilter'; // nuevo filtro
 
 const searchClient = algoliasearch(
   process.env.REACT_APP_ALGOLIA_APP_ID,
@@ -14,23 +15,34 @@ const searchClient = algoliasearch(
 );
 
 const CustomHits = connectHits(({ hits }) => {
-  console.log("📦 Resultados desde Algolia:", hits);
   return <ProductList products={hits} />;
 });
 
 const AlgoliaWrapper = () => {
   return (
-    <InstantSearch searchClient={searchClient} indexName={process.env.REACT_APP_ALGOLIA_INDEX_NAME}>
-      <div style={{ padding: '0 30px', marginBottom: '10px' }}>
-        <SearchBox
-          translations={{ placeholder: 'Buscar camisetas...' }}
-          className="form-control mb-4"
-        />
+    <InstantSearch
+      searchClient={searchClient}
+      indexName={process.env.REACT_APP_ALGOLIA_INDEX_NAME}
+    >
+      <div className="row" style={{ padding: '0 30px' }}>
+        {/* Filtro de equipo (columna izquierda) */}
+        <div className="col-xl-3 mb-3">
+        <AlgoliaTeamFilter attribute="team" />
+        </div>
+
+        {/* Buscador + resultados (columna derecha) */}
+        <div className="col-xl-9">
+          <div style={{ marginBottom: '10px' }}>
+            <SearchBox
+              translations={{ placeholder: 'Buscar camisetas...' }}
+              className="form-control mb-4"
+            />
+          </div>
+          <CustomHits />
+        </div>
       </div>
-      <CustomHits />
     </InstantSearch>
   );
 };
 
 export default AlgoliaWrapper;
-
