@@ -1,4 +1,3 @@
-// src/components/search/AlgoliaWrapper.js
 import React from 'react';
 import algoliasearch from 'algoliasearch/lite';
 import {
@@ -6,6 +5,7 @@ import {
   SearchBox,
   connectHits
 } from 'react-instantsearch-dom';
+
 import ProductList from '../product/ProductList';
 
 const searchClient = algoliasearch(
@@ -14,6 +14,7 @@ const searchClient = algoliasearch(
 );
 
 const CustomHits = connectHits(({ hits }) => {
+  console.log("📦 Resultados desde Algolia:", hits);
   return <ProductList products={hits} />;
 });
 
@@ -32,3 +33,4 @@ const AlgoliaWrapper = () => {
 };
 
 export default AlgoliaWrapper;
+

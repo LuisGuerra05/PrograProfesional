@@ -8,7 +8,7 @@ import './ProductList.css';
 import { CartContext } from '../../context/CartProvider';
 import { teamFolderMap, getImageUrl, getProductTranslationKey } from '../../utils/imageHelpers';
 
-const ProductList = () => {
+const ProductList = ({ products: externalProducts }) => {
   const { addToCart } = useContext(CartContext);
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -21,12 +21,16 @@ const ProductList = () => {
   const location = useLocation();
 
   useEffect(() => {
+    if (externalProducts) {
+      setProducts(externalProducts);
+      setFilteredProducts(externalProducts);
+      return;
+    }
+
     fetch('http://localhost:5000/api/products')
       .then(response => response.json())
       .then(data => {
         setProducts(data);
-
-        // Filtrar automáticamente si se especifica un equipo en la URL
         const params = new URLSearchParams(location.search);
         const teamParam = params.get('team');
 
@@ -39,7 +43,7 @@ const ProductList = () => {
         }
       })
       .catch(error => console.error('Error al cargar los productos:', error));
-  }, [location.search]);
+  }, [location.search, externalProducts]);
 
   const handleTeamCheckboxChange = (team) => {
     let newSelectedTeams;
@@ -103,15 +107,13 @@ const ProductList = () => {
 
   return (
     <Container fluid style={{ paddingTop: '45px' }}>
-      <ToastContainer /> {/* Contenedor para las notificaciones */}
+      <ToastContainer />
       <Row className="product-list-row">
-        {/* Dropdown para pantallas lg y más pequeñas */}
-        <Col lg={12} className="dropdown-filter"> 
+        <Col lg={12} className="dropdown-filter">
           <Dropdown>
             <Dropdown.Toggle variant="outline-secondary" className="dropdown-button">
               {t('Filter by team')}
             </Dropdown.Toggle>
-
             <Dropdown.Menu>
               <Form.Check
                 type="checkbox"
@@ -134,8 +136,7 @@ const ProductList = () => {
           </Dropdown>
         </Col>
 
-        {/* Columna para el filtro de equipos para pantallas xl y más grandes */}
-        <Col xl={3} className="team-filter"> 
+        <Col xl={3} className="team-filter">
           <div className="checkbox-container">
             <Form.Group>
               <Form.Label>{t('Filter by team')}</Form.Label>
@@ -160,16 +161,12 @@ const ProductList = () => {
           </div>
         </Col>
 
-        {/* Columna para la lista de productos */}
         <Col xl={9} className="col-products">
           <Row>
             {filteredProducts.length > 0 ? (
               filteredProducts.map(product => (
-                <Col
-                  key={product.id}
-                  xs={12} sm={12} md={6} lg={4} xl={3} className="mb-4"
-                >
-                  <Card className="h-100 clickable-card" onClick={() => window.location.href = `/product/${product.id}`}>
+                <Col key={product.id || product.objectID} xs={12} sm={12} md={6} lg={4} xl={3} className="mb-4">
+                  <Card className="h-100 clickable-card" onClick={() => window.location.href = `/product/${product.id || product.objectID}`}>
                     <Card.Img
                       variant="top"
                       src={getImageUrl(product.team, product.name)}
@@ -194,19 +191,20 @@ const ProductList = () => {
                 </Col>
               ))
             ) : (
-              <p>{t('no-products')}</p>
+              <p style={{ paddingLeft: '15px' }}>{t('no-products')}</p>
             )}
           </Row>
         </Col>
       </Row>
 
-      {/* Modal para seleccionar talla y agregar al carrito */}
       <Modal show={!!selectedProduct} onHide={handleClose} className="fixed-size-modal">
         <Modal.Header closeButton>
           <Modal.Title>
             <span style={{ fontSize: '1.2em' }}>{selectedProduct?.team}</span>
             <br />
-            <span style={{ fontSize: '0.8em', color: '#555' }}>{t(getProductTranslationKey(selectedProduct?.name))} 2024-2025</span>
+            <span style={{ fontSize: '0.8em', color: '#555' }}>
+              {t(getProductTranslationKey(selectedProduct?.name))} 2024-2025
+            </span>
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -229,9 +227,7 @@ const ProductList = () => {
             </div>
 
             {errorMessage && (
-              <p style={{ color: 'red', marginTop: '10px' }}>
-                {errorMessage}
-              </p>
+              <p style={{ color: 'red', marginTop: '10px' }}>{errorMessage}</p>
             )}
           </div>
         </Modal.Body>
