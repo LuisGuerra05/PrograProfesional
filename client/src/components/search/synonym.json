@@ -1,0 +1,23 @@
+[
+    {
+      "type": "synonym",
+      "synonyms": ["local", "home"]
+    },
+    {
+      "type": "synonym",
+      "synonyms": ["visita", "away"]
+    },
+    {
+      "type": "synonym",
+      "synonyms": ["tercera", "third"]
+    },
+    {
+      "type": "synonym",
+      "synonyms": ["cuarta", "fourth"]
+    },
+    {
+      "type": "synonym",
+      "synonyms": ["portero", "goalkeeper"]
+    }
+  ]
+  
