@@ -21,8 +21,15 @@ jobs:
         with:
           node-version: '18.x'
 
-      - name: Install dependencies
+      # Install dependencies for the backend
+      - name: Install backend dependencies
         run: npm install
+        working-directory: ./backend
+
+      # Install dependencies for the client
+      - name: Install client dependencies
+        run: npm install
+        working-directory: ./client
 
       - name: Zip project
         run: zip -r release.zip ./*
@@ -34,5 +41,3 @@ jobs:
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: release.zip
-
-          
