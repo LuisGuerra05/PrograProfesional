@@ -91,15 +91,16 @@ const Cart = () => {
                   <Col xs={12} sm={4} className="text-center text-sm-right d-flex align-items-center justify-content-sm-end">
                     {/* Botón de disminuir cantidad */}
                     <Button 
-                      variant="outline-secondary" 
+                      variant="secondary" 
                       onClick={() => removeFromCart(product_id, size)} 
+                      style={{ padding: '4px 10px', fontSize: '16px' }}
                     >
                       -
                     </Button>
                     <p className="mb-0 mx-2">{t('quantity')}: {product.quantity}</p>
                     {/* Botón de aumentar cantidad */}
                     <Button 
-                      variant="outline-secondary" 
+                      variant="secondary" 
                       onClick={() => addToCart({
                         id: product_id,
                         name: product.name,
@@ -107,6 +108,7 @@ const Cart = () => {
                         brand: product.brand,
                         price: product.price
                       }, size)}
+                      style={{ padding: '4px 10px', fontSize: '16px' }}
                     >
                       +
                     </Button>
