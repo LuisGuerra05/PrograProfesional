@@ -6,6 +6,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import './ProductList.css';
 import { CartContext } from '../../context/CartProvider';
 import { getImageUrl, getProductTranslationKey } from '../../utils/imageHelpers';
+import { Spinner } from 'react-bootstrap';
+
 
 const ProductList = ({ products: externalProducts }) => {
   const { addToCart } = useContext(CartContext);
@@ -88,7 +90,10 @@ const ProductList = ({ products: externalProducts }) => {
                 </Col>
               ))
             ) : (
-              <p style={{ paddingLeft: '15px' }}>{t('no-products')}</p>
+              <div className="text-center py-5 d-flex justify-content-center align-items-center gap-2">
+                <Spinner animation="border" role="status" size="sm" />
+                <span>{t('loading-products')}</span>
+              </div>
             )}
           </Row>
         </Col>

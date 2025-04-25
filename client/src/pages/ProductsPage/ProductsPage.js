@@ -1,5 +1,3 @@
-// src/routes/ProductsPage.js
-
 import React from 'react';
 import AlgoliaWrapper from '../../components/search/AlgoliaWrapper';
 

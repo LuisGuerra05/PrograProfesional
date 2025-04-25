@@ -163,5 +163,6 @@
     "review-error-generic": "Failed to submit review. Please try again",
 
     "searchPlaceholder": "Search jerseys...",
-    "no-options": "No options available"
+    "no-options": "No options available",
+    "loading-products": "Loading products..."
 }

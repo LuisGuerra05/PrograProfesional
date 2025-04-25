@@ -164,5 +164,6 @@
     "review-error-generic": "Error al enviar la reseña. Intenta nuevamente",
 
     "searchPlaceholder": "Buscar camisetas...",
-    "no-options": "No hay opciones disponibles"
+    "no-options": "No hay opciones disponibles",
+    "loading-products": "Cargando productos..."
 }
