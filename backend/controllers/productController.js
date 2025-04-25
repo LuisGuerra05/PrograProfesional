@@ -5,12 +5,13 @@ const getAllProducts = (req, res) => {
   const sql = 'SELECT * FROM products';
   db.query(sql, (err, results) => {
     if (err) {
-      console.error('Error obteniendo productos:', err);
+      console.error('Error en GET /api/products:', err);
       return res.status(500).json({ message: 'Error en el servidor' });
     }
     res.json(results);
   });
 };
+
 
 // Obtener un producto por ID
 const getProductById = (req, res) => {
