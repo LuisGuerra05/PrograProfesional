@@ -14,7 +14,6 @@ import '../../styles/pagination.css';
 import '../../styles/search.css';
 import { Spinner } from 'react-bootstrap';
 
-
 import ProductList from '../product/ProductList';
 import AlgoliaTeamFilter from '../search/AlgoliaTeamFilter';
 import { useLocation } from 'react-router-dom';
@@ -35,7 +34,6 @@ const CustomHits = connectHits(({ hits, searchState, searchResults }) => {
 
   if (hasAnyFilter && isLoading) return null;
 
-  // Mostrar mensaje si hay filtro y no se encontraron productos
   if (hasAnyFilter && hits.length === 0) {
     return (
       <div className="text-center py-5">
@@ -44,7 +42,6 @@ const CustomHits = connectHits(({ hits, searchState, searchResults }) => {
     );
   }
 
-  // Mostrar productos normalmente
   return <ProductList products={hits} />;
 });
 
@@ -53,17 +50,14 @@ const AlgoliaWrapper = () => {
   const location = useLocation();
   const [teamParamReady, setTeamParamReady] = useState(false);
 
-  // Detectar si venimos con un parámetro de equipo en la URL
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const teamParam = params.get('team');
 
     if (teamParam) {
-      // Esperar para que se aplique el filtro en AlgoliaTeamFilter
       const timer = setTimeout(() => {
         setTeamParamReady(true);
       }, 300);
-
       return () => clearTimeout(timer);
     } else {
       setTeamParamReady(true);
@@ -78,7 +72,6 @@ const AlgoliaWrapper = () => {
           <span>{t('loading-products')}</span>
         </div>
       );
-      
     }
 
     return <CustomHits searchState={searchState} searchResults={searchResults} />;
@@ -107,6 +100,18 @@ const AlgoliaWrapper = () => {
           </div>
 
           <ResultsWithState />
+
+          {/* Logo requerido por el plan gratuito de Algolia */}
+          <div className="text-center mt-4 mb-2">
+            <a
+              href="https://www.algolia.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ fontSize: '12px', color: '#aaa' }}
+            >
+              Search powered by <strong>Algolia</strong>
+            </a>
+          </div>
 
           <Pagination showLast={true} showFirst={true} padding={2} />
         </div>
