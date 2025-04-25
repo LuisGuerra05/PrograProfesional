@@ -1,0 +1,58 @@
+/* Estilos para la barra de búsqueda */
+.ais-SearchBox input {
+    width: 100%;
+    max-width: 500px; /* Limita el ancho máximo de la barra */
+    padding: 10px 15px;
+    border-radius: 25px;
+    border: 1px solid #ccc; /* Borde gris */
+    font-size: 16px;
+    background-color: #f8f9fa;
+    transition: all 0.3s ease;
+    outline: none; /* Elimina el contorno por defecto */
+}
+
+.ais-SearchBox input:focus {
+    border-color: #007bff; /* Borde azul cuando está enfocado */
+    background-color: #ffffff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.5); /* Sombra azul */
+}
+
+.ais-SearchBox input::placeholder {
+    color: #888;
+    font-style: italic;
+}
+
+/* Estilos para el icono de búsqueda */
+.ais-SearchBox .ais-SearchBox-submit {
+    background-color: transparent; /* Fondo transparente para el icono */
+    border: 2px solid #007bff; /* Borde azul solo para el icono */
+    color: #007bff; /* Color del icono azul */
+    padding: 6px 12px;
+    font-size: 16px;
+    border-radius: 50%; /* Hace que el botón sea circular */
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, opacity 0.3s ease; /* Añadimos transición en opacidad */
+    margin-left: 10px; /* Ajusta la distancia entre la lupa y la barra */
+}
+
+/* Hover del icono de búsqueda */
+.ais-SearchBox .ais-SearchBox-submit:hover {
+    background-color: rgba(0, 123, 255, 0.1); /* Fondo azul más suave con opacidad */
+    color: #007bff; /* El color del icono se mantiene azul */
+    opacity: 0.8; /* Más opacidad al pasar el mouse */
+}
+
+/* Focus del icono de búsqueda */
+.ais-SearchBox .ais-SearchBox-submit:focus {
+    outline: none;
+}
+
+/* Si quieres poner un borde más pequeño alrededor del icono de búsqueda */
+.ais-SearchBox .ais-SearchBox-submit:active {
+    border: 2px solid #0056b3; /* Un borde más oscuro cuando se hace clic */
+}
+
+/* Evitar la "X" en el input de búsqueda */
+.ais-SearchBox .ais-SearchBox-reset {
+    display: none; /* Oculta el botón de reset (la "X") */
+}

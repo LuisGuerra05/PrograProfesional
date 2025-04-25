@@ -10,8 +10,8 @@ import {
   Pagination
 } from 'react-instantsearch-dom';
 import { useTranslation } from 'react-i18next';
-import '../../styles/pagination.css'; // Ajusta la ruta relativa
-
+import '../../styles/pagination.css'; 
+import '../../styles/search.css';
 
 import ProductList from '../product/ProductList';
 import AlgoliaTeamFilter from '../search/AlgoliaTeamFilter';
