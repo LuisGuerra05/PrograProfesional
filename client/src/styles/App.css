@@ -208,5 +208,10 @@ button.custom-blue-btn:focus, button.custom-blue-btn:active, .modal-footer butto
   box-shadow: none;
 }
 
-
+/* Estilo personalizado para el header del Accordion */
+.accordion-button:not(.collapsed) {
+  background-color: transparent !important; /* Mantiene el fondo transparente */
+  color: inherit !important; /* Mantiene el color original del texto */
+  box-shadow: none !important; /* Elimina el efecto de sombra */
+}
 
