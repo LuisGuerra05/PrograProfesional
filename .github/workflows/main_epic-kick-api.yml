@@ -13,7 +13,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: read #This is required for actions/checkout
+      contents: read
 
     steps:
       - uses: actions/checkout@v4
@@ -23,8 +23,20 @@ jobs:
         with:
           node-version: '18.x'
 
+      - name: Install dependencies
+        run: |
+          cd backend
+          npm install
+
+      - name: Check backend content
+        run: |
+          cd backend
+          ls -la
+
       - name: Zip artifact for deployment
-        run: zip release.zip ./* -r
+        run: |
+          cd backend
+          zip -r ../release.zip .
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -39,8 +51,8 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write #This is required for requesting the JWT
-      contents: read #This is required for actions/checkout
+      id-token: write
+      contents: read
 
     steps:
       - name: Download artifact from build job
@@ -50,13 +62,14 @@ jobs:
 
       - name: Unzip artifact for deployment
         run: unzip release.zip
-      
-      - name: Login to Azure
-        uses: azure/login@v2
+
+      - name: 'Deploy to Azure Web App'
+        uses: azure/webapps-deploy@v3
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_DBD85A9403F64ED28B17449B8E5389BA }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_0AB03C2575EB4BC889F23EAA09932066 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_36C5B82028854547B3F26B2891C45242 }}
+          app-name: 'epic-kick-api'
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: .
+      
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
