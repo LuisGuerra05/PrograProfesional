@@ -6,21 +6,24 @@
   }
   
   .ais-Pagination-item {
+    display: flex;  /* Hacer el contenedor un elemento flexible */
+    justify-content: center;
+    align-items: center;  /* Centrar el contenido del botón */
     margin: 0 5px;
     font-size: 14px;
     border-radius: 4px;
     padding: 5px 10px;
     cursor: pointer;
+    width: 40px;  /* Asegurar que cada item tenga un tamaño adecuado */
+    height: 40px;  /* Hacer el área de cada página más grande */
   }
   
-
   .ais-Pagination-item--selected {
-    background-color: #e2e6ea;  /* Color de fondo más suave para la página seleccionada */
-    color: #007bff;  /* Color azul para el texto */
-    font-weight: bold;  /* Resalta el texto */
-    border: 2px solid #007bff; /* Borde azul para indicar que está seleccionado */
+    background-color: #e2e6ea;
+    color: #007bff;
+    font-weight: bold;
+    border: 2px solid #007bff;
   }
-  
   
   .ais-Pagination-item:hover {
     background-color: #f0f0f0;
@@ -38,7 +41,9 @@
   }
   
   .ais-Pagination-item {
-    display: inline-block;
+    display: inline-flex; /* Mantener la paginación como elementos en línea flexibles */
+    justify-content: center;
+    align-items: center;
   }
   
   .ais-Pagination-next,

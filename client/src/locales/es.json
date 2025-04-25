@@ -163,5 +163,6 @@
     "review-blocked-personal-info": "Tu comentario contiene información personal (correo o teléfono)",
     "review-error-generic": "Error al enviar la reseña. Intenta nuevamente",
 
-    "searchPlaceholder": "Buscar camisetas..."
+    "searchPlaceholder": "Buscar camisetas...",
+    "no-options": "No hay opciones disponibles"
 }

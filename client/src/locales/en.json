@@ -162,5 +162,6 @@
     "review-blocked-personal-info": "Your comment contains personal information (email or phone)",
     "review-error-generic": "Failed to submit review. Please try again",
 
-    "searchPlaceholder": "Search jerseys..."
+    "searchPlaceholder": "Search jerseys...",
+    "no-options": "No options available"
 }
