@@ -9,6 +9,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ProductReviews from '../review/ProductReviews';
 import ReviewModal from '../review/ReviewModal';
+import { API_URL } from '../../utils/config';
 
 const getProductTranslationKey = (name) => {
   if (name.includes('Local')) return 'Home Jersey';
@@ -31,7 +32,7 @@ const ProductDetail = () => {
   const [showReviewModal, setShowReviewModal] = useState(false);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/products/${id}`)
+    fetch(`${API_URL}/api/products/${id}`)
       .then((res) => res.json())
       .then((data) => setProduct(data))
       .catch((err) => console.error('Error al cargar el producto:', err));
@@ -43,7 +44,7 @@ const ProductDetail = () => {
 
     setIsLoggedIn(true);
 
-    fetch(`http://localhost:5000/api/reviews/hasReviewed/${id}`, {
+    fetch(`${API_URL}/api/reviews/hasReviewed/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }

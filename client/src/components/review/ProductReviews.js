@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { FaStar, FaRegStar } from 'react-icons/fa';
 import { useTranslation } from 'react-i18next';
 import ReviewModal from './ReviewModal';
+import { API_URL } from '../../utils/config';
 
 const BLUE = '#007bff';
 
@@ -24,7 +25,7 @@ const ShowAverageStars = ({ productId }) => {
   const [average, setAverage] = useState(null);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/reviews/average/${productId}`)
+    fetch(`${API_URL}/api/reviews/average/${productId}`)
       .then((res) => res.json())
       .then((data) => setAverage(Number(data.average || 0)))
       .catch((err) => console.error('Error promedio:', err));
@@ -51,8 +52,8 @@ const ProductReviews = ({ productId }) => {
   const fetchReviewData = useCallback(() => {
     const token = localStorage.getItem('token');
     const url = token
-      ? `http://localhost:5000/api/reviews/${productId}`
-      : `http://localhost:5000/api/reviews/public/${productId}`;
+      ? `${API_URL}/api/reviews/${productId}`
+      : `${API_URL}/api/reviews/public/${productId}`;
 
     fetch(url, {
       headers: token ? { Authorization: `Bearer ${token}` } : {},
@@ -61,12 +62,12 @@ const ProductReviews = ({ productId }) => {
       .then((data) => setReviews(data))
       .catch((err) => console.error('Error reseñas:', err));
 
-    fetch(`http://localhost:5000/api/reviews/average/${productId}`)
+    fetch(`${API_URL}/api/reviews/average/${productId}`)
       .then((res) => res.json())
       .then((data) => setAverage(Number(data.average || 0)))
       .catch((err) => console.error('Error promedio:', err));
 
-    fetch(`http://localhost:5000/api/reviews/distribution/${productId}`)
+    fetch(`${API_URL}/api/reviews/distribution/${productId}`)
       .then((res) => res.json())
       .then((data) => {
         setDistribution(data);

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_URL } from '../utils/config';
 
 const CartContext = React.createContext();
 
@@ -16,7 +17,7 @@ const CartProvider = ({ children }) => {
   const loadCartFromDatabase = () => {
     const token = localStorage.getItem('token');
     axios
-      .get('http://localhost:5000/api/cart', {
+      .get(`${API_URL}/api/cart`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -43,7 +44,7 @@ const CartProvider = ({ children }) => {
       if (!token) return;
 
       try {
-        await axios.get('http://localhost:5000/api/auth/validate-token', {
+        await axios.get(`${API_URL}/api/auth/validate-token`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         // Token válido, no se hace nada
@@ -63,7 +64,7 @@ const CartProvider = ({ children }) => {
       const token = localStorage.getItem('token');
       axios
         .post(
-          'http://localhost:5000/api/cart/add',
+          `${API_URL}/api/cart/add`,
           { productId: product.id, size: selectedSize, quantity: 1 },
           { headers: { Authorization: `Bearer ${token}` } }
         )
@@ -108,7 +109,7 @@ const CartProvider = ({ children }) => {
 
       axios
         .post(
-          'http://localhost:5000/api/cart/remove',
+          `${API_URL}/api/cart/remove`,
           { productId, size, quantity: 1 },
           { headers: { Authorization: `Bearer ${token}` } }
         )
@@ -140,7 +141,7 @@ const CartProvider = ({ children }) => {
 
       axios
         .post(
-          'http://localhost:5000/api/cart/removeAll',
+          `${API_URL}/api/cart/removeAll`,
           { productId, size },
           { headers: { Authorization: `Bearer ${token}` } }
         )
@@ -165,7 +166,7 @@ const CartProvider = ({ children }) => {
         const token = localStorage.getItem('token');
         axios
           .post(
-            'http://localhost:5000/api/cart/clear',
+            `${API_URL}/api/cart/clear`,
             {},
             { headers: { Authorization: `Bearer ${token}` } }
           )

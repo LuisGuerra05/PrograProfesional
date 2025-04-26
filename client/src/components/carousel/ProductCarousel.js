@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // Estilos básicos del carrusel
 import './ProductCarousel.css'; // Estilos específicos para el carrusel de productos
-import { CLOUDINARY_BASE_URL } from '../../utils/config';
+import { CLOUDINARY_BASE_URL, API_URL } from '../../utils/config';
 
 const ProductCarousel = ({ productId }) => {
   const [images, setImages] = useState([]);
@@ -10,7 +10,7 @@ const ProductCarousel = ({ productId }) => {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/products/${productId}/images`);
+        const response = await fetch(`${API_URL}/api/products/${productId}/images`);
         const data = await response.json();
 
         if (Array.isArray(data)) {

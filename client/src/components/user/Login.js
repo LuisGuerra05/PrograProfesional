@@ -8,6 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import './Login.css';
 import { handleOtpChange } from '../../utils/otpUtils'; 
 import LoadingScreen from '../common/LoadingScreen';
+import { API_URL } from '../../utils/config';
 
 const Login = () => {
   const { t } = useTranslation();
@@ -48,7 +49,7 @@ const Login = () => {
     const guestCart = JSON.parse(localStorage.getItem('cart')) || [];
     if (guestCart.length > 0) {
       try {
-        await fetch('http://localhost:5000/api/cart/merge', {
+        await fetch(`${API_URL}/api/cart/merge`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -83,7 +84,7 @@ const Login = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/login', {
+      const response = await fetch(`${API_URL}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: trimmedEmail, password: trimmedPassword })
@@ -124,7 +125,7 @@ const Login = () => {
 
     const tempToken = localStorage.getItem('tempToken');
     try {
-      const response = await fetch('http://localhost:5000/api/auth/verify-otp', {
+      const response = await fetch(`${API_URL}/api/auth/verify-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${tempToken}` },
         body: JSON.stringify({ otp: otp.join('') })
@@ -158,7 +159,7 @@ const Login = () => {
     setRecoveryError('');
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/recovery-login', {
+      const response = await fetch(`${API_URL}/api/auth/recovery-login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, recoveryCode }),

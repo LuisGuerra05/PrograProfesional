@@ -32,5 +32,10 @@ app.get('/', (req, res) => {
 // Iniciar el servidor
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+  const baseUrl = process.env.NODE_ENV === 'production' 
+    ? `https://${process.env.WEBSITE_HOSTNAME}` // Azure Web App lo define en WEBSITE_HOSTNAME
+    : `http://localhost:${PORT}`;
+
+  console.log(`Servidor corriendo en ${baseUrl}`);
 });
+

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Form, Button, Container, Row, Col, Alert } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { CartContext } from '../../context/CartProvider';
+import { API_URL } from '../../utils/config';
 import './Register.css';
 
 const Register = () => {
@@ -136,7 +137,7 @@ const Register = () => {
 
     // Enviar los datos al backend si no hay errores
     try {
-      const response = await fetch('http://localhost:5000/api/auth/register', {
+      const response = await fetch(`${API_URL}/api/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -171,7 +172,7 @@ const Register = () => {
         const guestCart = JSON.parse(localStorage.getItem('cart')) || [];
         if (guestCart.length > 0) {
           try {
-            await fetch('http://localhost:5000/api/cart/merge', {
+            await fetch(`${API_URL}/api/cart/merge`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { CartContext } from '../../context/CartProvider';
 import { useTranslation } from 'react-i18next';
 import { handleOtpChange } from '../../utils/otpUtils'; // Importa la función reutilizable
-
+import { API_URL } from '../../utils/config';
 
 const Profile = () => {
   const { t } = useTranslation();
@@ -34,7 +34,7 @@ const Profile = () => {
       if (!token) return;
   
       try {
-        const response = await fetch('http://localhost:5000/api/auth/profile', {
+        const response = await fetch(`${API_URL}/api/auth/profile`, {
           method: 'GET',
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -85,7 +85,7 @@ const Profile = () => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/auth/update-address', {
+      const response = await fetch(`${API_URL}/api/auth/update-address`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -126,7 +126,7 @@ const Profile = () => {
 
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch('http://localhost:5000/api/auth/generate-2fa', {
+      const response = await fetch(`${API_URL}/api/auth/generate-2fa`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -154,7 +154,7 @@ const Profile = () => {
   
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch('http://localhost:5000/api/auth/confirm-2fa', {
+      const response = await fetch(`${API_URL}/api/auth/confirm-2fa`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -192,7 +192,7 @@ const Profile = () => {
   const handleDisable2FA = async () => {
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch('http://localhost:5000/api/auth/disable-2fa', {
+      const response = await fetch(`${API_URL}/api/auth/disable-2fa`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -236,7 +236,7 @@ const Profile = () => {
   
   const handleGenerateCodes = async () => {
     try {
-        const response = await fetch('http://localhost:5000/api/auth/generate-recovery-codes', {  // Aquí asegúrate que está bien configurado el prefijo
+        const response = await fetch(`${API_URL}/api/auth/generate-recovery-codes`, {  // Aquí asegúrate que está bien configurado el prefijo
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

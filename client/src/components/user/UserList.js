@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { API_URL } from '../../utils/config';
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
 
   // Cargar la lista de usuarios al montar el componente
   useEffect(() => {
-    fetch('http://localhost:5000/api/users')
+    fetch(`${API_URL}/api/users`)
       .then(response => response.json())
       .then(data => setUsers(data))
       .catch(error => console.error('Error al cargar los usuarios:', error));
@@ -15,7 +16,7 @@ const UserList = () => {
   const deleteUser = async (id) => {
     if (window.confirm('¿Estás seguro de que deseas eliminar este usuario?')) {
       try {
-        const response = await fetch(`http://localhost:5000/api/users/${id}`, {
+        const response = await fetch(`${API_URL}/api/users/${id}`, {
           method: 'DELETE'
         });
 

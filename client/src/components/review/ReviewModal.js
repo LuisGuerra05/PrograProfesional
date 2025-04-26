@@ -4,6 +4,7 @@ import { FaStar } from 'react-icons/fa';
 import './ReviewModal.css';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { API_URL } from '../../utils/config';
 
 const ReviewModal = ({ productId, onClose, hasReviewed = false, onReviewSubmitted }) => {
   const { t } = useTranslation();
@@ -16,7 +17,7 @@ const ReviewModal = ({ productId, onClose, hasReviewed = false, onReviewSubmitte
   useEffect(() => {
     if (hasReviewed) {
       const token = localStorage.getItem('token');
-      fetch(`http://localhost:5000/api/reviews/userReview/${productId}`, {
+      fetch(`${API_URL}/api/reviews/userReview/${productId}`, {
         headers: { Authorization: `Bearer ${token}` }
       })
         .then(res => res.json())
@@ -40,7 +41,7 @@ const ReviewModal = ({ productId, onClose, hasReviewed = false, onReviewSubmitte
     setSubmitting(true);
 
     const token = localStorage.getItem('token');
-    const url = 'http://localhost:5000/api/reviews';
+    const url = `${API_URL}/api/reviews`;
     const method = hasReviewed ? 'PUT' : 'POST';
 
     const response = await fetch(url, {
@@ -76,7 +77,7 @@ const ReviewModal = ({ productId, onClose, hasReviewed = false, onReviewSubmitte
   const handleDeleteReview = async () => {
 
     const token = localStorage.getItem('token');
-    const response = await fetch('http://localhost:5000/api/reviews', {
+    const response = await fetch(`${API_URL}/api/reviews`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
