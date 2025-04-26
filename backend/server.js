@@ -26,17 +26,21 @@ app.use('/api/reviews', reviewRoutes); // Usar las rutas de las reseñas /api/re
 
 // Ruta de prueba para verificar si el servidor está funcionando
 app.get('/', (req, res) => {
-  res.send('API funcionando correctamente');
+  const baseUrl = process.env.NODE_ENV === 'production' 
+    ? `https://${process.env.WEBSITE_HOSTNAME}` // Azure Web App lo define en WEBSITE_HOSTNAME
+    : `http://localhost:${PORT}`;
+
+  res.send(`API funcionando correctamente en: ${baseUrl}`);
 });
 
 // Iniciar el servidor
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   const baseUrl = process.env.NODE_ENV === 'production' 
-    ? `https://${process.env.WEBSITE_HOSTNAME}` // Azure Web App lo define en WEBSITE_HOSTNAME
+    ? `https://${process.env.WEBSITE_HOSTNAME}`
     : `http://localhost:${PORT}`;
 
   console.log(`Servidor corriendo en ${baseUrl}`);
-  res.send(`Servidor corriendo en ${baseUrl}`);
 });
+
 
