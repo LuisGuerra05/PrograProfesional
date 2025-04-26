@@ -37,5 +37,6 @@ app.listen(PORT, () => {
     : `http://localhost:${PORT}`;
 
   console.log(`Servidor corriendo en ${baseUrl}`);
+  res.send(`Servidor corriendo en ${baseUrl}`);
 });
 
