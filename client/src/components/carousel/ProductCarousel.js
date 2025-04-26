@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Carousel } from 'react-responsive-carousel';
-import 'react-responsive-carousel/lib/styles/carousel.min.css'; // Estilos básicos del carrusel
-import './ProductCarousel.css'; // Estilos específicos para el carrusel de productos
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import './ProductCarousel.css';
 import { CLOUDINARY_BASE_URL, API_URL } from '../../utils/config';
 
-const ProductCarousel = ({ productId }) => {
+const ProductCarousel = ({ productId, onImagesLoaded }) => {
   const [images, setImages] = useState([]);
 
   useEffect(() => {
@@ -12,7 +12,6 @@ const ProductCarousel = ({ productId }) => {
       try {
         const response = await fetch(`${API_URL}/api/products/${productId}/images`);
         const data = await response.json();
-
         if (Array.isArray(data)) {
           setImages(data);
         } else {
@@ -26,17 +25,24 @@ const ProductCarousel = ({ productId }) => {
     fetchImages();
   }, [productId]);
 
-  if (images.length === 0) {
-    return <p>No hay imágenes disponibles</p>;
-  }
+  const handleFirstImageLoad = () => {
+    if (onImagesLoaded) {
+      onImagesLoaded();
+    }
+  };
 
   return (
     <div className="product-carousel-container">
       <Carousel className="product-carousel">
         {images.map((image, index) => (
           <div key={index} className="product-carousel-slide">
-            <img src={`${CLOUDINARY_BASE_URL}/${image.image_url}`}
-             alt={`Imagen ${index + 1}`} className="product-carousel-image" />
+            <img
+              src={`${CLOUDINARY_BASE_URL}/${image.image_url}`}
+              alt={`Imagen ${index + 1}`}
+              className="product-carousel-image"
+              onLoad={index === 0 ? handleFirstImageLoad : undefined} 
+              onError={index === 0 ? handleFirstImageLoad : undefined}
+            />
           </div>
         ))}
       </Carousel>

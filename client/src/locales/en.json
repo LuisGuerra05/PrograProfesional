@@ -165,5 +165,6 @@
     "searchPlaceholder": "Search jerseys...",
     "no-options": "No options available",
     "loading-products": "Loading products...",
-    "search_powered_by": "Search powered by"
+    "search_powered_by": "Search powered by",
+    "loading": "Loading product..."
 }

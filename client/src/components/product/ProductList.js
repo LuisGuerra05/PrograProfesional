@@ -47,14 +47,25 @@ const ProductList = ({ products: externalProducts }) => {
       setErrorMessage(t('You must select a size'));
       return;
     }
-    addToCart(selectedProduct, selectedSize);
+    
+    const productToAdd = {
+      id: selectedProduct.id || selectedProduct.objectID,
+      name: selectedProduct.name,
+      team: selectedProduct.team,
+      brand: selectedProduct.brand,
+      price: selectedProduct.price
+    };
+  
+    addToCart(productToAdd, selectedSize);
+  
     toast.success(t('Producto agregado al carrito con éxito'), {
       className: 'custom-toast',
       progressClassName: 'Toastify__progress-bar--blue',
       progressStyle: { backgroundColor: 'rgba(0, 123, 255, 0.85)' }
     });
+  
     handleClose();
-  };
+  };  
 
   return (
     <Container fluid style={{ paddingTop: '45px' }}>
