@@ -109,7 +109,7 @@ const AlgoliaWrapper = () => {
               rel="noopener noreferrer"
               style={{ fontSize: '12px', color: '#aaa' }}
             >
-              Search powered by <strong>Algolia</strong>
+              {t('search_powered_by')} <strong>Algolia</strong>
             </a>
           </div>
 

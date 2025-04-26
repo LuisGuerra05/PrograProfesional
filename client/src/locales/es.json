@@ -165,5 +165,6 @@
 
     "searchPlaceholder": "Buscar camisetas...",
     "no-options": "No hay opciones disponibles",
-    "loading-products": "Cargando productos..."
+    "loading-products": "Cargando productos...",
+    "search_powered_by": "Búsqueda impulsada por"
 }
