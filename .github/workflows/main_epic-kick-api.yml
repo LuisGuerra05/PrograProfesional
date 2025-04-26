@@ -23,8 +23,7 @@ jobs:
         run: npm install
         working-directory: ./backend
 
-      # Build backend (if necessary)
-      # Uncomment if backend needs a build step
+      # (Opcional) Build backend (si tienes procesos de build como TypeScript, Babel, etc.)
       # - name: Build backend
       #   run: npm run build
       #   working-directory: ./backend
@@ -34,15 +33,18 @@ jobs:
         run: npm install
         working-directory: ./client
 
-      # Build client (if necessary)
+      # Build client
       - name: Build client
         run: npm run build
         working-directory: ./client
 
-      # Zip project (excluding node_modules)
-      - name: Zip project
-        run: zip -r release.zip ./* -x "node_modules/*"
+      # Zip **solo** el backend
+      - name: Zip backend only
+        run: |
+          cd backend
+          zip -r ../release.zip ./* -x "node_modules/*"
 
+      # Deploy to Azure Web App
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
