@@ -6,8 +6,8 @@ const getAllProducts = async (req, res) => {
     const [results] = await db.query('SELECT * FROM products');
     res.json(results);
   } catch (err) {
-    console.error('🔥 Error en GET /api/products:', err);
-    res.status(500).json({ message: 'Error en el servidor' });
+    console.error('Error en GET /api/products:', err);
+    res.status(500).json({ message: 'Error en el servidor, no se pudieron obtener los productos' });
   }
 };
 
@@ -21,7 +21,7 @@ const getProductById = async (req, res) => {
     }
     res.json(result[0]);
   } catch (err) {
-    console.error('🔥 Error obteniendo producto:', err);
+    console.error('Error obteniendo producto:', err);
     res.status(500).json({ message: 'Error en el servidor' });
   }
 };
@@ -33,7 +33,7 @@ const getProductImages = async (req, res) => {
     const [results] = await db.query('SELECT image_url FROM product_images WHERE product_id = ?', [productId]);
     res.json(results);
   } catch (err) {
-    console.error('🔥 Error obteniendo las imágenes del producto:', err);
+    console.error('Error obteniendo las imágenes del producto:', err);
     res.status(500).json({ message: 'Error en el servidor' });
   }
 };
