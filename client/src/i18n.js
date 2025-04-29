@@ -16,6 +16,7 @@ i18n
   .init({
     resources,
     fallbackLng: 'es',
+    compatibilityJSON: 'v3',
     interpolation: {
       escapeValue: false,
     },

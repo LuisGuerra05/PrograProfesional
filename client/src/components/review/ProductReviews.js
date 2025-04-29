@@ -145,7 +145,9 @@ const ProductReviews = ({ productId }) => {
               {[...Array(5)].map((_, i) => (
                 <span key={i} style={{ color: BLUE }}>★</span>
               ))}
-              <span style={{ marginLeft: '10px' }}>{totalRatings} {t('ratings')}</span>
+              <span style={{ marginLeft: '10px' }}>
+                {t('ratings', { count: totalRatings })}
+              </span>
             </div>
 
             {[5, 4, 3, 2, 1].map((star) => {
