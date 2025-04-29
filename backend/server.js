@@ -19,7 +19,7 @@ app.use(cors()); // Habilitar CORS para permitir solicitudes del frontend
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Rutas
-app.use('/api/users', userRoutes); // Usar las rutas de usuarios bajo /api/users
+app.use('/api', userRoutes); // Usar las rutas de usuarios bajo /api/users
 app.use('/api/auth', authRoutes); // Usar las rutas de autenticación bajo /api/auth
 app.use('/api', productRoutes); // Usar las rutas de productos bajo /api/products
 app.use('/api/cart', cartRoutes); // Usar las rutas de carrito de compras /api/cart
