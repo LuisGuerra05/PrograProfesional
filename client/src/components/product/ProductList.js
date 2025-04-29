@@ -58,7 +58,7 @@ const ProductList = ({ products: externalProducts }) => {
   
     addToCart(productToAdd, selectedSize);
   
-    toast.success(t('Producto agregado al carrito con éxito'), {
+    toast.success(t('Product added to cart successfully'), {
       className: 'custom-toast',
       progressClassName: 'Toastify__progress-bar--blue',
       progressStyle: { backgroundColor: 'rgba(0, 123, 255, 0.85)' }
