@@ -23,6 +23,11 @@ const searchClient = algoliasearch(
   process.env.REACT_APP_ALGOLIA_SEARCH_KEY
 );
 
+// Línea solo para depuración
+console.log('Algolia App ID:', process.env.REACT_APP_ALGOLIA_APP_ID);
+console.log('Algolia Search Key:', process.env.REACT_APP_ALGOLIA_SEARCH_KEY);
+console.log('Algolia Index Name:', process.env.REACT_APP_ALGOLIA_INDEX_NAME);
+
 // Componente de resultados de productos
 const CustomHits = connectHits(({ hits, searchState, searchResults }) => {
   const { t } = useTranslation();
