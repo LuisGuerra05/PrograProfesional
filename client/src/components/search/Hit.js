@@ -8,7 +8,7 @@ const Hit = ({ hit }) => {
   const { t } = useTranslation();
 
   return (
-    <Card className="h-100 clickable-card search-hit-card" onClick={() => window.location.href = `/product/${hit.id}`}>
+    <Card className="h-100 clickable-card search-hit-card" onClick={() => navigate(`/product/${hit.id}`)}>
       <Card.Img
         variant="top"
         src={hit.image || '/images/default-product.png'}

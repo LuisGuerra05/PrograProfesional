@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import algoliasearch from 'algoliasearch/lite';
 import {
   InstantSearch,
@@ -16,6 +16,7 @@ import { Spinner } from 'react-bootstrap';
 
 import ProductList from '../product/ProductList';
 import AlgoliaTeamFilter from '../search/AlgoliaTeamFilter';
+import { useLocation } from 'react-router-dom';
 
 const searchClient = algoliasearch(
   process.env.REACT_APP_ALGOLIA_APP_ID,
@@ -46,9 +47,25 @@ const CustomHits = connectHits(({ hits, searchState, searchResults }) => {
 
 const AlgoliaWrapper = () => {
   const { t } = useTranslation();
+  const location = useLocation();
+  const [teamParamReady, setTeamParamReady] = useState(false);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const teamParam = params.get('team');
+
+    if (teamParam) {
+      const timer = setTimeout(() => {
+        setTeamParamReady(true);
+      }, 300);
+      return () => clearTimeout(timer);
+    } else {
+      setTeamParamReady(true);
+    }
+  }, [location.search]);
 
   const ResultsWithState = connectStateResults(({ searchState, searchResults }) => {
-    if (!searchResults) {
+    if (!teamParamReady) {
       return (
         <div className="text-center py-5 d-flex justify-content-center align-items-center gap-2">
           <Spinner animation="border" role="status" size="sm" />
