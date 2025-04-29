@@ -7,6 +7,7 @@ const authRoutes = require('./routes/authRoutes'); // Importar las rutas de aute
 const productRoutes = require('./routes/productRoutes'); // Importar las rutas de productos
 const cartRoutes = require('./routes/cartRoutes'); // Importar las rutas del carrito de compras
 const reviewRoutes = require('./routes/reviewRoutes'); // Importar las rutas de las reseñas
+const userRoutes = require('./routes/userRoutes'); // Importar las rutas de los usuarios
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use(cors()); // Habilitar CORS para permitir solicitudes del frontend
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Rutas
+app.use('/api/users', userRoutes); // Usar las rutas de usuarios bajo /api/users
 app.use('/api/auth', authRoutes); // Usar las rutas de autenticación bajo /api/auth
 app.use('/api', productRoutes); // Usar las rutas de productos bajo /api/products
 app.use('/api/cart', cartRoutes); // Usar las rutas de carrito de compras /api/cart

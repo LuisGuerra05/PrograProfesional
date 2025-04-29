@@ -2,24 +2,27 @@ const Review = require('../models/reviewModel');
 const { moderateComment } = require('../helpers/openai');
 const { containsPersonalInfo } = require('../helpers/personalInfo');
 
-exports.getReviewsByProduct = (req, res) => {
+// Obtener reseñas de un producto
+exports.getReviewsByProduct = async (req, res) => {
   const productId = req.params.productId;
-  const currentUserId = req.user?.id; // Puede venir o no
+  const currentUserId = req.user?.id;
 
-  Review.getByProductId(productId, (err, results) => {
-    if (err) return res.status(500).json({ message: 'Error al obtener reseñas' });
+  try {
+    const reviews = await Review.getByProductId(productId);
 
-    // Añadir marca a la reseña del usuario actual
-    const reviewsWithUserFlag = results.map((review) => ({
+    const reviewsWithUserFlag = reviews.map((review) => ({
       ...review,
       isUserReview: currentUserId ? review.user_id === currentUserId : false
     }));
 
     res.json(reviewsWithUserFlag);
-  });
+  } catch (err) {
+    console.error('Error al obtener reseñas:', err);
+    res.status(500).json({ message: 'Error al obtener reseñas' });
+  }
 };
 
-
+// Crear una reseña nueva
 exports.createReview = async (req, res) => {
   const userId = req.user.id;
   const { productId, rating, comment } = req.body;
@@ -29,46 +32,46 @@ exports.createReview = async (req, res) => {
   }
 
   try {
-    // Verificar si ya hizo una reseña
-    Review.exists(userId, productId, async (err, rows) => {
-      if (err) return res.status(500).json({ message: 'Error al validar reseña existente' });
-      if (rows.length > 0) return res.status(400).json({ message: 'Ya dejaste una reseña para este producto' });
+    const existingReviews = await Review.exists(userId, productId);
+    if (existingReviews.length > 0) {
+      return res.status(400).json({ message: 'Ya dejaste una reseña para este producto' });
+    }
 
-      // Detectar datos personales
-      if (containsPersonalInfo(comment)) {
-        return res.status(400).json({ message: 'Tu comentario contiene información personal (correo o teléfono).' });
-      }
+    if (containsPersonalInfo(comment)) {
+      return res.status(400).json({ message: 'Tu comentario contiene información personal (correo o teléfono).' });
+    }
 
-      // Evaluar con IA
-      const moderationResult = await moderateComment(comment);
-      if (moderationResult.flagged) {
-        return res.status(400).json({
-          message: 'Tu comentario fue bloqueado por contenido inapropiado.',
-          detalles: moderationResult.categories
-        });
-      }
-
-      // Crear reseña si todo está bien
-      Review.create(userId, productId, rating, comment, (err) => {
-        if (err) return res.status(500).json({ message: 'Error al crear reseña' });
-        res.status(201).json({ message: 'Reseña creada con éxito' });
+    const moderationResult = await moderateComment(comment);
+    if (moderationResult.flagged) {
+      return res.status(400).json({
+        message: 'Tu comentario fue bloqueado por contenido inapropiado.',
+        detalles: moderationResult.categories
       });
-    });
-  } catch (error) {
-    console.error('Error en moderación:', error);
-    res.status(500).json({ message: 'Error al procesar el comentario' });
+    }
+
+    await Review.create(userId, productId, rating, comment);
+    res.status(201).json({ message: 'Reseña creada con éxito' });
+
+  } catch (err) {
+    console.error('Error al crear reseña:', err);
+    res.status(500).json({ message: 'Error al crear reseña' });
   }
 };
 
-
-exports.getAverageRating = (req, res) => {
+// Obtener promedio de rating de un producto
+exports.getAverageRating = async (req, res) => {
   const productId = req.params.productId;
-  Review.getAverageRating(productId, (err, result) => {
-    if (err) return res.status(500).json({ message: 'Error al obtener el promedio' });
-    res.json({ average: result[0].average });
-  });
+
+  try {
+    const averageResult = await Review.getAverageRating(productId);
+    res.json({ average: averageResult.average });
+  } catch (err) {
+    console.error('Error al obtener el promedio:', err);
+    res.status(500).json({ message: 'Error al obtener el promedio' });
+  }
 };
 
+// Actualizar una reseña existente
 exports.updateReview = async (req, res) => {
   const userId = req.user.id;
   const { productId, rating, comment } = req.body;
@@ -78,13 +81,10 @@ exports.updateReview = async (req, res) => {
   }
 
   try {
-    // Detectar datos personales
     if (containsPersonalInfo(comment)) {
       return res.status(400).json({ message: 'Tu comentario contiene información personal (correo o teléfono).' });
     }
 
-    
-    // Evaluar con IA
     const moderationResult = await moderateComment(comment);
     if (moderationResult.flagged) {
       return res.status(400).json({
@@ -92,69 +92,86 @@ exports.updateReview = async (req, res) => {
         detalles: moderationResult.categories
       });
     }
-    
 
-    // Actualizar reseña si todo está bien
-    Review.update(userId, productId, rating, comment, (err, result) => {
-      if (err) return res.status(500).json({ message: 'Error al actualizar la reseña' });
-      if (result.affectedRows === 0) return res.status(404).json({ message: 'Reseña no encontrada' });
-      res.json({ message: 'Reseña actualizada con éxito' });
-    });
-  } catch (error) {
-    console.error('Error en moderación:', error);
-    res.status(500).json({ message: 'Error al procesar el comentario' });
+    const result = await Review.update(userId, productId, rating, comment);
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Reseña no encontrada' });
+    }
+
+    res.json({ message: 'Reseña actualizada con éxito' });
+
+  } catch (err) {
+    console.error('Error al actualizar reseña:', err);
+    res.status(500).json({ message: 'Error al actualizar reseña' });
   }
 };
 
-
-exports.getRatingDistribution = (req, res) => {
+// Obtener distribución de ratings
+exports.getRatingDistribution = async (req, res) => {
   const productId = req.params.productId;
-  Review.getRatingDistribution(productId, (err, results) => {
-    if (err) return res.status(500).json({ message: 'Error al obtener distribución' });
+
+  try {
+    const results = await Review.getRatingDistribution(productId);
+
     const distribution = [1, 2, 3, 4, 5].reduce((acc, star) => {
       const found = results.find((r) => r.rating === star);
       acc[star] = found ? found.count : 0;
       return acc;
     }, {});
+
     res.json(distribution);
-  });
+  } catch (err) {
+    console.error('Error al obtener distribución:', err);
+    res.status(500).json({ message: 'Error al obtener distribución' });
+  }
 };
 
-exports.deleteReview = (req, res) => {
+// Eliminar una reseña
+exports.deleteReview = async (req, res) => {
   const userId = req.user.id;
   const { productId } = req.body;
 
-  Review.delete(userId, productId, (err, result) => {
-    if (err) return res.status(500).json({ message: 'Error al eliminar la reseña' });
-    if (result.affectedRows === 0) return res.status(404).json({ message: 'Reseña no encontrada' });
-    res.json({ message: 'Reseña eliminada con éxito' });
-  });
-};
-
-// Verificar si el usuario logeado ya hizo una reseña para ese producto
-exports.hasUserReviewed = (req, res) => {
-  const userId = req.user.id;
-  const productId = req.params.productId;
-
-  Review.exists(userId, productId, (err, rows) => {
-    if (err) {
-      console.error('Error al verificar reseña existente:', err);
-      return res.status(500).json({ message: 'Error interno del servidor' });
+  try {
+    const result = await Review.delete(userId, productId);
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Reseña no encontrada' });
     }
 
-    const hasReviewed = rows.length > 0;
-    res.json({ hasReviewed });
-  });
+    res.json({ message: 'Reseña eliminada con éxito' });
+  } catch (err) {
+    console.error('Error al eliminar reseña:', err);
+    res.status(500).json({ message: 'Error al eliminar reseña' });
+  }
 };
 
-exports.getUserReview = (req, res) => {
+// Verificar si el usuario ya hizo reseña
+exports.hasUserReviewed = async (req, res) => {
   const userId = req.user.id;
   const productId = req.params.productId;
 
-  Review.exists(userId, productId, (err, rows) => {
-    if (err) return res.status(500).json({ message: 'Error al obtener la reseña del usuario' });
-    if (rows.length === 0) return res.status(404).json({ message: 'No hay reseña' });
-    res.json(rows[0]);
-  });
+  try {
+    const reviews = await Review.exists(userId, productId);
+    const hasReviewed = reviews.length > 0;
+    res.json({ hasReviewed });
+  } catch (err) {
+    console.error('Error al verificar reseña existente:', err);
+    res.status(500).json({ message: 'Error interno del servidor' });
+  }
 };
 
+// Obtener la reseña del usuario para un producto
+exports.getUserReview = async (req, res) => {
+  const userId = req.user.id;
+  const productId = req.params.productId;
+
+  try {
+    const reviews = await Review.exists(userId, productId);
+    if (reviews.length === 0) {
+      return res.status(404).json({ message: 'No hay reseña' });
+    }
+    res.json(reviews[0]);
+  } catch (err) {
+    console.error('Error al obtener la reseña del usuario:', err);
+    res.status(500).json({ message: 'Error al obtener la reseña del usuario' });
+  }
+};

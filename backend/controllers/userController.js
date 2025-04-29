@@ -1,35 +1,32 @@
-// userController.js
-const db = require('../models/db');
+const db = require('../models/db.promise');
 
 // Obtener todos los usuarios
-const getAllUsers = (req, res) => {
-  const sql = 'SELECT * FROM users';
-  db.query(sql, (err, results) => {
-    if (err) {
-      console.error('Error obteniendo usuarios:', err);
-      return res.status(500).json({ message: 'Error en el servidor' });
-    }
-    res.status(200).json(results); // Devolver la lista de usuarios
-  });
+const getAllUsers = async (req, res) => {
+  try {
+    const [users] = await db.query('SELECT * FROM users');
+    res.status(200).json(users);
+  } catch (err) {
+    console.error('Error obteniendo usuarios:', err);
+    res.status(500).json({ message: 'Error en el servidor' });
+  }
 };
 
 // Eliminar un usuario por ID
-const deleteUser = (req, res) => {
+const deleteUser = async (req, res) => {
   const userId = req.params.id;
 
-  const sql = 'DELETE FROM users WHERE id = ?';
-  db.query(sql, [userId], (err, result) => {
-    if (err) {
-      console.error('Error eliminando usuario:', err);
-      return res.status(500).json({ message: 'Error en el servidor' });
-    }
+  try {
+    const [result] = await db.query('DELETE FROM users WHERE id = ?', [userId]);
 
     if (result.affectedRows === 0) {
       return res.status(404).json({ message: 'Usuario no encontrado' });
     }
 
     res.status(200).json({ message: `Usuario con ID ${userId} ha sido eliminado` });
-  });
+  } catch (err) {
+    console.error('Error eliminando usuario:', err);
+    res.status(500).json({ message: 'Error en el servidor' });
+  }
 };
 
 module.exports = {

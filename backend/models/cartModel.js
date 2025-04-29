@@ -1,10 +1,8 @@
-// backend/models/cartModel.js
-
-const db = require('../models/db');
-const async = require('async');
+const db = require('../models/db.promise');
 
 const Cart = {
-  getCart: (userId, callback) => {
+  // Obtener todos los productos del carrito de un usuario
+  getCart: async (userId) => {
     const sql = `
       SELECT ci.product_id, ci.quantity, ci.size, p.name, p.team, p.brand, p.price
       FROM cart_items ci
@@ -12,150 +10,111 @@ const Cart = {
       JOIN products p ON ci.product_id = p.id
       WHERE c.user_id = ?
     `;
-    db.query(sql, [userId], callback);
+    const [rows] = await db.query(sql, [userId]);
+    return rows;
   },
 
-  addToCart: (userId, productId, size, quantity, callback) => {
-    // Verificar si el usuario ya tiene un carrito
-    const sqlCheckCart = 'SELECT id FROM carts WHERE user_id = ?';
-    db.query(sqlCheckCart, [userId], (err, results) => {
-      if (err) return callback(err);
+  // Agregar un producto al carrito (crea carrito si no existe)
+  addToCart: async (userId, productId, size, quantity) => {
+    // Buscar carrito del usuario
+    const [cartRows] = await db.query('SELECT id FROM carts WHERE user_id = ?', [userId]);
+    let cartId = cartRows.length > 0 ? cartRows[0].id : null;
 
-      let cartId;
-      if (results.length > 0) {
-        cartId = results[0].id;
-      } else {
-        // Crear un nuevo carrito
-        const sqlCreateCart = 'INSERT INTO carts (user_id) VALUES (?)';
-        db.query(sqlCreateCart, [userId], (err, result) => {
-          if (err) return callback(err);
-          cartId = result.insertId;
-        });
-      }
+    // Si no existe, crear carrito nuevo
+    if (!cartId) {
+      const [result] = await db.query('INSERT INTO carts (user_id) VALUES (?)', [userId]);
+      cartId = result.insertId;
+    }
 
-      // Verificar si el producto ya está en el carrito
-      const sqlCheckItem = `
-        SELECT id FROM cart_items 
-        WHERE cart_id = ? AND product_id = ? AND size = ?
-      `;
-      db.query(sqlCheckItem, [cartId, productId, size], (err, results) => {
-        if (err) return callback(err);
+    // Buscar si el ítem ya existe en el carrito
+    const [itemRows] = await db.query(
+      'SELECT id FROM cart_items WHERE cart_id = ? AND product_id = ? AND size = ?',
+      [cartId, productId, size]
+    );
 
-        if (results.length > 0) {
-          // Actualizar la cantidad
-          const sqlUpdateItem = `
-            UPDATE cart_items 
-            SET quantity = quantity + ? 
-            WHERE cart_id = ? AND product_id = ? AND size = ?
-          `;
-          db.query(sqlUpdateItem, [quantity, cartId, productId, size], callback);
-        } else {
-          // Insertar el nuevo item
-          const sqlInsertItem = `
-            INSERT INTO cart_items (cart_id, product_id, size, quantity)
-            VALUES (?, ?, ?, ?)
-          `;
-          db.query(sqlInsertItem, [cartId, productId, size, quantity], callback);
-        }
-      });
-    });
+    // Si existe, actualizar cantidad
+    if (itemRows.length > 0) {
+      await db.query(
+        'UPDATE cart_items SET quantity = quantity + ? WHERE cart_id = ? AND product_id = ? AND size = ?',
+        [quantity, cartId, productId, size]
+      );
+    } else {
+      // Si no existe, insertar nuevo ítem
+      await db.query(
+        'INSERT INTO cart_items (cart_id, product_id, size, quantity) VALUES (?, ?, ?, ?)',
+        [cartId, productId, size, quantity]
+      );
+    }
   },
 
-  removeItemFromCart: (userId, productId, size, quantity, callback) => {
-    const sqlUpdate = `
+  // Remover una cantidad específica de un producto del carrito
+  removeItemFromCart: async (userId, productId, size, quantity) => {
+    // Disminuir la cantidad
+    await db.query(`
       UPDATE cart_items ci
       JOIN carts c ON ci.cart_id = c.id
       SET ci.quantity = ci.quantity - ?
       WHERE c.user_id = ? AND ci.product_id = ? AND ci.size = ? AND ci.quantity >= ?
-    `;
-    db.query(sqlUpdate, [quantity, userId, productId, size, quantity], (err, result) => {
-      if (err) return callback(err);
+    `, [quantity, userId, productId, size, quantity]);
 
-      // Si la cantidad es menor o igual a cero, eliminamos el registro
-      const sqlDelete = `
-        DELETE ci FROM cart_items ci
-        JOIN carts c ON ci.cart_id = c.id
-        WHERE c.user_id = ? AND ci.product_id = ? AND ci.size = ? AND ci.quantity <= 0
-      `;
-      db.query(sqlDelete, [userId, productId, size], callback);
-    });
+    // Eliminar el ítem si la cantidad llegó a 0
+    await db.query(`
+      DELETE ci FROM cart_items ci
+      JOIN carts c ON ci.cart_id = c.id
+      WHERE c.user_id = ? AND ci.product_id = ? AND ci.size = ? AND ci.quantity <= 0
+    `, [userId, productId, size]);
   },
 
-  removeAllItemsFromCart: (userId, productId, size, callback) => {
-    const sql = `
+  // Eliminar por completo un producto del carrito (sin importar cantidad)
+  removeAllItemsFromCart: async (userId, productId, size) => {
+    await db.query(`
       DELETE ci FROM cart_items ci
       JOIN carts c ON ci.cart_id = c.id
       WHERE c.user_id = ? AND ci.product_id = ? AND ci.size = ?
-    `;
-    db.query(sql, [userId, productId, size], callback);
+    `, [userId, productId, size]);
   },
 
-  clearCart: (userId, callback) => {
-    const sql = `
+  // Vaciar completamente el carrito del usuario
+  clearCart: async (userId) => {
+    await db.query(`
       DELETE ci FROM cart_items ci
       JOIN carts c ON ci.cart_id = c.id
       WHERE c.user_id = ?
-    `;
-    db.query(sql, [userId], callback);
+    `, [userId]);
   },
 
-  // Nueva función para combinar carritos
-  mergeCarts: (userId, guestCart, callback) => {
-    // Primero, obtenemos el carrito actual del usuario
-    const getCartIdSql = 'SELECT id FROM carts WHERE user_id = ?';
-    db.query(getCartIdSql, [userId], (err, results) => {
-      if (err) return callback(err);
+  // Combinar el carrito de invitado con el carrito del usuario registrado
+  mergeCarts: async (userId, guestCart) => {
+    // Buscar o crear carrito del usuario
+    const [cartRows] = await db.query('SELECT id FROM carts WHERE user_id = ?', [userId]);
+    let cartId = cartRows.length > 0 ? cartRows[0].id : null;
 
-      let cartId;
-      if (results.length > 0) {
-        // El usuario ya tiene un carrito
-        cartId = results[0].id;
+    if (!cartId) {
+      const [result] = await db.query('INSERT INTO carts (user_id) VALUES (?)', [userId]);
+      cartId = result.insertId;
+    }
+
+    // Insertar o actualizar cada ítem del carrito de invitado
+    for (const item of guestCart) {
+      const { product_id, size, quantity } = item;
+      const [existingRows] = await db.query(
+        'SELECT id FROM cart_items WHERE cart_id = ? AND product_id = ? AND size = ?',
+        [cartId, product_id, size]
+      );
+
+      if (existingRows.length > 0) {
+        await db.query(
+          'UPDATE cart_items SET quantity = quantity + ? WHERE cart_id = ? AND product_id = ? AND size = ?',
+          [quantity, cartId, product_id, size]
+        );
       } else {
-        // El usuario no tiene carrito, creamos uno nuevo
-        const createCartSql = 'INSERT INTO carts (user_id) VALUES (?)';
-        db.query(createCartSql, [userId], (err, result) => {
-          if (err) return callback(err);
-          cartId = result.insertId;
-        });
+        await db.query(
+          'INSERT INTO cart_items (cart_id, product_id, size, quantity) VALUES (?, ?, ?, ?)',
+          [cartId, product_id, size, quantity]
+        );
       }
-
-      // Una vez que tenemos el cartId, procedemos a combinar los carritos
-      const tasks = guestCart.map((item) => {
-        return (cb) => {
-          const { product_id, size, quantity } = item;
-
-          // Verificamos si el producto ya existe en el carrito del usuario
-          const checkItemSql = `
-            SELECT * FROM cart_items 
-            WHERE cart_id = ? AND product_id = ? AND size = ?
-          `;
-          db.query(checkItemSql, [cartId, product_id, size], (err, results) => {
-            if (err) return cb(err);
-
-            if (results.length > 0) {
-              // Si existe, actualizamos la cantidad
-              const updateItemSql = `
-                UPDATE cart_items 
-                SET quantity = quantity + ? 
-                WHERE cart_id = ? AND product_id = ? AND size = ?
-              `;
-              db.query(updateItemSql, [quantity, cartId, product_id, size], cb);
-            } else {
-              // Si no existe, lo insertamos
-              const insertItemSql = `
-                INSERT INTO cart_items (cart_id, product_id, size, quantity) 
-                VALUES (?, ?, ?, ?)
-              `;
-              db.query(insertItemSql, [cartId, product_id, size, quantity], cb);
-            }
-          });
-        };
-      });
-
-      // Ejecutamos las tareas en serie
-      async.series(tasks, callback);
-    });
-  },
+    }
+  }
 };
 
 module.exports = Cart;
