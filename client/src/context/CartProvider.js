@@ -196,6 +196,7 @@ const CartProvider = ({ children }) => {
         isLoggedIn,
         setIsLoggedIn,
         loadCartFromDatabase,
+        setCart,
       }}
     >
       {children}

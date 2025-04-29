@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react'; 
 import { Link, useNavigate } from 'react-router-dom';
 import { Form, Button, Container, Row, Col, Alert, InputGroup, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
@@ -25,7 +25,7 @@ const Login = () => {
   const [recoveryCode, setRecoveryCode] = useState('');
   const [recoveryError, setRecoveryError] = useState('');
 
-  const { setIsLoggedIn } = useContext(CartContext);
+  const { setIsLoggedIn, setCart } = useContext(CartContext); // ✅ ahora también traemos setCart
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -44,7 +44,6 @@ const Login = () => {
     if (field === 'password') setPassword(value);
   };
 
-  // 🆕 Fusión del carrito temporal
   const mergeGuestCart = async (token) => {
     const guestCart = JSON.parse(localStorage.getItem('cart')) || [];
     if (guestCart.length > 0) {
@@ -62,6 +61,18 @@ const Login = () => {
       } catch (error) {
         console.error('❌ Error al fusionar el carrito:', error);
       }
+    }
+  };
+
+  const refreshCart = async (token) => {
+    try {
+      const response = await fetch(`${API_URL}/api/cart`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await response.json();
+      setCart(data.cartItems); // 👈 cuidado: accedemos a cartItems porque en CartProvider así los cargamos
+    } catch (error) {
+      console.error('❌ Error al refrescar el carrito:', error);
     }
   };
 
@@ -99,14 +110,14 @@ const Login = () => {
         localStorage.setItem('address', data.address);
         setIsLoggedIn(true);
 
-        // 🛒 Fusionar carrito temporal
         await mergeGuestCart(data.token);
+        await refreshCart(data.token); // ✅ refrescar después del merge
 
         setIsLoading(true);
         setTimeout(() => {
           setIsLoading(false);
           navigate('/profile');
-        }, 2000); // 2 segundos simulados
+        }, 2000);
 
       } else if (data.message === 'Se requiere código de autenticación') {
         setShowOtpField(true);
@@ -138,8 +149,8 @@ const Login = () => {
         localStorage.removeItem('tempToken');
         setIsLoggedIn(true);
 
-        // 🛒 Fusionar carrito temporal
         await mergeGuestCart(data.token);
+        await refreshCart(data.token); // ✅ refrescar después del merge
 
         setIsLoading(true);
         setTimeout(() => {
@@ -171,8 +182,8 @@ const Login = () => {
         localStorage.setItem('token', data.token);
         setIsLoggedIn(true);
 
-        // 🛒 Fusionar carrito temporal
         await mergeGuestCart(data.token);
+        await refreshCart(data.token); // ✅ refrescar después del merge
 
         toast.success(t('Recovery code toast message', { count: data.remainingCodes }), {
           autoClose: 3000,
@@ -193,6 +204,7 @@ const Login = () => {
       setRecoveryError('An error occurred while logging in');
     }
   };
+
 
   return (
     <>
