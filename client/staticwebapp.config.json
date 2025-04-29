@@ -1,0 +1,9 @@
+{
+    "routes": [
+      {
+        "route": "/api/*",
+        "rewrite": "https://epic-kick-api.azurewebsites.net/api/:path*"
+      }
+    ]
+  }
+  
