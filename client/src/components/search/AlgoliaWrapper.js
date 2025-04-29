@@ -16,7 +16,6 @@ import { Spinner } from 'react-bootstrap';
 
 import ProductList from '../product/ProductList';
 import AlgoliaTeamFilter from '../search/AlgoliaTeamFilter';
-import { useLocation } from 'react-router-dom';
 
 const searchClient = algoliasearch(
   process.env.REACT_APP_ALGOLIA_APP_ID,
@@ -31,10 +30,6 @@ const CustomHits = connectHits(({ hits, searchState, searchResults }) => {
   const hasSearchText = searchState?.query?.trim()?.length > 0;
   const isLoading = searchResults?.isSearchStalled;
   const hasAnyFilter = hasTeamFilter || hasSearchText;
-
-  console.log('🔍 Hits:', hits);
-  console.log('🔍 SearchState:', searchState);
-  console.log('🔍 SearchResults:', searchResults);
 
   if (hasAnyFilter && isLoading) return null;
 
@@ -51,7 +46,6 @@ const CustomHits = connectHits(({ hits, searchState, searchResults }) => {
 
 const AlgoliaWrapper = () => {
   const { t } = useTranslation();
-  const location = useLocation();
 
   const ResultsWithState = connectStateResults(({ searchState, searchResults }) => {
     if (!searchResults) {
