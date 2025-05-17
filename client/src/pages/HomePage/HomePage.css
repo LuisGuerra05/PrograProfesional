@@ -1,56 +1,31 @@
-/* Personalización del logo */
-.logo {
-  width: 40px;
-  height: auto;
-  margin-right: 10px;
-}
-
 /* Título principal de la página */
 .homepage-title {
   text-align: center;
-  font-size: 2rem;
-  margin: 40px 0 20px; /* Espacio superior e inferior */
+  font-size: 2.5rem;
+  margin: 40px 0 20px;
   color: #333;
+  font-family: 'Arial', sans-serif;
   font-weight: bold;
 }
 
-/* Personalización de la imagen de perfil */
-.profile-icon {
-  width: 60px;
-  height: 60px;
-  background-color: transparent;
-  border-radius: 50%;
-  object-fit: cover;
-  border: none;
+/* Subtítulo */
+.homepage-subtitle {
+  text-align: center;
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  color: #666;
+  font-family: 'Arial', sans-serif;
 }
 
-/* Personalización de la imagen de carrito */
-.cart-icon {
-  width: 65px;
-  height: 65px;
-  background-color: transparent;
-  border-radius: 50%;
-  object-fit: cover;
-  border: none;
+/* Contenedor general de la sección de equipos */
+.home-content {
+  padding-bottom: 40px;
 }
 
-/* Estilos para el contenido de la página */
-.grid-container {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 20px;
-  padding: 20px;
-}
-
-.grid-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
+/* Estilo de los escudos */
 .team-logo {
-  width: 140px;
-  height: 140px;
+  width: 120px;
+  height: 120px;
   object-fit: contain;
   margin-bottom: 10px;
   border-radius: 50%;
@@ -63,73 +38,9 @@
   transform: scale(1.1);
 }
 
-/* Responsivo */
-@media (max-width: 1200px) {
-  .grid-container {
-    grid-template-columns: repeat(4, 1fr);
-  }
+/* Estilo del nombre del equipo */
+.home-content p {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
 }
-
-@media (max-width: 1024px) {
-  .grid-container {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (max-width: 768px) {
-  .grid-container {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 480px) {
-  .grid-container {
-    grid-template-columns: 1fr;
-  }
-
-  .team-logo {
-    width: 80px;
-    height: 80px;
-  }
-}
-
-/* Estilos para los botones de perfil y carrito */
-.profile-icon, .cart-icon {
-  margin-left: 15px; /* Añade margen izquierdo para separarlos */
-}
-
-select {
-  margin-right: 15px; /* Añade margen derecho al selector de idioma */
-}
-
-/* Ajusta el tamaño y espaciado para dispositivos pequeños */
-@media (max-width: 768px) {
-  .profile-icon, .cart-icon {
-    margin-left: 10px; /* Reduce el margen en pantallas pequeñas */
-  }
-
-  select {
-    margin-right: 10px; /* Reduce el margen del selector en pantallas pequeñas */
-  }
-}
-
-/* Título principal con color negro */
-.homepage-title {
-  text-align: center;
-  font-size: 2.5rem;
-  margin: 40px 0 20px; /* Espaciado similar al About Us */
-  color: #333; /* Color similar al About Us */
-  font-family: 'Arial', sans-serif; /* Mismo estilo de fuente */
-  font-weight: bold; /* Peso de fuente */
-}
-
-/* Subtítulo */
-.homepage-subtitle {
-  text-align: center;
-  font-size: 1.2rem;
-  margin-bottom: 20px;
-  color: #666;
-  font-family: 'Arial', sans-serif; /* Asegura que el subtítulo también use la misma fuente */
-}
-
-
