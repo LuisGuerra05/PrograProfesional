@@ -53,6 +53,7 @@
 
 
     "login-title": "Inicia Sesión",
+    "Login required": "Inicio de sesión requerido",
     "Invalid email format" : "Formato de correo inválido",
     "Unknown registration error.": "Error desconocido en el registro.",
     "Registration error": "Error en el registro",

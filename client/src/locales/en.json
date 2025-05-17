@@ -51,6 +51,7 @@
     "All" : "All",
 
     "login-title": "Login",
+    "Login required": "Login required",
     "Invalid email format": "Invalid email format",
     "Unknown registration error.": "Unknown registration error.",
     "Registration error": "Registration error",
