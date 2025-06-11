@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
-  },
+  "start": "node server.js",
+  "test": "jest",
+  "test:coverage": "jest --coverage"
+},
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -24,5 +26,8 @@
   },
   "engines": {
     "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
   }
 }

@@ -37,5 +37,11 @@ async function syncProductsToAlgolia() {
   }
 }
 
-// Ejecutar
-syncProductsToAlgolia();
+// Ejecutar solo si se corre directamente con `node syncProducts.js`
+if (require.main === module) {
+  syncProductsToAlgolia();
+}
+
+// Exportar para Jest u otros usos
+module.exports = syncProductsToAlgolia;
+
