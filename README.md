@@ -12,6 +12,12 @@ Este proyecto se desarrolla de forma continua a través de dos ramos distintos:
   - Primera entrega: [Ver video](https://youtu.be/4sm-HUOfB5o)
 
 ---
+**Nota Disponibilidad de la Página Web**
+
+Se puede acceder a una versión en línea de Epic Kick desde: 🔗 [https://EpicKick.com](https://red-wave-05f62db1e.6.azurestaticapps.net/)  
+> ⚠️ Algunas funcionalidades como login, registro, carrito o detalles de productos podrían no estar activas si la base de datos de AWS está temporalmente deshabilitada para evitar costos.
+
+---
 
 
 ## Tabla de contenidos
