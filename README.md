@@ -10,7 +10,7 @@ Este proyecto se desarrolla de forma continua a través de dos ramos distintos:
 
 - **Programación Profesional 2025-1** (UAI)  
   - Primera entrega: [Ver video](https://youtu.be/4sm-HUOfB5o)
-
+  - Entrega final: [Ver video](https://youtu.be/ktQ_v9HK6lE)
 ---
 **Nota Disponibilidad de la Página Web**
 
