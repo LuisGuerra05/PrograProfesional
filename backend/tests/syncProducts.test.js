@@ -13,8 +13,8 @@ describe('syncProductsToAlgolia', () => {
     jest.clearAllMocks();
   });
 
-  test('sube productos reales a Algolia en formato correcto', async () => {
-    db.query.mockResolvedValueOnce([[
+  test('sube productos reales a Algolia en formato correcto, incluyendo productos sin imagen', async () => {
+    db.query.mockResolvedValueOnce([[ 
       {
         id: 1,
         name: 'Camiseta Local 2024-2025',
@@ -32,10 +32,19 @@ describe('syncProductsToAlgolia', () => {
         type: 'visita',
         price: 117.99,
         image_url: '/images/Madrid/Visita/Madrid_Visita_24_1.jpg'
+      },
+      {
+        id: 3,
+        name: 'Camiseta Sin Imagen',
+        team: 'Inter',
+        brand: 'Nike',
+        type: 'alternativa',
+        price: 95.00,
+        image_url: null // cubrir el caso del ternario
       }
     ]]);
 
-    console.log = jest.fn(); // mock console.log
+    console.log = jest.fn();
 
     await syncProductsToAlgolia();
 
@@ -57,6 +66,15 @@ describe('syncProductsToAlgolia', () => {
         type: 'visita',
         price: 117.99,
         image: 'https://res.cloudinary.com/ds0zs3wub/image/upload//images/Madrid/Visita/Madrid_Visita_24_1.jpg'
+      },
+      {
+        objectID: 3,
+        name: 'Camiseta Sin Imagen',
+        team: 'Inter',
+        brand: 'Nike',
+        type: 'alternativa',
+        price: 95.00,
+        image: null
       }
     ]);
 
@@ -64,16 +82,29 @@ describe('syncProductsToAlgolia', () => {
   });
 
   test('maneja errores si saveObjects falla', async () => {
-    db.query.mockResolvedValueOnce([[]]); // sin productos
-    index.saveObjects.mockRejectedValueOnce(new Error('Falla simulada'));
+    db.query.mockResolvedValueOnce([[ 
+      {
+        id: 4,
+        name: 'Camiseta con Error',
+        team: 'Chelsea',
+        brand: 'Nike',
+        type: 'local',
+        price: 100.00,
+        image_url: '/images/Chelsea/Local/Chelsea_Local.jpg'
+      }
+    ]]);
 
-    console.error = jest.fn(); // mock console.error
+    const error = new Error('Falla simulada');
+    index.saveObjects.mockRejectedValueOnce(error);
+
+    console.error = jest.fn();
 
     await syncProductsToAlgolia();
 
+    expect(index.saveObjects).toHaveBeenCalled();
     expect(console.error).toHaveBeenCalledWith(
       'Error subiendo productos a Algolia:',
-      expect.any(Error)
+      error
     );
   });
 });
