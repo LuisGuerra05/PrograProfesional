@@ -38,6 +38,7 @@ async function syncProductsToAlgolia() {
 }
 
 // Ejecutar solo si se corre directamente con `node syncProducts.js`
+/*istanbul ignore next */
 if (require.main === module) {
   syncProductsToAlgolia();
 }
