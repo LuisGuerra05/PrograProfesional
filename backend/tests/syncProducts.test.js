@@ -35,6 +35,8 @@ describe('syncProductsToAlgolia', () => {
       }
     ]]);
 
+    console.log = jest.fn(); // mock console.log
+
     await syncProductsToAlgolia();
 
     expect(index.saveObjects).toHaveBeenCalledWith([
@@ -57,5 +59,21 @@ describe('syncProductsToAlgolia', () => {
         image: 'https://res.cloudinary.com/ds0zs3wub/image/upload//images/Madrid/Visita/Madrid_Visita_24_1.jpg'
       }
     ]);
+
+    expect(console.log).toHaveBeenCalledWith('Productos subidos a Algolia exitosamente.');
+  });
+
+  test('maneja errores si saveObjects falla', async () => {
+    db.query.mockResolvedValueOnce([[]]); // sin productos
+    index.saveObjects.mockRejectedValueOnce(new Error('Falla simulada'));
+
+    console.error = jest.fn(); // mock console.error
+
+    await syncProductsToAlgolia();
+
+    expect(console.error).toHaveBeenCalledWith(
+      'Error subiendo productos a Algolia:',
+      expect.any(Error)
+    );
   });
 });
